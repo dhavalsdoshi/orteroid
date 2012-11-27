@@ -1,0 +1,10 @@
+.DS_STORE
+gen/
+bin/
+out/
+.idea
+.classpath
+.project
+*.iws
+*.ipr
+*.iml

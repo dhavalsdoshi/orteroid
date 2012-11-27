@@ -13,20 +13,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c882a8a6-8fb9-42d4-9c9b-9d831945cc74" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/ant.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/view_board.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/thoughtworks/orteroid/ViewBoardActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/thoughtworks/orteroid/constants/Constants.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/src/com/thoughtworks/orteroid/BaseActivityTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/src/com/thoughtworks/orteroid/utils/TestUtilities.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/test.iml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/gen/com/example/orteroid/BuildConfig.java" afterPath="$PROJECT_DIR$/gen/com/thoughtworks/orteroid/BuildConfig.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/gen/com/example/orteroid/R.java" afterPath="$PROJECT_DIR$/gen/com/thoughtworks/orteroid/R.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/example/orteroid/MainActivity.java" afterPath="$PROJECT_DIR$/src/com/thoughtworks/orteroid/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/AndroidManifest.xml" afterPath="$PROJECT_DIR$/bin/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/activity_main.xml" afterPath="$PROJECT_DIR$/res/layout/activity_main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="orteroid.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -131,13 +119,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ViewBoardActivity.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="ViewBoardActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/thoughtworks/orteroid/ViewBoardActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="34" selection-start="303" selection-end="303" vertical-scroll-proportion="0.3346856">
+            <state line="11" column="34" selection-start="303" selection-end="303" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="5" selection-start="68" selection-end="68" vertical-scroll-proportion="0.27383366">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -193,6 +190,7 @@
         <option value="$PROJECT_DIR$/src/com/thoughtworks/orteroid/constants/Constants.java" />
         <option value="$PROJECT_DIR$/res/layout/view_board.xml" />
         <option value="$PROJECT_DIR$/src/com/thoughtworks/orteroid/ViewBoardActivity.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -562,7 +560,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1680" height="929" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -579,7 +577,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21691176" sideWeight="0.6707921" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21691176" sideWeight="0.6707921" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32920793" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -736,10 +734,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/thoughtworks/orteroid/ViewBoardActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="34" selection-start="303" selection-end="303" vertical-scroll-proportion="0.3346856">
+        <state line="11" column="34" selection-start="303" selection-end="303" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="5" selection-start="68" selection-end="68" vertical-scroll-proportion="0.27383366">
+          <folding />
         </state>
       </provider>
     </entry>
