@@ -2,7 +2,9 @@
 <resources>
 
     <string name="app_name">Orteroid</string>
+    <string name="view_board">View Board</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
+    <string name="option1">View Board</string>
 
 </resources>
