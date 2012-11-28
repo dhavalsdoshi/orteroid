@@ -2,9 +2,12 @@
 gen/
 bin/
 out/
-.idea
+.idea/
 .classpath
 .project
 *.iws
 *.ipr
 *.iml
+local.properties
+test/local.properties
+

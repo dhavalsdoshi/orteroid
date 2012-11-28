@@ -1,6 +1,5 @@
 package com.thoughtworks.orteroid;
 
-import android.test.ActivityInstrumentationTestCase2;
 import com.thoughtworks.orteroid.constants.Constants;
 
 import java.util.HashMap;
@@ -16,5 +15,6 @@ public class MainActivityTest extends BaseActivityTest<MainActivity> {
         Map<String,String> bundleExtras = new HashMap<String, String>();
         bundleExtras.put(Constants.BOARD_KEY,"test");
         assertNavigationToTargetWithParameters(R.id.viewTestBoard, ViewBoardActivity.class,bundleExtras );
+
     }
 }
