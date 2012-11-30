@@ -1,4 +1,4 @@
-package com.thoughtworks.orteroid;
+package com.thoughtworks.orteroid.utilities;
 
 public class URLGenerator {
     public String getBoardURL(String input, String id) {

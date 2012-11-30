@@ -1,10 +1,11 @@
-package com.thoughtworks.orteroid;
+package com.thoughtworks.orteroid.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
+import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
 
 public class MainActivity extends Activity {

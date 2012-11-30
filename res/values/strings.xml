@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Orteroid</string>
-    <string name="view_board">View Board</string>
+    <string name="section_view_row">List of Sections</string>
     <string name="menu_settings">Settings</string>
     <string name="option1">View Board</string>
 

@@ -1,7 +1,8 @@
-package com.thoughtworks.orteroid;
+package com.thoughtworks.orteroid.utilities;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import com.thoughtworks.orteroid.Callback;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -14,26 +15,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class ContentFetcher extends AsyncTask<String,Void,Void>{
+public class ContentFetcher extends AsyncTask<String,Void,JSONObject>{
 
-    private HTTPRequester httpRequester;
-    private JSONObject jsonObject;
+    private Callback callback;
 
-    public ContentFetcher(HTTPRequester httpRequester) {
-        this.httpRequester = httpRequester;
+    public ContentFetcher(Callback callback) {
+        this.callback = callback;
     }
 
     //TODO write functional tests
 
     @Override
-    protected Void doInBackground(String... urls) {
+    protected JSONObject doInBackground(String... urls) {
         for (String url : urls) {
-            response(url);
+            return response(url);
         }
         return null;
     }
 
-    public void response(String url) {
+    public JSONObject response(String url) {
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(url);
         String result = null;
@@ -51,11 +51,17 @@ public class ContentFetcher extends AsyncTask<String,Void,Void>{
             result = "404 error";
         }
         try {
-            jsonObject = new JSONObject(result);
+            return new JSONObject(result);
         } catch (JSONException e) {
             Log.e("JSON Parser", "Error parsing data " + e.toString());
         }
-        httpRequester.callback(jsonObject);
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(JSONObject jsonObject) {
+        super.onPostExecute(jsonObject);
+        callback.execute(jsonObject);
     }
 
     private String toString(InputStream content) {

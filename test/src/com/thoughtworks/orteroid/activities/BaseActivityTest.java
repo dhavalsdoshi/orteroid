@@ -1,4 +1,4 @@
-package com.thoughtworks.orteroid;
+package com.thoughtworks.orteroid.activities;
 
 import android.app.Activity;
 import android.app.Instrumentation;

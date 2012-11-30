@@ -1,5 +1,6 @@
-package com.thoughtworks.orteroid;
+package com.thoughtworks.orteroid.utilities;
 
+import com.thoughtworks.orteroid.utilities.URLGenerator;
 import junit.framework.TestCase;
 
 public class URLGeneratorTest extends TestCase {

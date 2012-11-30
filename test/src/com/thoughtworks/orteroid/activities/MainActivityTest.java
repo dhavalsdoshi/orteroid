@@ -1,5 +1,9 @@
-package com.thoughtworks.orteroid;
+package com.thoughtworks.orteroid.activities;
 
+import com.thoughtworks.orteroid.R;
+import com.thoughtworks.orteroid.activities.BaseActivityTest;
+import com.thoughtworks.orteroid.activities.MainActivity;
+import com.thoughtworks.orteroid.activities.ViewBoardActivity;
 import com.thoughtworks.orteroid.constants.Constants;
 
 import java.util.HashMap;

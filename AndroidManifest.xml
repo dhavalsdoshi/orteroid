@@ -5,8 +5,10 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="16" />
+    android:minSdkVersion="8"
+    android:targetSdkVersion="16" />
+
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -14,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.thoughtworks.orteroid.MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,8 +25,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.thoughtworks.orteroid.ViewBoardActivity"
-            android:label="@string/view_board" >
+            android:name=".activities.ViewBoardActivity"
+            android:label="@string/section_view_row" >
         </activity>
     </application>
 
