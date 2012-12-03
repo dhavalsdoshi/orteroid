@@ -1,4 +1,4 @@
-package com.thoughtworks.orteroid.funtional;
+package com.thoughtworks.orteroid.activities;
 
 import android.test.ActivityInstrumentationTestCase2;
 import com.jayway.android.robotium.solo.Solo;
