@@ -1,7 +1,6 @@
 package com.thoughtworks.orteroid.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -20,8 +19,7 @@ import com.thoughtworks.orteroid.utilities.SectionListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewBoardActivity extends Activity implements Callback<Board>,AdapterView.OnItemSelectedListener {
-    Context context =this;
+public class ViewBoardActivity extends Activity implements AdapterView.OnItemSelectedListener {
     private Board board;
 
     @Override
@@ -31,16 +29,21 @@ public class ViewBoardActivity extends Activity implements Callback<Board>,Adapt
         Intent intent = getIntent();
         String boardKey = intent.getStringExtra(Constants.BOARD_KEY);
         String boardId = intent.getStringExtra(Constants.BOARD_ID);
-        new BoardRepository().retrieveBoard(boardKey, boardId, this);
+        new BoardRepository().retrieveBoard(boardKey, boardId, viewBoardCallback());
+    }
+
+    private Callback<Board> viewBoardCallback() {
+        return new Callback<Board>() {
+            @Override
+            public void execute(Board board) {
+                ViewBoardActivity.this.board = board;
+                String selectedItem = setSpinner(board);
+                setPoints(ViewBoardActivity.this.board,selectedItem);
+            }
+        };
     }
 
 
-    @Override
-    public void execute(Board board) {
-        this.board = board;
-        String selectedItem = setSpinner(board);
-        setPoints(this.board,selectedItem);
-    }
 
     private void setPoints(Board board, String selectedItem) {
         SectionListAdapter adapter = new SectionListAdapter(this, board.pointsOfSection(selectedItem));
