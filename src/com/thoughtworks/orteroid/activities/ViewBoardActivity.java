@@ -19,7 +19,9 @@ import com.thoughtworks.orteroid.utilities.SectionListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewBoardActivity extends Activity implements AdapterView.OnItemSelectedListener {
+import static android.widget.AdapterView.OnItemSelectedListener;
+
+public class ViewBoardActivity extends Activity {
     private Board board;
 
     @Override
@@ -29,6 +31,7 @@ public class ViewBoardActivity extends Activity implements AdapterView.OnItemSel
         Intent intent = getIntent();
         String boardKey = intent.getStringExtra(Constants.BOARD_KEY);
         String boardId = intent.getStringExtra(Constants.BOARD_ID);
+
         new BoardRepository().retrieveBoard(boardKey, boardId, viewBoardCallback());
     }
 
@@ -57,8 +60,24 @@ public class ViewBoardActivity extends Activity implements AdapterView.OnItemSel
         List<String> sectionNames = inflateSpinner(spinnerArray);
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, sectionNames);
         spinner.setAdapter(spinnerArrayAdapter);
-        spinner.setOnItemSelectedListener(this);
+
+        spinner.setOnItemSelectedListener(dropDownOnClickListener());
         return (String)spinner.getSelectedItem();
+    }
+
+    private OnItemSelectedListener dropDownOnClickListener() {
+        return new OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                String selected = parent.getItemAtPosition(pos).toString();
+                setPoints(board,selected);
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView parent) {
+                // Do nothing.
+            }
+        };
     }
 
 
@@ -70,15 +89,6 @@ public class ViewBoardActivity extends Activity implements AdapterView.OnItemSel
         return sectionNames;
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        String selected = parent.getItemAtPosition(pos).toString();
-        setPoints(board,selected);
 
-    }
-    @Override
-    public void onNothingSelected(AdapterView parent) {
-        // Do nothing.
-    }
 
 }
