@@ -1,7 +1,5 @@
 package com.thoughtworks.orteroid.models;
 
-import org.json.JSONObject;
-
 import java.util.List;
 
 public class Board {
@@ -27,10 +25,6 @@ public class Board {
 
     }
 
-    public String description() {
-        return description;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -46,5 +40,16 @@ public class Board {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    public void update(List<Point> points) {
+        for (Point point : points)
+            for (Section section : sections)
+                if (point.section_id == section.id && !section.contains(point))
+                    section.addPoint(point);
+    }
+
+    public List<Point> names() {
+        return sections.get(1).points;
     }
 }

@@ -9,20 +9,20 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.thoughtworks.orteroid.R;
-import com.thoughtworks.orteroid.models.Section;
+import com.thoughtworks.orteroid.models.Point;
 
 import java.util.List;
 
-public class SectionListAdapter extends ArrayAdapter<Section> {
+public class SectionListAdapter extends ArrayAdapter<Point> {
 
     private final Context context;
-    private final List<Section> sections;
+    private final List<Point> points;
     View rowView;
 
-    public SectionListAdapter(Context context, List<Section> objects) {
+    public SectionListAdapter(Context context, List<Point> objects) {
         super(context, R.layout.section_view_row_layout, R.id.row_text, objects);
         this.context = context;
-        this.sections = objects;
+        this.points = objects;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class SectionListAdapter extends ArrayAdapter<Section> {
         TextView textView = (TextView) rowView.findViewById(R.id.row_text);
         Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/Handwritten_Crystal_v2.ttf");
         textView.setTypeface(tf);
-        textView.setText(sections.get(position).name());
+        textView.setText(points.get(position).message);
         return rowView;
     }
 
