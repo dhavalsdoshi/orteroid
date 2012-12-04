@@ -37,26 +37,32 @@ public class JSONParser {
     }
 
     public static List<Point> parseToPoints(String resultString) throws JSONException  {
+        List<String> stringJSONObjectsList = toStringArrayOfPoints(resultString);
+
+        JSONArray jsonArray = toJSONArrayOfPoints(stringJSONObjectsList);
+
+        return getPointsFromJSONArray(jsonArray);
+    }
+
+    private static List<String> toStringArrayOfPoints(String resultString) {
         StringBuilder stringBuilder = new StringBuilder(resultString);
         List<String> stringJSONObjectsList = new ArrayList<String>();
 
-        while(stringBuilder.toString().length() > 0){
+        while(stringBuilder.toString().length() > 0){ //TODO: what if /} is present..? change the logic accordingly
             int endIndex = stringBuilder.indexOf("}");
 
             if(endIndex < 0){
                 break;
             }
-            stringJSONObjectsList.add(stringBuilder.substring(1, endIndex+1));
-            System.out.println(stringBuilder.substring(1, endIndex+1));
-            System.out.println("*****************************************************************");
-            stringBuilder.delete(1, endIndex+2);
+            stringJSONObjectsList.add(stringBuilder.substring(1, endIndex + 1));
+            stringBuilder.delete(1, endIndex + 2);
         }
-        JSONArray jsonArray = new JSONArray();
-        for (String jsonString : stringJSONObjectsList) {
-            jsonArray.put(new JSONObject(jsonString));
-        }
+        return stringJSONObjectsList;
+    }
 
+    private static List<Point> getPointsFromJSONArray(JSONArray jsonArray) throws JSONException {
         List<Point> points = new ArrayList<Point>();
+
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             points.add(new Point(jsonObject.getInt("section_id"),jsonObject.getInt("id"), jsonObject.getString("message")));
@@ -64,4 +70,15 @@ public class JSONParser {
         }
         return points;
     }
+
+    private static JSONArray toJSONArrayOfPoints(List<String> stringJSONObjectsList) throws JSONException {
+        JSONArray jsonArray = new JSONArray();
+
+        for (String jsonString : stringJSONObjectsList) {
+            jsonArray.put(new JSONObject(jsonString));
+        }
+        return jsonArray;
+    }
+
+
 }

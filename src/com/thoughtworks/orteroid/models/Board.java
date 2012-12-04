@@ -49,7 +49,12 @@ public class Board {
                     section.addPoint(point);
     }
 
-    public List<Point> names() {
-        return sections.get(1).points;
+    public List<Point> pointsOfSection(String selectedSection) {
+        for (Section section : sections) {
+            if((section.name()).equals(selectedSection))
+                return  section.points;
+        }
+
+        return null;
     }
 }

@@ -24,8 +24,6 @@ public class ContentFetcher extends AsyncTask<String, Void, String> {
         this.callback = callback;
     }
 
-    //TODO write functional tests
-
     @Override
     protected String doInBackground(String... urls) {
         for (String url : urls) {

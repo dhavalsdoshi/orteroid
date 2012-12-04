@@ -10,33 +10,33 @@ import org.json.JSONObject;
 
 public class BoardRepository {
 
-
     public void  retrieveBoard(String boardKey, String boardId, final Callback<Board> callback) {
         String url = new URLGenerator().getBoardURL(boardKey, boardId);
-        Callback<String> serverCallback = generateServerCallback(callback);
+        Callback<String> serverCallback = generateServerCallback(callback,boardId,boardKey);
         ContentFetcher contentFetcher = new ContentFetcher(serverCallback);
         contentFetcher.execute(url);
     }
 
-    private Callback<String> generateServerCallback(final Callback<Board> callback) {
+    private Callback<String> generateServerCallback(final Callback<Board> callback, final String boardId, final String boardKey) {
         return new Callback<String>() {
             @Override
             public void execute(String jsonBoard) throws JSONException {
                 JSONObject jsonObject = new JSONObject(jsonBoard);
                 final Board boardSkeleton = JSONParser.parseToBoard(jsonObject);
-                updateBoard(boardSkeleton, callback);
+                updateBoard(boardSkeleton, callback,boardId,boardKey);
             }
         };
     }
 
-    private void updateBoard(final Board boardSkeleton, final Callback<Board> callback) {
+    private void updateBoard(final Board boardSkeleton, final Callback<Board> callback, String boardId, String boardKey) { //TODO: signature is smelly
+        String urlForPoints = new URLGenerator().getPointsURL(boardKey, boardId);
+
         new ContentFetcher(new Callback<String>() {
             @Override
             public void execute(String object) throws JSONException {
                 boardSkeleton.update(JSONParser.parseToPoints(object));
                 callback.execute(boardSkeleton);
             }
-
-        }).execute("http://www.ideaboardz.com/retros/test/2/points.json");
+        }).execute(urlForPoints);
     }
 }
