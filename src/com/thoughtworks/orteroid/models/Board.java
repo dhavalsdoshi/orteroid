@@ -54,7 +54,6 @@ public class Board {
             if((section.name()).equals(selectedSection))
                 return  section.points();
         }
-
         return null;
     }
 }

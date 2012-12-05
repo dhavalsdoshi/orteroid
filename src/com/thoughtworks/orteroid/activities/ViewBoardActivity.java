@@ -49,8 +49,6 @@ public class ViewBoardActivity extends Activity {
         };
     }
 
-
-
     private void setPoints(Board board, String selectedItem) {
         SectionListAdapter adapter = new SectionListAdapter(this, board.pointsOfSection(selectedItem));
         ListView listView = (ListView)findViewById(android.R.id.list);
@@ -77,7 +75,6 @@ public class ViewBoardActivity extends Activity {
             }
             @Override
             public void onNothingSelected(AdapterView parent) {
-                // Do nothing.
             }
         };
     }
