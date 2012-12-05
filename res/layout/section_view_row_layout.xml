@@ -6,14 +6,15 @@
 
     <Button
         android:id="@+id/row_text"
-        android:layout_width="600dp"
+        android:layout_width="500dip"
         android:layout_height="wrap_content"
+        android:padding="4dip"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:textSize="20dp"
+        android:layout_marginRight="10dip"
+        android:layout_marginLeft="10dip"
+        android:textSize="20dip"
         android:background="@drawable/sticky"
         android:text="@string/section_view_row" />
 
