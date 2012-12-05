@@ -31,8 +31,7 @@ public class ViewBoardActivity extends Activity {
         Intent intent = getIntent();
         String boardKey = intent.getStringExtra(Constants.BOARD_KEY);
         String boardId = intent.getStringExtra(Constants.BOARD_ID);
-
-        new BoardRepository().retrieveBoard(boardKey, boardId, viewBoardCallback());
+        BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback());
     }
 
     private Callback<Board> viewBoardCallback() {
@@ -88,7 +87,4 @@ public class ViewBoardActivity extends Activity {
         }
         return sectionNames;
     }
-
-
-
 }

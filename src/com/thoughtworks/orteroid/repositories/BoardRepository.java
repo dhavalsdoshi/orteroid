@@ -10,7 +10,12 @@ import org.json.JSONObject;
 
 public class BoardRepository {
 
-    public void  retrieveBoard(String boardKey, String boardId, final Callback<Board> callback) {
+    private static BoardRepository boardRepository;
+
+    private BoardRepository() {
+    }
+
+    public void retrieveBoard(String boardKey, String boardId, final Callback callback) {
         String url = new URLGenerator().getBoardURL(boardKey, boardId);
         Callback<String> serverCallback = generateServerCallback(callback,boardId,boardKey);
         ContentFetcher contentFetcher = new ContentFetcher(serverCallback);
@@ -38,5 +43,12 @@ public class BoardRepository {
                 callback.execute(boardSkeleton);
             }
         }).execute(urlForPoints);
+    }
+
+    public static BoardRepository getInstance(){
+        if(boardRepository == null){
+            boardRepository = new BoardRepository();
+        }
+        return boardRepository;
     }
 }
