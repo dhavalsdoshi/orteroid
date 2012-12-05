@@ -44,4 +44,8 @@ public class BoardRepository {
         }
         return boardRepository;
     }
+
+    public static void setBoardRepository(BoardRepository boardRepository){
+        BoardRepository.boardRepository = boardRepository;
+    }
 }
