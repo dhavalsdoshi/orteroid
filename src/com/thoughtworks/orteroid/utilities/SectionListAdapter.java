@@ -32,7 +32,7 @@ public class SectionListAdapter extends ArrayAdapter<Point> {
         TextView textView = (TextView) rowView.findViewById(R.id.row_text);
         Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/Handwritten_Crystal_v2.ttf");
         textView.setTypeface(tf);
-        textView.setText(points.get(position).message);
+        textView.setText(points.get(position).message());
         return rowView;
     }
 

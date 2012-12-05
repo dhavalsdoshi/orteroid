@@ -45,14 +45,14 @@ public class Board {
     public void update(List<Point> points) {
         for (Point point : points)
             for (Section section : sections)
-                if (point.section_id == section.id && !section.contains(point))
+                if (point.section_id() == section.id() && !section.contains(point))
                     section.addPoint(point);
     }
 
     public List<Point> pointsOfSection(String selectedSection) {
         for (Section section : sections) {
             if((section.name()).equals(selectedSection))
-                return  section.points;
+                return  section.points();
         }
 
         return null;

@@ -6,8 +6,8 @@ import java.util.List;
 public class Section {
 
     private String name;
-    Integer id;
-    List<Point> points;
+    private Integer id;
+    private List<Point> points;
 
     public Section(String name, Integer id) {
         this.name = name;
@@ -25,5 +25,13 @@ public class Section {
 
     public void addPoint(Point point) {
         points.add(point);
+    }
+
+    public Integer id() {
+        return id;
+    }
+
+    public List<Point> points() {
+        return points;
     }
 }

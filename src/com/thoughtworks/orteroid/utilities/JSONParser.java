@@ -22,7 +22,7 @@ public class JSONParser {
             return new Board(name, id, description, sections);
         } catch (JSONException e) {
             e.printStackTrace();
-            throw new RuntimeException("Failure in JSON Parse");
+            throw new RuntimeException("Failure in JSON Parse to sections");
         }
     }
 
@@ -37,48 +37,23 @@ public class JSONParser {
     }
 
     public static List<Point> parseToPoints(String resultString) throws JSONException  {
-        List<String> stringJSONObjectsList = toStringArrayOfPoints(resultString);
-
-        JSONArray jsonArray = toJSONArrayOfPoints(stringJSONObjectsList);
-
-        return getPointsFromJSONArray(jsonArray);
-    }
-
-    private static List<String> toStringArrayOfPoints(String resultString) {
-        StringBuilder stringBuilder = new StringBuilder(resultString);
-        List<String> stringJSONObjectsList = new ArrayList<String>();
-
-        while(stringBuilder.toString().length() > 0){ //TODO: what if /} is present..? change the logic accordingly
-            int endIndex = stringBuilder.indexOf("}");
-
-            if(endIndex < 0){
-                break;
-            }
-            stringJSONObjectsList.add(stringBuilder.substring(1, endIndex + 1));
-            stringBuilder.delete(1, endIndex + 2);
-        }
-        return stringJSONObjectsList;
-    }
-
-    private static List<Point> getPointsFromJSONArray(JSONArray jsonArray) throws JSONException {
-        List<Point> points = new ArrayList<Point>();
-
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            points.add(new Point(jsonObject.getInt("section_id"),jsonObject.getInt("id"), jsonObject.getString("message")));
-
-        }
+        List<Point> points = parse(resultString);
         return points;
     }
 
-    private static JSONArray toJSONArrayOfPoints(List<String> stringJSONObjectsList) throws JSONException {
-        JSONArray jsonArray = new JSONArray();
-
-        for (String jsonString : stringJSONObjectsList) {
-            jsonArray.put(new JSONObject(jsonString));
+    private static List<Point> parse(String resultString) {
+        JSONArray result;
+        List<Point> points = new ArrayList<Point>();
+        try {
+            result = new JSONArray(resultString);
+            for(int i = 0 ; i < result.length() ; i++ ){
+                JSONObject jsonObject = result.getJSONObject(i);
+                points.add(new Point(jsonObject.getInt("section_id"),jsonObject.getInt("id"),jsonObject.getString("message")));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failure in JSON Parse to points");
         }
-        return jsonArray;
+        return points;
     }
-
-
 }
