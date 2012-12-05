@@ -1,6 +1,7 @@
 package com.thoughtworks.orteroid.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -31,13 +32,16 @@ public class ViewBoardActivity extends Activity {
         Intent intent = getIntent();
         String boardKey = intent.getStringExtra(Constants.BOARD_KEY);
         String boardId = intent.getStringExtra(Constants.BOARD_ID);
-        BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback());
+        ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of "+boardKey+" board", true);
+        dialog.show();
+        BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
     }
 
-    private Callback<Board> viewBoardCallback() {
+    private Callback<Board> viewBoardCallback(final ProgressDialog dialog) {  //TODO: dialog is smell....
         return new Callback<Board>() {
             @Override
             public void execute(Board board) {
+                dialog.dismiss();
                 ViewBoardActivity.this.board = board;
                 String selectedItem = setSpinner(board);
                 setPoints(ViewBoardActivity.this.board,selectedItem);
@@ -70,7 +74,6 @@ public class ViewBoardActivity extends Activity {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 String selected = parent.getItemAtPosition(pos).toString();
                 setPoints(board,selected);
-
             }
             @Override
             public void onNothingSelected(AdapterView parent) {
@@ -78,7 +81,6 @@ public class ViewBoardActivity extends Activity {
             }
         };
     }
-
 
     private List<String> inflateSpinner(List<Section> spinnerArray) {
         List<String> sectionNames = new ArrayList<String>();
