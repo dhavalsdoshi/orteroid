@@ -8,41 +8,34 @@ import com.thoughtworks.orteroid.utilities.URLGenerator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class BoardRepository {
 
     private static BoardRepository boardRepository;
+
 
     private BoardRepository() {
     }
 
     public void retrieveBoard(String boardKey, String boardId, final Callback callback) {
-        String url = new URLGenerator().getBoardURL(boardKey, boardId);
-        Callback<String> serverCallback = generateServerCallback(callback,boardId,boardKey);
+        String boardURL = new URLGenerator().getBoardURL(boardKey, boardId);
+        Callback<List<String>> serverCallback = generateServerCallback(callback);
         ContentFetcher contentFetcher = new ContentFetcher(serverCallback);
-        contentFetcher.execute(url);
+        String pointsURL = new URLGenerator().getPointsURL(boardKey,boardId);
+        contentFetcher.execute(boardURL,pointsURL);
     }
 
-    private Callback<String> generateServerCallback(final Callback<Board> callback, final String boardId, final String boardKey) {
-        return new Callback<String>() {
+    private Callback<List<String>> generateServerCallback(final Callback<Board> callback) {
+        return new Callback<List<String>>() {
             @Override
-            public void execute(String jsonBoard) throws JSONException {
-                JSONObject jsonObject = new JSONObject(jsonBoard);
+            public void execute(List<String> jsonResponseList) throws JSONException {
+                JSONObject jsonObject = new JSONObject(jsonResponseList.get(0));
                 final Board boardSkeleton = JSONParser.parseToBoard(jsonObject);
-                updateBoard(boardSkeleton, callback,boardId,boardKey);
-            }
-        };
-    }
-
-    private void updateBoard(final Board boardSkeleton, final Callback<Board> callback, String boardId, String boardKey) { //TODO: signature is smelly
-        String urlForPoints = new URLGenerator().getPointsURL(boardKey, boardId);
-
-        new ContentFetcher(new Callback<String>() {
-            @Override
-            public void execute(String object) throws JSONException {
-                boardSkeleton.update(JSONParser.parseToPoints(object));
+                boardSkeleton.update(JSONParser.parseToPoints(jsonResponseList.get(1)));
                 callback.execute(boardSkeleton);
             }
-        }).execute(urlForPoints);
+        };
     }
 
     public static BoardRepository getInstance(){

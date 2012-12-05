@@ -17,7 +17,7 @@ public class Point {
         return message;
     }
 
-    public Integer section_id() {
+    public Integer sectionId() {
         return section_id;
     }
 }

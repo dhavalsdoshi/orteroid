@@ -34,8 +34,17 @@ public class BoardTest extends TestCase{
     }
 
     public void testShouldNotUpdateBoardIfPointsWereAlreadyPresent() {
+        List<Point> newListOfPoints = new ArrayList<Point>();
+
+        newListOfPoints.add(firstPoint);
+        newListOfPoints.add(secondPoint);
+
+        board.update(newListOfPoints);
+
         assertTrue(board.sections().get(0).contains(firstPoint));
         assertTrue(board.sections().get(1).contains(secondPoint));
+
+        assertEquals(board.sections().size(),listOfPoints.size());
     }
 
 }

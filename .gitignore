@@ -12,4 +12,4 @@ local.properties
 test/local.properties
 project.properties
 test/project.properties
-
+test/*.iml

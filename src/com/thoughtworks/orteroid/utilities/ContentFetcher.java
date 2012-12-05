@@ -15,8 +15,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ContentFetcher extends AsyncTask<String, Void, String> {
+public class ContentFetcher extends AsyncTask<String, Void, List<String>> {
 
     private Callback callback;
 
@@ -25,11 +27,12 @@ public class ContentFetcher extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected String doInBackground(String... urls) {
+    protected List<String> doInBackground(String... urls) {
+        List<String> list = new ArrayList<String>();
         for (String url : urls) {
-            return response(url);
+            list.add(response(url));
         }
-        return null;
+        return list;
     }
 
     public String response(String url) {
@@ -54,7 +57,7 @@ public class ContentFetcher extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected void onPostExecute(String resultString) {
+    protected void onPostExecute(List<String> resultString) {
         super.onPostExecute(resultString);
         try {
             callback.execute(resultString);
