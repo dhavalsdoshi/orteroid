@@ -7,17 +7,13 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 tools:context=".ViewBoardActivity"  >
-    <TextView
-            android:id="@+id/board_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Demo"/>
     <Spinner
             android:id="@+id/spinnerForSections"
-            android:layout_width="300dip"
-            android:layout_height="wrap_content"
+            android:layout_width="231dp"
+            android:layout_height="41dp"
             android:gravity="center"
-            android:layout_marginTop="44dip" />
+            android:layout_marginTop="1dp"
+            android:layout_gravity="center"/>
     <ListView
             android:id="@android:id/list"
             android:layout_width="fill_parent"
