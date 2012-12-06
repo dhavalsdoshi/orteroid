@@ -7,13 +7,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 tools:context=".ViewBoardActivity"  >
-    <Spinner
-            android:id="@+id/spinnerForSections"
-            android:layout_width="231dp"
-            android:layout_height="41dp"
-            android:gravity="center"
-            android:layout_marginTop="1dp"
-            android:layout_gravity="center"/>
     <ListView
             android:id="@android:id/list"
             android:layout_width="fill_parent"

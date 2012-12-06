@@ -1,5 +1,6 @@
 package com.thoughtworks.orteroid.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -22,10 +23,8 @@ import com.thoughtworks.orteroid.utilities.SectionListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.widget.AdapterView.OnItemSelectedListener;
-
 public class ViewBoardActivity extends Activity {
-    private Board board;
+    private ActionBar actionBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -36,6 +35,9 @@ public class ViewBoardActivity extends Activity {
         String boardId = intent.getStringExtra(Constants.BOARD_ID);
         ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of "+boardKey+" board", true);
         dialog.show();
+        actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        actionBar.setTitle(boardKey);
         BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
     }
 
@@ -43,7 +45,6 @@ public class ViewBoardActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.view_board_activity, menu);
-        getActionBar().show();
         return true;
     }
 
@@ -52,41 +53,29 @@ public class ViewBoardActivity extends Activity {
             @Override
             public void execute(Board board) {
                 dialog.dismiss();
-                ViewBoardActivity.this.board = board;
-                String selectedItem = setSpinner(board);
-                setPoints(ViewBoardActivity.this.board,selectedItem);
+                setSpinner(board);
             }
         };
     }
 
     private void setPoints(Board board, String selectedItem) {
-        SectionListAdapter adapter = new SectionListAdapter(this, board.pointsOfSection(selectedItem));
+        SectionListAdapter sectionListAdapter = new SectionListAdapter(this, board.pointsOfSection(selectedItem));
         ListView listView = (ListView)findViewById(android.R.id.list);
-        listView.setAdapter(adapter);
+        listView.setAdapter(sectionListAdapter);
     }
 
-    private String setSpinner(Board board) {
+    private void setSpinner(final Board board) {
         List<Section> spinnerArray = board.sections();
-        Spinner spinner = (Spinner)findViewById(R.id.spinnerForSections);
-        List<String> sectionNames = inflateSpinner(spinnerArray);
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, sectionNames);
-        spinner.setAdapter(spinnerArrayAdapter);
-
-        spinner.setOnItemSelectedListener(dropDownOnClickListener());
-        return (String)spinner.getSelectedItem();
-    }
-
-    private OnItemSelectedListener dropDownOnClickListener() {
-        return new OnItemSelectedListener(){
+        final List<String> sectionNames = inflateSpinner(spinnerArray);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(actionBar.getThemedContext(), android.R.layout.simple_spinner_dropdown_item, sectionNames);
+        actionBar.setListNavigationCallbacks(spinnerArrayAdapter, new ActionBar.OnNavigationListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                String selected = parent.getItemAtPosition(pos).toString();
+            public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+                String selected = board.sections().get(itemPosition).name();
                 setPoints(board,selected);
+                return true;
             }
-            @Override
-            public void onNothingSelected(AdapterView parent) {
-            }
-        };
+        });
     }
 
     private List<String> inflateSpinner(List<Section> spinnerArray) {
