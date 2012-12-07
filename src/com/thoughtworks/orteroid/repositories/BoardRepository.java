@@ -22,8 +22,8 @@ public class BoardRepository {
         String boardURL = new URLGenerator().getBoardURL(boardKey, boardId);
         Callback<List<String>> serverCallback = generateServerCallback(callback);
         ContentFetcher contentFetcher = new ContentFetcher(serverCallback);
-        String pointsURL = new URLGenerator().getPointsURL(boardKey,boardId);
-        contentFetcher.execute(boardURL,pointsURL);
+        String pointsURL = new URLGenerator().getPointsURL(boardKey, boardId);
+        contentFetcher.execute(boardURL, pointsURL);
     }
 
     private Callback<List<String>> generateServerCallback(final Callback<Board> callback) {
@@ -38,14 +38,14 @@ public class BoardRepository {
         };
     }
 
-    public static BoardRepository getInstance(){
-        if(boardRepository == null){
+    public static BoardRepository getInstance() {
+        if (boardRepository == null) {
             boardRepository = new BoardRepository();
         }
         return boardRepository;
     }
 
-    public static void setBoardRepository(BoardRepository boardRepository){
+    public static void setBoardRepository(BoardRepository boardRepository) {
         BoardRepository.boardRepository = boardRepository;
     }
 }

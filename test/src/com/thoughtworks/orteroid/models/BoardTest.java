@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class BoardTest extends TestCase{
+public class BoardTest extends TestCase {
     List<Section> listOfSections;
     List<Point> listOfPoints;
     Point firstPoint, secondPoint;
@@ -44,7 +44,7 @@ public class BoardTest extends TestCase{
         assertTrue(board.sections().get(0).contains(firstPoint));
         assertTrue(board.sections().get(1).contains(secondPoint));
 
-        assertEquals(board.sections().size(),listOfPoints.size());
+        assertEquals(board.sections().size(), listOfPoints.size());
     }
 
 }

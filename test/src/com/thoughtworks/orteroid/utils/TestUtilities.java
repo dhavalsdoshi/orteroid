@@ -8,7 +8,7 @@ import android.widget.EditText;
 
 public class TestUtilities {
 
-    private static void setEditText(final EditText editText,	final String text, Activity currentActivity, InstrumentationTestCase instrumentationTestCase) {
+    private static void setEditText(final EditText editText, final String text, Activity currentActivity, InstrumentationTestCase instrumentationTestCase) {
         currentActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -18,13 +18,14 @@ public class TestUtilities {
         instrumentationTestCase.getInstrumentation().waitForIdleSync();
     }
 
-    public static void setEditText(int id, String text, Activity currentActivity, InstrumentationTestCase instrumentationTestCase){
+    public static void setEditText(int id, String text, Activity currentActivity, InstrumentationTestCase instrumentationTestCase) {
         EditText editText = (EditText) currentActivity.findViewById(id);
-        setEditText(editText, text , currentActivity,instrumentationTestCase);
+        setEditText(editText, text, currentActivity, instrumentationTestCase);
     }
-    public static void clickButton(int id, Activity activity, InstrumentationTestCase instrumentationTestCase){
-        Button view = (Button)activity.findViewById(id);
-        TouchUtils.clickView(instrumentationTestCase,view);
+
+    public static void clickButton(int id, Activity activity, InstrumentationTestCase instrumentationTestCase) {
+        Button view = (Button) activity.findViewById(id);
+        TouchUtils.clickView(instrumentationTestCase, view);
     }
 
 

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class  BaseActivityTest<T extends Activity> extends ActivityInstrumentationTestCase2<T>{
+public class BaseActivityTest<T extends Activity> extends ActivityInstrumentationTestCase2<T> {
 
     protected T activity;
 
@@ -29,8 +29,8 @@ public class  BaseActivityTest<T extends Activity> extends ActivityInstrumentati
     protected void assertNavigationToTargetWithParameters(int buttonIdToBeClicked, Class<? extends Activity> targetClass, Map<String, String> bundleExtras) {
         Instrumentation.ActivityMonitor monitor = getInstrumentation().addMonitor(targetClass.getName(), null, false);
         TestUtilities.clickButton(buttonIdToBeClicked, activity, this);
-        Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(monitor,5000);
-        assertEquals(targetClass,nextActivity.getClass());
+        Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(monitor, 5000);
+        assertEquals(targetClass, nextActivity.getClass());
         for (String key : bundleExtras.keySet()) {
             assertEquals(nextActivity.getIntent().getStringExtra(key), bundleExtras.get(key));
         }

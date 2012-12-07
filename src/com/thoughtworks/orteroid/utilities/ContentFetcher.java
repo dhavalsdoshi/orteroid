@@ -48,8 +48,7 @@ public class ContentFetcher extends AsyncTask<String, Void, List<String>> {
                 InputStream content = httpEntity.getContent();
                 result = toString(content);
             }
-        }
-        catch (IOException httpResponseError) {
+        } catch (IOException httpResponseError) {
             Log.e("HTTP Response", "IO error");
             result = "404 error";
         }
@@ -62,7 +61,7 @@ public class ContentFetcher extends AsyncTask<String, Void, List<String>> {
         try {
             callback.execute(resultString);
         } catch (JSONException e) {
-           throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
 
     }

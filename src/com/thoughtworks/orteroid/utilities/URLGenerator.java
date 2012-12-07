@@ -6,6 +6,6 @@ public class URLGenerator {
     }
 
     public String getPointsURL(String input, String id) {
-        return "http://www.ideaboardz.com/retros/" + input + "/" + id + "/points"+ ".json";
+        return "http://www.ideaboardz.com/retros/" + input + "/" + id + "/points" + ".json";
     }
 }

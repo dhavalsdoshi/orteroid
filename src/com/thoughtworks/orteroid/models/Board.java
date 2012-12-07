@@ -51,8 +51,8 @@ public class Board {
 
     public List<Point> pointsOfSection(String selectedSection) {
         for (Section section : sections) {
-            if((section.name()).equals(selectedSection))
-                return  section.points();
+            if ((section.name()).equals(selectedSection))
+                return section.points();
         }
         return null;
     }

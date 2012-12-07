@@ -7,11 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
@@ -27,13 +24,13 @@ public class ViewBoardActivity extends Activity {
     private ActionBar actionBar;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_board);
         Intent intent = getIntent();
         String boardKey = intent.getStringExtra(Constants.BOARD_KEY);
         String boardId = intent.getStringExtra(Constants.BOARD_ID);
-        ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of "+boardKey+" board", true);
+        ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + boardKey + " board", true);
         dialog.show();
         actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
@@ -60,7 +57,7 @@ public class ViewBoardActivity extends Activity {
 
     private void setPoints(Board board, String selectedItem) {
         SectionListAdapter sectionListAdapter = new SectionListAdapter(this, board.pointsOfSection(selectedItem));
-        ListView listView = (ListView)findViewById(android.R.id.list);
+        ListView listView = (ListView) findViewById(android.R.id.list);
         listView.setAdapter(sectionListAdapter);
     }
 
@@ -72,7 +69,7 @@ public class ViewBoardActivity extends Activity {
             @Override
             public boolean onNavigationItemSelected(int itemPosition, long itemId) {
                 String selected = board.sections().get(itemPosition).name();
-                setPoints(board,selected);
+                setPoints(board, selected);
                 return true;
             }
         });

@@ -1,9 +1,6 @@
 package com.thoughtworks.orteroid.activities;
 
 import com.thoughtworks.orteroid.R;
-import com.thoughtworks.orteroid.activities.BaseActivityTest;
-import com.thoughtworks.orteroid.activities.MainActivity;
-import com.thoughtworks.orteroid.activities.ViewBoardActivity;
 import com.thoughtworks.orteroid.constants.Constants;
 
 import java.util.HashMap;
@@ -16,9 +13,9 @@ public class MainActivityTest extends BaseActivityTest<MainActivity> {
     }
 
     public void testShouldNavigateToDemoBoard() {
-        Map<String,String> bundleExtras = new HashMap<String, String>();
-        bundleExtras.put(Constants.BOARD_KEY,"test");
-        assertNavigationToTargetWithParameters(R.id.viewTestBoard, ViewBoardActivity.class,bundleExtras);
+        Map<String, String> bundleExtras = new HashMap<String, String>();
+        bundleExtras.put(Constants.BOARD_KEY, "test");
+        assertNavigationToTargetWithParameters(R.id.viewTestBoard, ViewBoardActivity.class, bundleExtras);
 
     }
 }

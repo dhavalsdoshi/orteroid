@@ -26,6 +26,11 @@ public class JSONParser {
         }
     }
 
+    public static List<Point> parseToPoints(String resultString) throws JSONException {
+        List<Point> points = parse(resultString);
+        return points;
+    }
+
     private static List<Section> parseToSections(JSONArray sectionJSON) throws JSONException {
         List<Section> sections = new ArrayList<Section>();
 
@@ -36,19 +41,14 @@ public class JSONParser {
         return sections;
     }
 
-    public static List<Point> parseToPoints(String resultString) throws JSONException  {
-        List<Point> points = parse(resultString);
-        return points;
-    }
-
     private static List<Point> parse(String resultString) {
         JSONArray result;
         List<Point> points = new ArrayList<Point>();
         try {
             result = new JSONArray(resultString);
-            for(int i = 0 ; i < result.length() ; i++ ){
+            for (int i = 0; i < result.length(); i++) {
                 JSONObject jsonObject = result.getJSONObject(i);
-                points.add(new Point(jsonObject.getInt("section_id"),jsonObject.getInt("id"),jsonObject.getString("message")));
+                points.add(new Point(jsonObject.getInt("section_id"), jsonObject.getInt("id"), jsonObject.getString("message")));
             }
         } catch (JSONException e) {
             e.printStackTrace();
