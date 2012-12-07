@@ -1,20 +1,23 @@
 package com.thoughtworks.orteroid.activities;
 
 import android.app.ActionBar;
-import android.test.TouchUtils;
 import android.widget.Button;
 import android.widget.ListView;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
+import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.models.Board;
 import com.thoughtworks.orteroid.models.Point;
 import com.thoughtworks.orteroid.models.Section;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
+import com.thoughtworks.orteroid.utils.TestUtilities;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -81,21 +84,19 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
     }
 
     public void testShouldShowIdeasOfOtherSection() {
-        final ActionBar actionBar = activity.getActionBar();
-
-        try {
-            runTestOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    actionBar.setSelectedNavigationItem(1);
-                }
-            });
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        TouchUtils.tapView(this, activity.findViewById(R.id.row_text));
+        TestUtilities.navigateActionBarToIndex(activity.getActionBar(), 1, this);
         Button firstButton = (Button) activity.findViewById(R.id.row_text);
 
         assertEquals("point3", firstButton.getText());
     }
+
+    public void testShouldNavigateToAddIdeaActivity(){
+
+        TestUtilities.navigateActionBarToIndex(activity.getActionBar(), 1, this);
+
+        Map<String, String> bundleExtras = new HashMap<String, String>();
+        bundleExtras.put(Constants.SECTION_ID, "2");
+        assertNavigationToTargetWithParameters(R.id.addButton, AddIdeaActivity.class, bundleExtras);
+    }
+
 }

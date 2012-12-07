@@ -49,9 +49,9 @@ public class Board {
                     section.addPoint(point);
     }
 
-    public List<Point> pointsOfSection(String selectedSection) {
+    public List<Point> pointsOfSection(int selectedSection) {
         for (Section section : sections) {
-            if ((section.name()).equals(selectedSection))
+            if ((section.id()).equals(selectedSection))
                 return section.points();
         }
         return null;

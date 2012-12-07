@@ -30,6 +30,10 @@
             android:label="@string/section_view_row"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".activities.AddIdeaActivity"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
