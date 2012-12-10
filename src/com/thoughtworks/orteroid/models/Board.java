@@ -1,19 +1,28 @@
 package com.thoughtworks.orteroid.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class Board {
+public class Board implements Parcelable{
 
     private String name;
     private Integer id;
-    private String description;
     private List<Section> sections;
 
-    public Board(String name, Integer id, String description, List<Section> sections) {
+    public Board(String name, Integer id, List<Section> sections) {
         this.name = name;
         this.id = id;
-        this.description = description;
         this.sections = sections;
+    }
+
+    private Board(Parcel in) {
+        id = in.readInt();
+        sections = new ArrayList<Section>();
+        in.readTypedList(sections,Section.CREATOR);
     }
 
     public String name() {
@@ -32,9 +41,7 @@ public class Board {
 
         Board board = (Board) o;
 
-        if (!id.equals(board.id)) return false;
-
-        return true;
+        return id.equals(board.id);
     }
 
     @Override
@@ -60,4 +67,26 @@ public class Board {
     public Integer id() {
         return id;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        Log.v("","Write to Parcel: "+ flags);
+        parcel.writeInt(id);
+        parcel.writeList(sections);
+    }
+
+    public static final Parcelable.Creator<Board> CREATOR = new Parcelable.Creator<Board>() {
+        public Board createFromParcel(Parcel in) {
+            return new Board(in);
+        }
+
+        public Board[] newArray(int size) {
+            return new Board[size];
+        }
+    };
 }

@@ -6,4 +6,5 @@ public class Constants {
     public static final String SECTION_ID = "Section Id";
     public static final String POST = "POST";
     public static final String GET = "GET";
+    public static final String BOARD = "BOARD";
 }

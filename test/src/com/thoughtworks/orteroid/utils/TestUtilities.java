@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.test.InstrumentationTestCase;
 import android.test.TouchUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -28,7 +27,7 @@ public class TestUtilities {
 
     public static void clickButton(int id, Activity activity, InstrumentationTestCase instrumentationTestCase) {
 
-        if(!(activity.findViewById(id) instanceof Button)) {
+        if (!(activity.findViewById(id) instanceof Button)) {
             ImageButton view = (ImageButton) activity.findViewById(id);
             TouchUtils.clickView(instrumentationTestCase, view);
         } else {

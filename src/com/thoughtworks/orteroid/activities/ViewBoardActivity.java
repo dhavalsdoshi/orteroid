@@ -51,6 +51,10 @@ public class ViewBoardActivity extends Activity {
         Intent intent = new Intent(this, AddIdeaActivity.class);
         int selectedIndex = actionBar.getSelectedNavigationIndex();
         Integer selectedSectionId = board.sections().get(selectedIndex).id();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BOARD,this.board);
+        intent.putExtras(bundle);
+        intent.putExtra(Constants.SECTION_ID, selectedSectionId.toString());
         intent.putExtra(Constants.SECTION_ID, selectedSectionId.toString());
         startActivity(intent);
     }

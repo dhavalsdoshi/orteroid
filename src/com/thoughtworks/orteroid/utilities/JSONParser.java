@@ -15,11 +15,10 @@ public class JSONParser {
     public static Board parseToBoard(JSONObject jsonObject) {
         try {
             String name = jsonObject.getString("name");
-            String description = jsonObject.getString("description");
             Integer id = jsonObject.getInt("id");
             JSONArray sectionJSON = new JSONArray(jsonObject.getString("sections"));
             List<Section> sections = parseToSections(sectionJSON);
-            return new Board(name, id, description, sections);
+            return new Board(name, id, sections);
         } catch (JSONException e) {
             e.printStackTrace();
             throw new RuntimeException("Failure in JSON Parse to sections");
@@ -41,7 +40,7 @@ public class JSONParser {
         return sections;
     }
 
-    private static List<Point> parse(String resultString) throws JSONException{
+    private static List<Point> parse(String resultString) throws JSONException {
         JSONArray result;
         List<Point> points = new ArrayList<Point>();
         result = new JSONArray(resultString);

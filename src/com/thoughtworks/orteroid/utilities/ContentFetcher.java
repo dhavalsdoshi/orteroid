@@ -26,7 +26,7 @@ public class ContentFetcher extends AsyncTask<String, Void, List<String>> {
     private Callback callback;
     private String responseType;
 
-    public ContentFetcher(Callback callback,String responseType) {
+    public ContentFetcher(Callback callback, String responseType) {
         this.callback = callback;
         this.responseType = responseType;
     }
@@ -61,7 +61,7 @@ public class ContentFetcher extends AsyncTask<String, Void, List<String>> {
     }
 
     private HttpRequestBase httpRequest(String url) {
-        if(responseType == Constants.GET) return new HttpGet(url);
+        if (responseType == Constants.GET) return new HttpGet(url);
         return new HttpPost(url);
     }
 

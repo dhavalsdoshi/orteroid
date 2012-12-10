@@ -21,7 +21,7 @@ public class BoardTest extends TestCase {
 
         firstPoint = new Point(1, 112, "Hey ! This is a test");
         secondPoint = new Point(2, 301, "This is a test too");
-        board = new Board("test", 2, "to test board", listOfSections);
+        board = new Board("test", 2, listOfSections);
         listOfPoints = new ArrayList<Point>();
         listOfPoints.add(firstPoint);
         listOfPoints.add(secondPoint);

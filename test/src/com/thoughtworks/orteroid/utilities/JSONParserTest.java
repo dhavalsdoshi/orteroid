@@ -20,7 +20,7 @@ public class JSONParserTest extends TestCase {
             add(new Section("Action Item", 6));
         }};
 
-        Board expectedBoard = new Board("test", 2, "Try it out", sections);
+        Board expectedBoard = new Board("test", 2, sections);
 
         assertEquals(board, expectedBoard);
     }

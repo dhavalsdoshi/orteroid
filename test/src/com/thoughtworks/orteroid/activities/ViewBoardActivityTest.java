@@ -48,7 +48,7 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
         BoardRepository boardRepository = mock(BoardRepository.class);
         BoardRepository.setBoardRepository(boardRepository);
 
-        final Board board = new Board("test", 2, "test description", listOfSections);
+        final Board board = new Board("test", 2, listOfSections);
 
         doAnswer(new Answer<Object>() {
             @Override
@@ -90,7 +90,7 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
         assertEquals("point3", firstButton.getText());
     }
 
-    public void testShouldNavigateToAddIdeaActivity(){
+    public void testShouldNavigateToAddIdeaActivity() {
 
         TestUtilities.navigateActionBarToIndex(activity.getActionBar(), 1, this);
 

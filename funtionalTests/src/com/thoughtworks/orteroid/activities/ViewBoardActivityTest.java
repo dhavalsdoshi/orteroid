@@ -3,8 +3,6 @@ package com.thoughtworks.orteroid.activities;
 import android.test.ActivityInstrumentationTestCase2;
 import com.jayway.android.robotium.solo.Solo;
 import com.thoughtworks.orteroid.R;
-import com.thoughtworks.orteroid.activities.MainActivity;
-import com.thoughtworks.orteroid.activities.ViewBoardActivity;
 
 public class ViewBoardActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
@@ -14,19 +12,19 @@ public class ViewBoardActivityTest extends ActivityInstrumentationTestCase2<Main
         super(MainActivity.class);
     }
 
-    public void setUp() throws Exception{
-        solo = new Solo(getInstrumentation(),getActivity());
+    public void setUp() throws Exception {
+        solo = new Solo(getInstrumentation(), getActivity());
     }
 
-    public void testShouldNavigateToViewBoardActivity(){
+    public void testShouldNavigateToViewBoardActivity() {
         solo.assertCurrentActivity("Current Activity", MainActivity.class);
 
         solo.clickOnButton(solo.getString(R.string.option1));
-        solo.assertCurrentActivity("should be ViewBoardActivity",ViewBoardActivity.class);
+        solo.assertCurrentActivity("should be ViewBoardActivity", ViewBoardActivity.class);
 
     }
 
-    public void tearDown(){
+    public void tearDown() {
         try {
             solo.finalize();
         } catch (Throwable throwable) {
