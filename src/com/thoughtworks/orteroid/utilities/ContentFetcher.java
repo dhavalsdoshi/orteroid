@@ -3,11 +3,14 @@ package com.thoughtworks.orteroid.utilities;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.thoughtworks.orteroid.Callback;
+import com.thoughtworks.orteroid.constants.Constants;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 
@@ -21,9 +24,11 @@ import java.util.List;
 public class ContentFetcher extends AsyncTask<String, Void, List<String>> {
 
     private Callback callback;
+    private String responseType;
 
-    public ContentFetcher(Callback callback) {
+    public ContentFetcher(Callback callback,String responseType) {
         this.callback = callback;
+        this.responseType = responseType;
     }
 
     @Override
@@ -37,13 +42,13 @@ public class ContentFetcher extends AsyncTask<String, Void, List<String>> {
 
     public String response(String url) {
         HttpClient httpClient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(url);
+        HttpRequestBase httpRequest = httpRequest(url);
         String result = null;
         try {
-            HttpResponse httpResponse = httpClient.execute(httpGet);
+            HttpResponse httpResponse = httpClient.execute(httpRequest);
             StatusLine statusLine = httpResponse.getStatusLine();
             int statusCode = statusLine.getStatusCode();
-            if (statusCode == 200) {
+            if (statusCode >= 200 && statusCode <= 210) {
                 HttpEntity httpEntity = httpResponse.getEntity();
                 InputStream content = httpEntity.getContent();
                 result = toString(content);
@@ -55,15 +60,19 @@ public class ContentFetcher extends AsyncTask<String, Void, List<String>> {
         return result;
     }
 
+    private HttpRequestBase httpRequest(String url) {
+        if(responseType == Constants.GET) return new HttpGet(url);
+        return new HttpPost(url);
+    }
+
     @Override
     protected void onPostExecute(List<String> resultString) {
         super.onPostExecute(resultString);
         try {
             callback.execute(resultString);
         } catch (JSONException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
-
     }
 
     private String toString(InputStream content) {

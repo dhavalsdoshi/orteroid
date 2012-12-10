@@ -41,19 +41,18 @@ public class JSONParser {
         return sections;
     }
 
-    private static List<Point> parse(String resultString) {
+    private static List<Point> parse(String resultString) throws JSONException{
         JSONArray result;
         List<Point> points = new ArrayList<Point>();
-        try {
-            result = new JSONArray(resultString);
-            for (int i = 0; i < result.length(); i++) {
-                JSONObject jsonObject = result.getJSONObject(i);
-                points.add(new Point(jsonObject.getInt("section_id"), jsonObject.getInt("id"), jsonObject.getString("message")));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failure in JSON Parse to points");
+        result = new JSONArray(resultString);
+        for (int i = 0; i < result.length(); i++) {
+            JSONObject jsonObject = result.getJSONObject(i);
+            points.add(parseToPoint(jsonObject));
         }
         return points;
+    }
+
+    public static Point parseToPoint(JSONObject jsonObject) throws JSONException {
+        return new Point(jsonObject.getInt("section_id"), jsonObject.getInt("id"), jsonObject.getString("message"));
     }
 }

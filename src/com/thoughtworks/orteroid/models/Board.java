@@ -56,4 +56,8 @@ public class Board {
         }
         return null;
     }
+
+    public Integer id() {
+        return id;
+    }
 }
