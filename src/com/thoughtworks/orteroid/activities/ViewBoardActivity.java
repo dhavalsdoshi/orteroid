@@ -14,6 +14,7 @@ import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.models.Board;
 import com.thoughtworks.orteroid.models.Section;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
+import com.thoughtworks.orteroid.utilities.ColorSticky;
 import com.thoughtworks.orteroid.utilities.SectionListAdapter;
 
 import java.util.ArrayList;
@@ -40,11 +41,10 @@ public class ViewBoardActivity extends Activity {
 
     public void addIdea(View view) {
         Intent intent = new Intent(this, AddIdeaActivity.class);
-        int selectedIndex = actionBar.getSelectedNavigationIndex();
-        Integer selectedSectionId = board.sections().get(selectedIndex).id();
+        Integer selectedIndex = actionBar.getSelectedNavigationIndex();
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BOARD,this.board);
-        intent.putExtra(Constants.SECTION_ID, selectedSectionId.toString());
+        intent.putExtra(Constants.SELECTED_POSITION, selectedIndex.toString());
         intent.putExtra(Constants.BOARD,ViewBoardActivity.this.board);
         startActivity(intent);
     }
@@ -62,7 +62,7 @@ public class ViewBoardActivity extends Activity {
     }
 
     private void setPoints(Board board, int selectedItem) {
-        int colourCode = selectedItem % 6;
+        String colourCode = ColorSticky.getColorCode(selectedItem);
         SectionListAdapter sectionListAdapter = new SectionListAdapter(this, board.pointsOfSection(selectedItem), colourCode);
         ListView listView = (ListView) findViewById(android.R.id.list);
         listView.setAdapter(sectionListAdapter);

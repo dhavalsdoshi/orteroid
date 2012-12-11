@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.models.Point;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SectionListAdapter extends ArrayAdapter<Point> {
@@ -21,26 +20,16 @@ public class SectionListAdapter extends ArrayAdapter<Point> {
     private final Context context;
     private final List<Point> points;
     View rowView;
-    private List<String> colours = new ArrayList<String>();
     String colour;
-    int colourCode;
 
-    public SectionListAdapter(Context context, List<Point> objects, int colourCode) {
+    public SectionListAdapter(Context context, List<Point> objects, String colourCode) {
         super(context, R.layout.section_view_row_layout, R.id.row_text, objects);
         this.context = context;
         this.points = objects;
-        this.colourCode = colourCode;
-        populateColours();
+        this.colour = colourCode;
     }
 
-    private void populateColours() {
-        colours.add("#ffff88");
-        colours.add("#ffb058");
-        colours.add("#bcee6b");
-        colours.add("#d07ddf");
-        colours.add("#ccffff");
-        colours.add("#17b6ff");
-    }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -56,7 +45,6 @@ public class SectionListAdapter extends ArrayAdapter<Point> {
         textView.setText(points.get(position).message());
         textView.setBackgroundResource(R.drawable.sticky);
         GradientDrawable drawable = (GradientDrawable) textView.getBackground();
-        colour = colours.get(colourCode);
         drawable.setColor(Color.parseColor(colour));
         return rowView;
     }

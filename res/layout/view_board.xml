@@ -12,7 +12,9 @@
             android:layout_width="fill_parent"
             android:layout_height="0dip"
             android:layout_marginBottom="10dip"
-            android:layout_marginTop="10dip" android:layout_weight="9"/>
+            android:layout_marginTop="10dip"
+            android:divider="#80000000"
+            android:layout_weight="9"/>
 
     <ImageButton
             android:layout_width="fill_parent"

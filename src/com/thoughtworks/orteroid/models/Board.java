@@ -20,6 +20,7 @@ public class Board implements Parcelable{
     }
 
     private Board(Parcel in) {
+        name = in.readString();
         id = in.readInt();
         sections = new ArrayList<Section>();
         in.readTypedList(sections,Section.CREATOR);
@@ -76,6 +77,7 @@ public class Board implements Parcelable{
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         //Log.v("","Write to Parcel: "+ flags);
+        parcel.writeString(name);
         parcel.writeInt(id);
         parcel.writeTypedList(sections);
     }

@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.models.Board;
 import com.thoughtworks.orteroid.models.Section;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
+import com.thoughtworks.orteroid.utilities.ColorSticky;
 import org.json.JSONException;
 
 import java.util.ArrayList;
@@ -27,29 +30,31 @@ import java.util.List;
 
 public class AddIdeaActivity extends Activity {
 
-    private int sectionId;
     private String idea;
     private Board board;
     private ActionBar actionBar;
+    private int selectedIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        String sectionId = intent.getStringExtra(Constants.SECTION_ID);
-        if (sectionId == null) {
-            this.sectionId = 0;
-        } else {
-            this.sectionId = Integer.parseInt(sectionId);
-        }
+        String selectedPosition = intent.getStringExtra(Constants.SELECTED_POSITION);
+        selectedIndex = Integer.parseInt(selectedPosition);
         board = intent.getParcelableExtra(Constants.BOARD);
-
-        setContentView(R.layout.add_idea);
         actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setTitle(board.name());
+        setContentView(R.layout.add_idea);
+        setBackgroundLayout();
         setActionBar(board);
+    }
 
+    private void setBackgroundLayout() {
+        EditText editText = (EditText) findViewById(R.id.ideaMessage);
+        editText.setBackgroundResource(R.drawable.sticky);
+        GradientDrawable drawable = (GradientDrawable) editText.getBackground();
+        drawable.setColor(Color.parseColor(ColorSticky.getColorCode(board.sections().get(selectedIndex).id())));
     }
 
     public void addAnIdea(View view) {
@@ -61,6 +66,9 @@ public class AddIdeaActivity extends Activity {
 
     private void postIdea() {
         Callback callback = addIdeaCallback();
+        int selectedNavigationIndex = actionBar.getSelectedNavigationIndex();
+        Integer sectionId = board.sections().get(selectedNavigationIndex).id();
+
         BoardRepository.getInstance().addIdea(idea, sectionId, callback);
     }
 
@@ -110,12 +118,14 @@ public class AddIdeaActivity extends Activity {
     private void setActionBar(final Board board) {
         List<Section> spinnerArray = board.sections();
         final List<String> sectionNames;
+        actionBar.setSelectedNavigationItem(selectedIndex);
         sectionNames = inflateSpinner(spinnerArray);
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(actionBar.getThemedContext(), android.R.layout.simple_spinner_dropdown_item, sectionNames);
         actionBar.setListNavigationCallbacks(spinnerArrayAdapter, new ActionBar.OnNavigationListener() {
             @Override
             public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-               sectionId = board.sections().get(itemPosition).id();
+               selectedIndex = itemPosition;
+                setBackgroundLayout();
                return true;
             }
         });
