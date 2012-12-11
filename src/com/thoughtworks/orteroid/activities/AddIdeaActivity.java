@@ -10,14 +10,16 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.models.Board;
 import com.thoughtworks.orteroid.models.Section;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
-import com.thoughtworks.orteroid.utilities.SectionListAdapter;
 import org.json.JSONException;
 
 import java.util.ArrayList;
@@ -40,15 +42,14 @@ public class AddIdeaActivity extends Activity {
         } else {
             this.sectionId = Integer.parseInt(sectionId);
         }
-        Bundle bundle = intent.getExtras();
-        if(bundle != null){
-            board = bundle.getParcelable(Constants.BOARD);
-        }
+        board = intent.getParcelableExtra(Constants.BOARD);
+
         setContentView(R.layout.add_idea);
         actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setTitle(board.name());
         setActionBar(board);
+
     }
 
     public void addAnIdea(View view) {
@@ -105,23 +106,17 @@ public class AddIdeaActivity extends Activity {
         toast.show();
     }
 
-    private void setPoints(Board board, int selectedItem) {
-        int colourCode = selectedItem % 6;
-        SectionListAdapter sectionListAdapter = new SectionListAdapter(this, board.pointsOfSection(selectedItem), colourCode);
-        ListView listView = (ListView) findViewById(android.R.id.list);
-        listView.setAdapter(sectionListAdapter);
-    }
 
     private void setActionBar(final Board board) {
         List<Section> spinnerArray = board.sections();
-        final List<String> sectionNames = inflateSpinner(spinnerArray);
+        final List<String> sectionNames;
+        sectionNames = inflateSpinner(spinnerArray);
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(actionBar.getThemedContext(), android.R.layout.simple_spinner_dropdown_item, sectionNames);
         actionBar.setListNavigationCallbacks(spinnerArrayAdapter, new ActionBar.OnNavigationListener() {
             @Override
             public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-                int selected = board.sections().get(itemPosition).id();
-                setPoints(board, selected);
-                return true;
+               sectionId = board.sections().get(itemPosition).id();
+               return true;
             }
         });
     }

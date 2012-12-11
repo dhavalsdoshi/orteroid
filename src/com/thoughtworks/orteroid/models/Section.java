@@ -2,7 +2,6 @@ package com.thoughtworks.orteroid.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +19,8 @@ public class Section implements Parcelable{
     }
 
     private Section(Parcel in) {
-        name = in.readString();
         id = in.readInt();
+        name = in.readString();
     }
 
     public String name() {
@@ -51,11 +50,10 @@ public class Section implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-        Log.v("","Write to parcel: "+ flags);
-        parcel.writeString(name);
+     //   Log.v("","Write to parcel: "+ flags);
         parcel.writeInt(id);
+        parcel.writeString(name);
     }
-
     public static final Parcelable.Creator<Section> CREATOR = new Parcelable.Creator<Section>() {
         public Section createFromParcel(Parcel in) {
             return new Section(in);

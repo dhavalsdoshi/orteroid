@@ -13,6 +13,8 @@ public class Point {
         this.section_id = section_id;
     }
 
+
+
     public String message() {
         return message;
     }
@@ -20,4 +22,5 @@ public class Point {
     public Integer sectionId() {
         return section_id;
     }
+
 }

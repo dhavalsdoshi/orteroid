@@ -5,8 +5,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -40,22 +38,14 @@ public class ViewBoardActivity extends Activity {
         BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.view_board_activity, menu);
-        return true;
-    }
-
     public void addIdea(View view) {
         Intent intent = new Intent(this, AddIdeaActivity.class);
         int selectedIndex = actionBar.getSelectedNavigationIndex();
         Integer selectedSectionId = board.sections().get(selectedIndex).id();
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BOARD,this.board);
-        intent.putExtras(bundle);
         intent.putExtra(Constants.SECTION_ID, selectedSectionId.toString());
-        intent.putExtra(Constants.SECTION_ID, selectedSectionId.toString());
+        intent.putExtra(Constants.BOARD,ViewBoardActivity.this.board);
         startActivity(intent);
     }
 
@@ -65,6 +55,7 @@ public class ViewBoardActivity extends Activity {
             @Override
             public void execute(Board board) {
                 dialog.dismiss();
+               ViewBoardActivity.this.board = board;
                 setActionBar(board);
             }
         };
@@ -78,7 +69,6 @@ public class ViewBoardActivity extends Activity {
     }
 
     private void setActionBar(final Board board) {
-        this.board = board;
         List<Section> spinnerArray = board.sections();
         final List<String> sectionNames = inflateSpinner(spinnerArray);
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(actionBar.getThemedContext(), android.R.layout.simple_spinner_dropdown_item, sectionNames);

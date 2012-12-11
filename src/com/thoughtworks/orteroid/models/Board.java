@@ -2,7 +2,6 @@ package com.thoughtworks.orteroid.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +13,10 @@ public class Board implements Parcelable{
     private List<Section> sections;
 
     public Board(String name, Integer id, List<Section> sections) {
-        this.name = name;
         this.id = id;
+        this.name = name;
         this.sections = sections;
+
     }
 
     private Board(Parcel in) {
@@ -75,9 +75,9 @@ public class Board implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-        Log.v("","Write to Parcel: "+ flags);
+        //Log.v("","Write to Parcel: "+ flags);
         parcel.writeInt(id);
-        parcel.writeList(sections);
+        parcel.writeTypedList(sections);
     }
 
     public static final Parcelable.Creator<Board> CREATOR = new Parcelable.Creator<Board>() {
