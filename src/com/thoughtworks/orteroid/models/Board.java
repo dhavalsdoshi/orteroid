@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Board implements Parcelable{
+public class Board implements Parcelable {
 
     private String name;
     private Integer id;
@@ -23,7 +23,7 @@ public class Board implements Parcelable{
         name = in.readString();
         id = in.readInt();
         sections = new ArrayList<Section>();
-        in.readTypedList(sections,Section.CREATOR);
+        in.readTypedList(sections, Section.CREATOR);
     }
 
     public String name() {
@@ -51,10 +51,13 @@ public class Board implements Parcelable{
     }
 
     public void update(List<Point> points) {
-        for (Point point : points)
-            for (Section section : sections)
-                if (point.sectionId() == section.id() && !section.contains(point))
+        for (Point point : points) {
+            for (Section section : sections) {
+                if (point.sectionId().equals(section.id())){
                     section.addPoint(point);
+                }
+            }
+        }
     }
 
     public List<Point> pointsOfSection(int selectedSection) {

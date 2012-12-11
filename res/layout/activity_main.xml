@@ -28,8 +28,8 @@
             android:layout_height="wrap_content"
             android:text="@string/option2"
             android:onClick="viewBoard" android:background="@color/black"
-            android:textColor="@android:color/holo_green_light" android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true" android:layout_marginTop="84dip" android:layout_marginLeft="20dip"
-            android:layout_marginRight="20dip"/>
+            android:textColor="@android:color/holo_green_light"
+            android:layout_alignLeft="@+id/viewTestBoard" android:layout_alignParentTop="true"
+            android:layout_marginTop="150dp" android:layout_marginRight="20dip"/>
 
 </RelativeLayout>

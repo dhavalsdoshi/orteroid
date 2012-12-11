@@ -5,12 +5,12 @@ public class Point {
 
     private int id;
     private String message;
-    private int section_id;
+    private int sectionId;
 
-    public Point(int section_id, int id, String message) {
+    public Point(int sectionId, int id, String message) {
         this.id = id;
         this.message = message;
-        this.section_id = section_id;
+        this.sectionId = sectionId;
     }
 
 
@@ -20,7 +20,7 @@ public class Point {
     }
 
     public Integer sectionId() {
-        return section_id;
+        return sectionId;
     }
 
 }

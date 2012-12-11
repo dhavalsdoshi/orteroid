@@ -26,8 +26,7 @@ public class JSONParser {
     }
 
     public static List<Point> parseToPoints(String resultString) throws JSONException {
-        List<Point> points = parse(resultString);
-        return points;
+        return parse(resultString);
     }
 
     private static List<Section> parseToSections(JSONArray sectionJSON) throws JSONException {

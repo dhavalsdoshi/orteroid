@@ -18,4 +18,9 @@ public class MainActivityTest extends BaseActivityTest<MainActivity> {
         assertNavigationToTargetWithParameters(R.id.viewTestBoard, ViewBoardActivity.class, bundleExtras);
 
     }
+    public void testShouldNavigateToSelectBoard() {
+        Map<String, String> bundleExtras = new HashMap<String, String>();
+        assertNavigationToTargetWithParameters(R.id.viewBoard, SelectBoardActivity.class, bundleExtras);
+
+    }
 }

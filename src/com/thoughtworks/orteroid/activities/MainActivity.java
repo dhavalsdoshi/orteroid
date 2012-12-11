@@ -28,5 +28,9 @@ public class MainActivity extends Activity {
         intent.putExtra(Constants.BOARD_ID, "2");
         startActivity(intent);
     }
+    public void viewBoard(View view) {
+        Intent intent = new Intent(this,SelectBoardActivity.class);
+        startActivity(intent);
+    }
 
 }

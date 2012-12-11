@@ -95,7 +95,7 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
         TestUtilities.navigateActionBarToIndex(activity.getActionBar(), 1, this);
 
         Map<String, String> bundleExtras = new HashMap<String, String>();
-        bundleExtras.put(Constants.SECTION_ID, "2");
+        bundleExtras.put(Constants.SELECTED_POSITION, "1");
         assertNavigationToTargetWithParameters(R.id.addButton, AddIdeaActivity.class, bundleExtras);
     }
 
