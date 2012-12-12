@@ -161,7 +161,7 @@ public class AddIdeaActivity extends Activity {
     public void onBackPressed() {
         Intent intent = new Intent(this, ViewBoardActivity.class);
         intent.putExtra(Constants.BOARD_KEY, board.name());
-        intent.putExtra(Constants.BOARD_ID, board.id());
+        intent.putExtra(Constants.BOARD_ID, board.id().toString());
         startActivity(intent);
         super.onBackPressed();
     }

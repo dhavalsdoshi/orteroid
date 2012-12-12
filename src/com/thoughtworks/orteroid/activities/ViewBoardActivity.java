@@ -24,14 +24,12 @@ import java.util.List;
 public class ViewBoardActivity extends Activity {
     private ActionBar actionBar;
     private Board board;
-    private View.OnClickListener listner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_board);
         Intent intent = getIntent();
-        System.out.println(intent.getData() + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         String boardKey = intent.getStringExtra(Constants.BOARD_KEY);
         String boardId = intent.getStringExtra(Constants.BOARD_ID);
         ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + boardKey + " board", true);
@@ -44,6 +42,7 @@ public class ViewBoardActivity extends Activity {
         BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -56,7 +55,6 @@ public class ViewBoardActivity extends Activity {
         }
     }
 
-
     public void addIdea(View view) {
         Intent intent = new Intent(this, AddIdeaActivity.class);
         Integer selectedIndex = actionBar.getSelectedNavigationIndex();
@@ -66,7 +64,6 @@ public class ViewBoardActivity extends Activity {
         intent.putExtra(Constants.BOARD,ViewBoardActivity.this.board);
         startActivity(intent);
     }
-
 
     private Callback<Board> viewBoardCallback(final ProgressDialog dialog) {
         return new Callback<Board>() {
