@@ -23,6 +23,7 @@ import java.util.List;
 public class ViewBoardActivity extends Activity {
     private ActionBar actionBar;
     private Board board;
+    private View.OnClickListener listner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,8 @@ public class ViewBoardActivity extends Activity {
         actionBar.setTitle(boardKey);
         BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
     }
+
+
 
     public void addIdea(View view) {
         Intent intent = new Intent(this, AddIdeaActivity.class);

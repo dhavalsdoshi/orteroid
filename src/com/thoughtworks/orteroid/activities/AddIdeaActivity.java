@@ -40,8 +40,16 @@ public class AddIdeaActivity extends Activity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         String selectedPosition = intent.getStringExtra(Constants.SELECTED_POSITION);
-        selectedIndex = Integer.parseInt(selectedPosition);
+        if (selectedPosition == null) {
+            selectedIndex = 0;
+        } else {
+            selectedIndex = Integer.parseInt(selectedPosition);
+        }
         board = intent.getParcelableExtra(Constants.BOARD);
+        List<Section> listForDefault = new ArrayList<Section>(){{
+            add(new Section("section1",0));
+        }};
+        if(board == null) board = new Board("test",2,listForDefault);             //TODO: what if board is null
         actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setTitle(board.name());
@@ -124,9 +132,9 @@ public class AddIdeaActivity extends Activity {
         actionBar.setListNavigationCallbacks(spinnerArrayAdapter, new ActionBar.OnNavigationListener() {
             @Override
             public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-               selectedIndex = itemPosition;
+                selectedIndex = itemPosition;
                 setBackgroundLayout();
-               return true;
+                return true;
             }
         });
     }

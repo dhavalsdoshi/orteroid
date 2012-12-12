@@ -15,7 +15,7 @@
     <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="enter url fragment here"
+            android:hint="Enter url fragment here"
             android:id="@+id/url" android:layout_gravity="center" android:layout_alignParentLeft="true"
             android:layout_marginLeft="7dp" android:layout_alignParentTop="true" android:layout_marginTop="58dp"/>
 </RelativeLayout>

@@ -5,27 +5,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import com.thoughtworks.orteroid.R;
 
-public class AddIdeaActivityTest extends BaseActivityTest<AddIdeaActivity> {
+public class SelectBoardActivityTest extends BaseActivityTest<SelectBoardActivity> {
 
-    public AddIdeaActivityTest() {
-        super(AddIdeaActivity.class);
+    public SelectBoardActivityTest() {
+        super(SelectBoardActivity.class);
     }
 
-    public void testShouldContainEditTextWithMessageEnterYourIdea() {
+    public void testShouldContainEditTextWithDefaultHintWritten() {
         Activity activity = getActivity();
-        EditText editText = (EditText) activity.findViewById(R.id.ideaMessage);
+        EditText editText = (EditText) activity.findViewById(R.id.url);
         String defaultMessage = editText.getHint().toString();
 
         assertNotNull(editText);
-        assertEquals("Enter your idea", defaultMessage);
+        assertEquals("Enter url fragment here", defaultMessage);
     }
 
     public void testShouldContainSubmitButton() {
         Activity activity = getActivity();
-        Button submitButton = (Button) activity.findViewById(R.id.submitButton);
+        Button submitButton = (Button) activity.findViewById(R.id.goButton);
         String buttonMessage = submitButton.getText().toString();
 
         assertNotNull(submitButton);
-        assertEquals("Submit", buttonMessage);
+        assertEquals("Go", buttonMessage);
     }
 }
