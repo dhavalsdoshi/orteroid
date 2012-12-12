@@ -32,5 +32,9 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(this,SelectBoardActivity.class);
         startActivity(intent);
     }
-
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+        super.onBackPressed();
+    }
 }
