@@ -156,4 +156,13 @@ public class AddIdeaActivity extends Activity {
         }
         return sectionNames;
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, ViewBoardActivity.class);
+        intent.putExtra(Constants.BOARD_KEY, board.name());
+        intent.putExtra(Constants.BOARD_ID, board.id());
+        startActivity(intent);
+        super.onBackPressed();
+    }
 }
