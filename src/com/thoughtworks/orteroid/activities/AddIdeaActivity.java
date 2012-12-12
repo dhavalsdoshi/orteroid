@@ -8,10 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -51,11 +48,24 @@ public class AddIdeaActivity extends Activity {
         }};
         if(board == null) board = new Board("test",2,listForDefault);             //TODO: what if board is null
         actionBar = getActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setIcon(R.drawable.ic_launcher);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setTitle(board.name());
         setContentView(R.layout.add_idea);
         setBackgroundLayout();
         setActionBar(board);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void setBackgroundLayout() {

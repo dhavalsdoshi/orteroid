@@ -17,19 +17,22 @@
         <activity
                 android:name=".activities.MainActivity"
                 android:label="@string/app_name"
+                android:icon="@drawable/ic_launcher"
                 android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
-                <category android:name="android.intent.category.DEFAULT"></category>
-                <category android:name="android.intent.category.BROWSABLE"></category>
-                <data android:host="www.ideaboardz.com" android:scheme="http"></data>
+
             </intent-filter>
         </activity>
         <activity
                 android:name=".activities.ViewBoardActivity"
-                android:label="@string/section_view_row"
                 android:screenOrientation="portrait">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"></category>
+                <category android:name="android.intent.category.BROWSABLE"></category>
+                <data android:host="www.ideaboardz.com" android:scheme="http"></data>
+            </intent-filter>
         </activity>
         <activity
                 android:name=".activities.AddIdeaActivity"

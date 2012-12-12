@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -30,16 +31,30 @@ public class ViewBoardActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_board);
         Intent intent = getIntent();
+        System.out.println(intent.getData() + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         String boardKey = intent.getStringExtra(Constants.BOARD_KEY);
         String boardId = intent.getStringExtra(Constants.BOARD_ID);
         ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + boardKey + " board", true);
         dialog.show();
         actionBar = getActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setIcon(R.drawable.ic_launcher);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setTitle(boardKey);
         BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
-    }
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 
     public void addIdea(View view) {
@@ -53,7 +68,7 @@ public class ViewBoardActivity extends Activity {
     }
 
 
-    private Callback<Board> viewBoardCallback(final ProgressDialog dialog) {  //TODO: dialog is smell....
+    private Callback<Board> viewBoardCallback(final ProgressDialog dialog) {
         return new Callback<Board>() {
             @Override
             public void execute(Board board) {

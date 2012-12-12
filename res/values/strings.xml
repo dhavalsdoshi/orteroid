@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Orteroid</string>
-    <string name="section_view_row">List of Sections</string>
+    <string name="app_name">IdeaBoardz</string>
     <string name="menu_settings">Settings</string>
     <string name="option1">View Demo</string>
     <string name="option2">View Board</string>

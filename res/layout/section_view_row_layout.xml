@@ -15,7 +15,6 @@
             android:layout_marginRight="10dip"
             android:layout_marginLeft="10dip"
             android:textSize="20dip"
-            android:text="@string/section_view_row"
             style="?android:attr/borderlessButtonStyle"/>
 
 </RelativeLayout>
