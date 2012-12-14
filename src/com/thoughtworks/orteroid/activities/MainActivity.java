@@ -2,9 +2,11 @@ package com.thoughtworks.orteroid.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
 
@@ -14,6 +16,11 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Button buttonForDemo = (Button) findViewById(R.id.viewTestBoard);
+        Typeface tf = Typeface.createFromAsset(this.getAssets(), "fonts/Handwritten_Crystal_v2.ttf");
+        buttonForDemo.setTypeface(tf);
+        Button buttonForViewing = (Button) findViewById(R.id.viewBoard);
+        buttonForViewing.setTypeface(tf);
     }
 
     @Override

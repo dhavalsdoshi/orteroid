@@ -94,4 +94,12 @@ public class Board implements Parcelable {
             return new Board[size];
         }
     };
+
+    public List<String> getSectionNames() {
+        List<String> sectionNames = new ArrayList<String>();
+        for (Section section : sections) {
+            sectionNames.add(section.name());
+        }
+        return sectionNames;
+    }
 }

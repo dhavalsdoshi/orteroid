@@ -7,12 +7,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.*;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
@@ -31,6 +29,7 @@ public class AddIdeaActivity extends Activity {
     private Board board;
     private ActionBar actionBar;
     private int selectedIndex;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,19 +42,30 @@ public class AddIdeaActivity extends Activity {
             selectedIndex = Integer.parseInt(selectedPosition);
         }
         board = intent.getParcelableExtra(Constants.BOARD);
-        List<Section> listForDefault = new ArrayList<Section>(){{
-            add(new Section("section1",0));
+        List<Section> listForDefault = new ArrayList<Section>() {{
+            add(new Section("section1", 0));
         }};
-        if(board == null) board = new Board("test",2,listForDefault);             //TODO: what if board is null
+        if (board == null) board = new Board("test", 2, listForDefault);             //TODO: what if board is null
+        setContentView(R.layout.add_idea);
+        setBackgroundLayout();
+        if (Build.VERSION.SDK_INT <= 11) {
+            useSpinner();
+            spinner.setVisibility(View.VISIBLE);
+        } else {
+            useActionBar();
+        }
+
+    }
+
+    private void useActionBar() {
         actionBar = getActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setIcon(R.drawable.ic_launcher);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setTitle(board.name());
-        setContentView(R.layout.add_idea);
-        setBackgroundLayout();
         setActionBar(board);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -73,6 +83,7 @@ public class AddIdeaActivity extends Activity {
         editText.setBackgroundResource(R.drawable.sticky);
         GradientDrawable drawable = (GradientDrawable) editText.getBackground();
         drawable.setColor(Color.parseColor(ColorSticky.getColorCode(board.sections().get(selectedIndex).id())));
+        editText.invalidate();
     }
 
     public void addAnIdea(View view) {
@@ -84,7 +95,9 @@ public class AddIdeaActivity extends Activity {
 
     private void postIdea() {
         Callback callback = addIdeaCallback();
-        int selectedNavigationIndex = actionBar.getSelectedNavigationIndex();
+        int selectedNavigationIndex;
+        if(actionBar == null) selectedNavigationIndex = spinner.getSelectedItemPosition();
+        else selectedNavigationIndex = actionBar.getSelectedNavigationIndex();
         Integer sectionId = board.sections().get(selectedNavigationIndex).id();
 
         BoardRepository.getInstance().addIdea(idea, sectionId, callback);
@@ -132,6 +145,30 @@ public class AddIdeaActivity extends Activity {
         toast.show();
     }
 
+    private void useSpinner() {
+        setTitle(board.name());
+        spinner = (Spinner) findViewById(R.id.spinnerForIdeas);
+        setSpinner();
+    }
+
+    private void setSpinner() {
+        List<String> sectionNames = board.getSectionNames();
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, sectionNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setSelection(selectedIndex);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int selected, long id) {
+                selectedIndex = selected;
+                setBackgroundLayout();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+    }
 
     private void setActionBar(final Board board) {
         List<Section> spinnerArray = board.sections();
