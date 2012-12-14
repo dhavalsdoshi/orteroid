@@ -139,13 +139,12 @@ public class ViewBoardActivity extends Activity {
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, sectionNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setSelection(0);
+        spinner.setSelection(selectedIndex);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int selected, long id) {
                 int selectedSection = board.sections().get(selected).id();
                 setPoints(board, selectedSection);
-                spinner.setSelection(selectedIndex);
             }
 
             @Override
