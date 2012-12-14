@@ -32,28 +32,36 @@ public class ViewBoardActivity extends Activity {
     private Spinner spinner;
     String boardKey;
     String boardId;
+    private int selectedIndex;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_board);
         Intent intent = getIntent();
-        String urlOfBoardz = intent.getDataString();
-        if(urlOfBoardz == null){
-        boardKey = intent.getStringExtra(Constants.BOARD_KEY);
-        boardId = intent.getStringExtra(Constants.BOARD_ID);
+        String urlOfBoard = intent.getDataString();
+        if(urlOfBoard == null){
+            boardKey = intent.getStringExtra(Constants.BOARD_KEY);
+            boardId = intent.getStringExtra(Constants.BOARD_ID);
+
+            if(intent.getStringExtra(Constants.SELECTED_POSITION) != null){
+                selectedIndex = Integer.parseInt(intent.getStringExtra(Constants.SELECTED_POSITION));
+            } else {
+                selectedIndex = 0;
+            }
         }
         else{
-            boardId = extractURLFragment(urlOfBoardz);
-            urlOfBoardz = urlOfBoardz.substring(0,urlOfBoardz.lastIndexOf('/'));
-            boardKey = extractURLFragment(urlOfBoardz);
+            
+            boardId = extractURLFragment(urlOfBoard);
+            urlOfBoard = urlOfBoard.substring(0,urlOfBoard.lastIndexOf('/'));
+            boardKey = extractURLFragment(urlOfBoard);
         }
 
         String name = null;
         try {
             name = URLDecoder.decode(boardKey, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();  
+            e.printStackTrace();
         }
         ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + name + " board", true);
         dialog.show();
@@ -118,6 +126,7 @@ public class ViewBoardActivity extends Activity {
                 }
                 else{
                     setActionBar(board);
+                    actionBar.setSelectedNavigationItem(selectedIndex);
                     actionBar.setTitle(board.name());
                 }
 
@@ -136,6 +145,7 @@ public class ViewBoardActivity extends Activity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int selected, long id) {
                 int selectedSection = board.sections().get(selected).id();
                 setPoints(board, selectedSection);
+                spinner.setSelection(selectedIndex);
             }
 
             @Override

@@ -28,7 +28,7 @@ public class AddIdeaActivity extends Activity {
     private String idea;
     private Board board;
     private ActionBar actionBar;
-    private int selectedIndex;
+    private Integer selectedIndex;
     private Spinner spinner;
 
     @Override
@@ -199,6 +199,7 @@ public class AddIdeaActivity extends Activity {
         Intent intent = new Intent(this, ViewBoardActivity.class);
         intent.putExtra(Constants.BOARD_KEY, board.name().replace(" ","%20"));
         intent.putExtra(Constants.BOARD_ID, board.id().toString());
+        intent.putExtra(Constants.SELECTED_POSITION,selectedIndex.toString());
         startActivity(intent);
         super.onBackPressed();
     }
