@@ -201,6 +201,7 @@ public class AddIdeaActivity extends Activity {
         intent.putExtra(Constants.BOARD_ID, board.id().toString());
         intent.putExtra(Constants.SELECTED_POSITION,selectedIndex.toString());
         startActivity(intent);
+        finish();
         super.onBackPressed();
     }
 }

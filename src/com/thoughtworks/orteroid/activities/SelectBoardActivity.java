@@ -51,5 +51,12 @@ public class SelectBoardActivity extends Activity {
         intent.putExtra(Constants.BOARD_ID, boardId);
         startActivity(intent);
     }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
+    }
 
 }

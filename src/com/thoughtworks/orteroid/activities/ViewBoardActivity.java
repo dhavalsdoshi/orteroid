@@ -51,7 +51,7 @@ public class ViewBoardActivity extends Activity {
             }
         }
         else{
-            
+
             boardId = extractURLFragment(urlOfBoard);
             urlOfBoard = urlOfBoard.substring(0,urlOfBoard.lastIndexOf('/'));
             boardKey = extractURLFragment(urlOfBoard);
@@ -187,6 +187,7 @@ public class ViewBoardActivity extends Activity {
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
         super.onBackPressed();
     }
 }
