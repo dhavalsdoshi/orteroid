@@ -49,16 +49,15 @@ public class ViewBoardActivity extends Activity {
         ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + boardKey + " board", true);
         dialog.show();
         if (Build.VERSION.SDK_INT <= 11) {
-            useSpinner(boardKey);
+            useSpinner();
             spinner.setVisibility(View.VISIBLE);
         } else {
-            useActionBar(boardKey);
+            useActionBar();
         }
         BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
     }
 
-    private void useSpinner(String boardKey) {
-        setTitle(boardKey);
+    private void useSpinner() {
         spinner = (Spinner) findViewById(R.id.spinnerForSections);
     }
 
@@ -67,12 +66,11 @@ public class ViewBoardActivity extends Activity {
         return url.substring(lastIndex+1,url.length());
     }
 
-    private void useActionBar(String boardKey) {
+    private void useActionBar() {
         actionBar = getActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setIcon(R.drawable.ic_launcher);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        actionBar.setTitle(boardKey);
     }
 
     @Override
@@ -105,8 +103,14 @@ public class ViewBoardActivity extends Activity {
             public void execute(Board board) {
                 dialog.dismiss();
                 ViewBoardActivity.this.board = board;
-                if (actionBar == null) setSpinner(board);
-                else setActionBar(board);
+                if (actionBar == null){
+                    setSpinner(board);
+                    setTitle(board.name());
+                }
+                else{
+                    setActionBar(board);
+                    actionBar.setTitle(board.name());
+                }
 
             }
         };
