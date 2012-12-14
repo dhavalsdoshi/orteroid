@@ -197,7 +197,7 @@ public class AddIdeaActivity extends Activity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, ViewBoardActivity.class);
-        intent.putExtra(Constants.BOARD_KEY, board.name());
+        intent.putExtra(Constants.BOARD_KEY, board.name().replace(" ","%20"));
         intent.putExtra(Constants.BOARD_ID, board.id().toString());
         startActivity(intent);
         super.onBackPressed();

@@ -21,6 +21,8 @@ import com.thoughtworks.orteroid.repositories.BoardRepository;
 import com.thoughtworks.orteroid.utilities.ColorSticky;
 import com.thoughtworks.orteroid.utilities.SectionListAdapter;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +48,14 @@ public class ViewBoardActivity extends Activity {
             urlOfBoardz = urlOfBoardz.substring(0,urlOfBoardz.lastIndexOf('/'));
             boardKey = extractURLFragment(urlOfBoardz);
         }
-        ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + boardKey + " board", true);
+
+        String name = null;
+        try {
+            name = URLDecoder.decode(boardKey, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();  
+        }
+        ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + name + " board", true);
         dialog.show();
         if (Build.VERSION.SDK_INT <= 11) {
             useSpinner();
