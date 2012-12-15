@@ -17,6 +17,7 @@ import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.models.Board;
 import com.thoughtworks.orteroid.models.Section;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
+import com.thoughtworks.orteroid.utilities.ActionBarSetup;
 import com.thoughtworks.orteroid.utilities.ColorSticky;
 import org.json.JSONException;
 
@@ -48,22 +49,32 @@ public class AddIdeaActivity extends Activity {
         if (board == null) board = new Board("test", 2, listForDefault);             //TODO: what if board is null
         setContentView(R.layout.add_idea);
         setBackgroundLayout();
-        if (Build.VERSION.SDK_INT <= 11) {
+        if (Build.VERSION.SDK_INT <= Constants.VERSION_CODE_FOR_ANDROID_3) {
             useSpinner();
             spinner.setVisibility(View.VISIBLE);
-        } else {
-            useActionBar();
+        }
+        else {
+            setActionBar();
         }
 
     }
 
-    private void useActionBar() {
-        actionBar = getActionBar();
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setIcon(R.drawable.ic_launcher);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+    private void setActionBar() {
+        actionBar = ActionBarSetup.useActionBar(this, true);
         actionBar.setTitle(board.name());
-        setActionBar(board);
+        actionBar.setListNavigationCallbacks(ActionBarSetup.setActionBar(board), actionBarNavigation());
+        actionBar.setSelectedNavigationItem(selectedIndex);
+    }
+
+    private ActionBar.OnNavigationListener actionBarNavigation() {
+        return new ActionBar.OnNavigationListener() {
+            @Override
+            public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+                selectedIndex = itemPosition;
+                setBackgroundLayout();
+                return true;
+            }
+        };
     }
 
     @Override
@@ -168,30 +179,6 @@ public class AddIdeaActivity extends Activity {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-    }
-
-    private void setActionBar(final Board board) {
-        List<Section> spinnerArray = board.sections();
-        final List<String> sectionNames;
-        actionBar.setSelectedNavigationItem(selectedIndex);
-        sectionNames = inflateSpinner(spinnerArray);
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(actionBar.getThemedContext(), android.R.layout.simple_spinner_dropdown_item, sectionNames);
-        actionBar.setListNavigationCallbacks(spinnerArrayAdapter, new ActionBar.OnNavigationListener() {
-            @Override
-            public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-                selectedIndex = itemPosition;
-                setBackgroundLayout();
-                return true;
-            }
-        });
-    }
-
-    private List<String> inflateSpinner(List<Section> spinnerArray) {
-        List<String> sectionNames = new ArrayList<String>();
-        for (Section section : spinnerArray) {
-            sectionNames.add(section.name());
-        }
-        return sectionNames;
     }
 
     @Override

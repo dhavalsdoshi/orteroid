@@ -3,7 +3,6 @@ package com.thoughtworks.orteroid.activities;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,14 +16,13 @@ import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.models.Board;
-import com.thoughtworks.orteroid.models.Section;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
+import com.thoughtworks.orteroid.utilities.ActionBarSetup;
 import com.thoughtworks.orteroid.utilities.ColorSticky;
 import com.thoughtworks.orteroid.utilities.SectionListAdapter;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ViewBoardActivity extends Activity {
@@ -34,7 +32,6 @@ public class ViewBoardActivity extends Activity {
     String boardKey;
     String boardId;
     private int selectedIndex;
-    Context context = this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +39,34 @@ public class ViewBoardActivity extends Activity {
         setContentView(R.layout.view_board);
         Intent intent = getIntent();
         String urlOfBoard = intent.getDataString();
+        setParameters(intent, urlOfBoard);
+
+        ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + decodeBoardKey() + " board", true);
+        dialog.show();
+        setLayoutForDifferentVersions();
+        BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
+    }
+
+    private void setLayoutForDifferentVersions() {
+        if (Build.VERSION.SDK_INT <= Constants.VERSION_CODE_FOR_ANDROID_3) {
+            useSpinner();
+            spinner.setVisibility(View.VISIBLE);
+        } else {
+            actionBar = ActionBarSetup.useActionBar(this, true);
+        }
+    }
+
+    private String decodeBoardKey() {
+        String name = null;
+        try {
+            name = URLDecoder.decode(boardKey, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return name;
+    }
+
+    private void setParameters(Intent intent, String urlOfBoard) {
         if (urlOfBoard == null) {
             boardKey = intent.getStringExtra(Constants.BOARD_KEY);
             boardId = intent.getStringExtra(Constants.BOARD_ID);
@@ -57,22 +82,6 @@ public class ViewBoardActivity extends Activity {
             urlOfBoard = urlOfBoard.substring(0, urlOfBoard.lastIndexOf('/'));
             boardKey = extractURLFragment(urlOfBoard);
         }
-
-        String name = null;
-        try {
-            name = URLDecoder.decode(boardKey, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + name + " board", true);
-        dialog.show();
-        if (Build.VERSION.SDK_INT <= 11) {
-            useSpinner();
-            spinner.setVisibility(View.VISIBLE);
-        } else {
-            useActionBar();
-        }
-        BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
     }
 
     private void useSpinner() {
@@ -84,12 +93,6 @@ public class ViewBoardActivity extends Activity {
         return url.substring(lastIndex + 1, url.length());
     }
 
-    private void useActionBar() {
-        actionBar = getActionBar();
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setIcon(R.drawable.ic_launcher);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -126,11 +129,15 @@ public class ViewBoardActivity extends Activity {
                     setTitle(board.name());
                 } else {
                     setActionBar(board);
-                    actionBar.setSelectedNavigationItem(selectedIndex);
-                    actionBar.setTitle(board.name());
                 }
             }
         };
+    }
+
+    private void setActionBar(Board board) {
+        actionBar.setListNavigationCallbacks(ActionBarSetup.setActionBar(board), actionBarNavigation(board));
+        actionBar.setSelectedNavigationItem(selectedIndex);
+        actionBar.setTitle(board.name());
     }
 
     private void setSpinner(final Board board) {
@@ -159,26 +166,17 @@ public class ViewBoardActivity extends Activity {
         listView.setAdapter(sectionListAdapter);
     }
 
-    private void setActionBar(final Board board) {
-        List<Section> spinnerArray = board.sections();
-        final List<String> sectionNames = inflateSpinner(spinnerArray);
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(actionBar.getThemedContext(), android.R.layout.simple_spinner_dropdown_item, sectionNames);
-        actionBar.setListNavigationCallbacks(spinnerArrayAdapter, new ActionBar.OnNavigationListener() {
+
+
+    private ActionBar.OnNavigationListener actionBarNavigation(final Board board) {
+        return new ActionBar.OnNavigationListener() {
             @Override
             public boolean onNavigationItemSelected(int itemPosition, long itemId) {
                 int selected = board.sections().get(itemPosition).id();
                 setPoints(board, selected);
                 return true;
             }
-        });
-    }
-
-    private List<String> inflateSpinner(List<Section> spinnerArray) {
-        List<String> sectionNames = new ArrayList<String>();
-        for (Section section : spinnerArray) {
-            sectionNames.add(section.name());
-        }
-        return sectionNames;
+        };
     }
 
     @Override

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
+import com.thoughtworks.orteroid.utilities.ActionBarSetup;
 
 public class SelectBoardActivity extends Activity {
     private ActionBar actionBar;
@@ -18,14 +19,10 @@ public class SelectBoardActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_board);
-        if (Build.VERSION.SDK_INT > 11) useActionBar();
+        if (Build.VERSION.SDK_INT > Constants.VERSION_CODE_FOR_ANDROID_3) {
+            actionBar = ActionBarSetup.useActionBar(this,false);
+        }
 
-    }
-
-    private void useActionBar() {
-        actionBar = getActionBar();
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setIcon(R.drawable.ic_launcher);
     }
 
     @Override
