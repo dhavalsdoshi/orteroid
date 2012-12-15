@@ -3,6 +3,7 @@ package com.thoughtworks.orteroid.activities;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class ViewBoardActivity extends Activity {
     String boardKey;
     String boardId;
     private int selectedIndex;
+    Context context = this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,20 +42,19 @@ public class ViewBoardActivity extends Activity {
         setContentView(R.layout.view_board);
         Intent intent = getIntent();
         String urlOfBoard = intent.getDataString();
-        if(urlOfBoard == null){
+        if (urlOfBoard == null) {
             boardKey = intent.getStringExtra(Constants.BOARD_KEY);
             boardId = intent.getStringExtra(Constants.BOARD_ID);
 
-            if(intent.getStringExtra(Constants.SELECTED_POSITION) != null){
+            if (intent.getStringExtra(Constants.SELECTED_POSITION) != null) {
                 selectedIndex = Integer.parseInt(intent.getStringExtra(Constants.SELECTED_POSITION));
             } else {
                 selectedIndex = 0;
             }
-        }
-        else{
+        } else {
 
             boardId = extractURLFragment(urlOfBoard);
-            urlOfBoard = urlOfBoard.substring(0,urlOfBoard.lastIndexOf('/'));
+            urlOfBoard = urlOfBoard.substring(0, urlOfBoard.lastIndexOf('/'));
             boardKey = extractURLFragment(urlOfBoard);
         }
 
@@ -78,9 +79,9 @@ public class ViewBoardActivity extends Activity {
         spinner = (Spinner) findViewById(R.id.spinnerForSections);
     }
 
-    private String extractURLFragment(String url){
+    private String extractURLFragment(String url) {
         int lastIndex = url.lastIndexOf('/');
-        return url.substring(lastIndex+1,url.length());
+        return url.substring(lastIndex + 1, url.length());
     }
 
     private void useActionBar() {
@@ -120,16 +121,14 @@ public class ViewBoardActivity extends Activity {
             public void execute(Board board) {
                 dialog.dismiss();
                 ViewBoardActivity.this.board = board;
-                if (actionBar == null){
+                if (actionBar == null) {
                     setSpinner(board);
                     setTitle(board.name());
-                }
-                else{
+                } else {
                     setActionBar(board);
                     actionBar.setSelectedNavigationItem(selectedIndex);
                     actionBar.setTitle(board.name());
                 }
-
             }
         };
     }

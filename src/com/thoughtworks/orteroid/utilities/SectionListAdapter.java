@@ -3,7 +3,6 @@ package com.thoughtworks.orteroid.utilities;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,8 +39,7 @@ public class SectionListAdapter extends ArrayAdapter<Point> {
             rowView = convertView;
         }
         TextView textView = (TextView) rowView.findViewById(R.id.row_text);
-        Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/Handwritten_Crystal_v2.ttf");
-        textView.setTypeface(tf);
+        textView.setTypeface(Font.setFont((Activity) this.getContext()));
         textView.setText(points.get(position).message());
         textView.setBackgroundResource(R.drawable.sticky);
         GradientDrawable drawable = (GradientDrawable) textView.getBackground();

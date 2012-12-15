@@ -18,7 +18,7 @@ public class SelectBoardActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_board);
-        if (Build.VERSION.SDK_INT > 11)useActionBar();
+        if (Build.VERSION.SDK_INT > 11) useActionBar();
 
     }
 
@@ -41,16 +41,17 @@ public class SelectBoardActivity extends Activity {
     }
 
 
-    public void navigateToUrl(View view){
+    public void navigateToUrl(View view) {
         EditText editText = (EditText) findViewById(R.id.url);
         String url = editText.getText().toString();
         String boardKey = url.substring(0, url.indexOf('/'));
-        String boardId = url.substring(url.indexOf('/')+1,url.length());
+        String boardId = url.substring(url.indexOf('/') + 1, url.length());
         Intent intent = new Intent(this, ViewBoardActivity.class);
         intent.putExtra(Constants.BOARD_KEY, boardKey);
         intent.putExtra(Constants.BOARD_ID, boardId);
         startActivity(intent);
     }
+
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);

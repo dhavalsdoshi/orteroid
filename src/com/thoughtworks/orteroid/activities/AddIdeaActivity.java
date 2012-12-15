@@ -96,7 +96,7 @@ public class AddIdeaActivity extends Activity {
     private void postIdea() {
         Callback callback = addIdeaCallback();
         int selectedNavigationIndex;
-        if(actionBar == null) selectedNavigationIndex = spinner.getSelectedItemPosition();
+        if (actionBar == null) selectedNavigationIndex = spinner.getSelectedItemPosition();
         else selectedNavigationIndex = actionBar.getSelectedNavigationIndex();
         Integer sectionId = board.sections().get(selectedNavigationIndex).id();
 
@@ -197,9 +197,9 @@ public class AddIdeaActivity extends Activity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, ViewBoardActivity.class);
-        intent.putExtra(Constants.BOARD_KEY, board.name().replace(" ","%20"));
+        intent.putExtra(Constants.BOARD_KEY, board.name().replace(" ", "%20"));
         intent.putExtra(Constants.BOARD_ID, board.id().toString());
-        intent.putExtra(Constants.SELECTED_POSITION,selectedIndex.toString());
+        intent.putExtra(Constants.SELECTED_POSITION, selectedIndex.toString());
         startActivity(intent);
         finish();
         super.onBackPressed();
