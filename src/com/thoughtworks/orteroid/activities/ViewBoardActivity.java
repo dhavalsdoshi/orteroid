@@ -40,7 +40,6 @@ public class ViewBoardActivity extends Activity {
         Intent intent = getIntent();
         String urlOfBoard = intent.getDataString();
         setParameters(intent, urlOfBoard);
-
         ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + decodeBoardKey() + " board", true);
         dialog.show();
         setLayoutForDifferentVersions();
@@ -57,7 +56,8 @@ public class ViewBoardActivity extends Activity {
     }
 
     private String decodeBoardKey() {
-        String name = null;
+        if(boardKey == null) return boardKey;
+            String name = null;
         try {
             name = URLDecoder.decode(boardKey, "UTF-8");
         } catch (UnsupportedEncodingException e) {
@@ -73,10 +73,12 @@ public class ViewBoardActivity extends Activity {
 
             if (intent.getStringExtra(Constants.SELECTED_POSITION) != null) {
                 selectedIndex = Integer.parseInt(intent.getStringExtra(Constants.SELECTED_POSITION));
-            } else {
+            }
+            else {
                 selectedIndex = 0;
             }
-        } else {
+        }
+        else {
 
             boardId = extractURLFragment(urlOfBoard);
             urlOfBoard = urlOfBoard.substring(0, urlOfBoard.lastIndexOf('/'));
