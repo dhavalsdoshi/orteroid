@@ -11,6 +11,7 @@
             backward-compatibility can go here.
         -->
     </style>
+    <style name="Animation" />
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">

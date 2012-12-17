@@ -37,26 +37,40 @@ public class AddIdeaActivity extends Activity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         String selectedPosition = intent.getStringExtra(Constants.SELECTED_POSITION);
+        setSelectedPosition(selectedPosition);
+        board = intent.getParcelableExtra(Constants.BOARD);
+        if (board == null) {
+            board = getDefaultBoard();           //TODO: what if board is null
+        }
+        setContentView(R.layout.add_idea);
+        setBackgroundLayout();
+        setLayoutForDifferentVersions();
+    }
+
+    private void setLayoutForDifferentVersions() {
+        if (Build.VERSION.SDK_INT <= Constants.VERSION_CODE_FOR_ANDROID_3) {
+            useSpinner();
+            spinner.setVisibility(View.VISIBLE);
+        } else {
+            setActionBar();
+        }
+    }
+
+    private Board getDefaultBoard() {
+        List<Section> listForDefault = new ArrayList<Section>() {{
+            add(new Section("section1", 0));
+        }};
+        String boardName = "test";
+        int boardId = 2;
+        return new Board(boardName, boardId, listForDefault);
+    }
+
+    private void setSelectedPosition(String selectedPosition) {
         if (selectedPosition == null) {
             selectedIndex = 0;
         } else {
             selectedIndex = Integer.parseInt(selectedPosition);
         }
-        board = intent.getParcelableExtra(Constants.BOARD);
-        List<Section> listForDefault = new ArrayList<Section>() {{
-            add(new Section("section1", 0));
-        }};
-        if (board == null) board = new Board("test", 2, listForDefault);             //TODO: what if board is null
-        setContentView(R.layout.add_idea);
-        setBackgroundLayout();
-        if (Build.VERSION.SDK_INT <= Constants.VERSION_CODE_FOR_ANDROID_3) {
-            useSpinner();
-            spinner.setVisibility(View.VISIBLE);
-        }
-        else {
-            setActionBar();
-        }
-
     }
 
     private void setActionBar() {
@@ -99,9 +113,12 @@ public class AddIdeaActivity extends Activity {
 
     public void addAnIdea(View view) {
         final EditText ideaText = (EditText) findViewById(R.id.ideaMessage);
+        idea = null;
         idea = ideaText.getText().toString();
+        if(idea.length() != 0){
         postIdea();
-        ideaText.setText("");
+        }
+        ideaText.setText(null);
     }
 
     private void postIdea() {

@@ -7,6 +7,7 @@ import android.test.TouchUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 
 public class TestUtilities {
 
@@ -44,6 +45,20 @@ public class TestUtilities {
                 public void run() {
 
                     actionBar.setSelectedNavigationItem(indexToSelect);
+                }
+            });
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        instrumentationTestCase.getInstrumentation().waitForIdleSync();
+    }
+    public static void navigateSpinnerToIndex(final Spinner spinner, final int indexToSelect, InstrumentationTestCase instrumentationTestCase) {
+        try {
+            instrumentationTestCase.runTestOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    spinner.setSelection(indexToSelect);
                 }
             });
         } catch (Throwable e) {

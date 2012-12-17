@@ -1,8 +1,10 @@
 package com.thoughtworks.orteroid.activities;
 
 import android.app.ActionBar;
+import android.os.Build;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
@@ -72,28 +74,54 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
         assertEquals("point4", thirdButton.getText());
     }
 
-    public void testShouldFindTotalNumberOfNavigationItemsInActionBar() {
-        ActionBar actionBar = activity.getActionBar();
-        assertEquals(2, actionBar.getNavigationItemCount());
+    public void testShouldFindTotalNumberOfNavigationItemsInCorrespondingSpinner() {
+        ActionBar actionBar;
+        Spinner spinner;
+        if(Build.VERSION.SDK_INT <= Constants.VERSION_CODE_FOR_ANDROID_3) {
+            spinner = (Spinner) activity.findViewById(R.id.spinnerForSections);
+            assertEquals(2, spinner.getCount());
+        }
+        else{
+            actionBar = activity.getActionBar();
+            assertEquals(2, actionBar.getNavigationItemCount());
+        }
     }
 
     public void testShouldHaveDefaultSectionSelectedOnStart() {
-        ActionBar actionBar = activity.getActionBar();
-        int selectedIndex = actionBar.getSelectedNavigationIndex();
-        assertEquals(0, selectedIndex);
+        ActionBar actionBar;
+        Spinner spinner;
+        if(Build.VERSION.SDK_INT <= Constants.VERSION_CODE_FOR_ANDROID_3) {
+            spinner = (Spinner) activity.findViewById(R.id.spinnerForSections);
+            assertEquals(0, spinner.getSelectedItemPosition());
+        }
+        else{
+            actionBar = activity.getActionBar();
+            assertEquals(0, actionBar.getSelectedNavigationIndex());
+        }
     }
 
     public void testShouldShowIdeasOfOtherSection() {
-        TestUtilities.navigateActionBarToIndex(activity.getActionBar(), 1, this);
+        if(Build.VERSION.SDK_INT <= Constants.VERSION_CODE_FOR_ANDROID_3) {
+            Spinner spinner = (Spinner) activity.findViewById(R.id.spinnerForSections);
+            TestUtilities.navigateSpinnerToIndex(spinner,1,this);
+        }
+        else{
+            TestUtilities.navigateActionBarToIndex(activity.getActionBar(), 1, this);
+        }
+
         Button firstButton = (Button) activity.findViewById(R.id.row_text);
 
         assertEquals("point3", firstButton.getText());
     }
 
     public void testShouldNavigateToAddIdeaActivity() {
-
-        TestUtilities.navigateActionBarToIndex(activity.getActionBar(), 1, this);
-
+        if(Build.VERSION.SDK_INT <= Constants.VERSION_CODE_FOR_ANDROID_3) {
+            Spinner spinner = (Spinner) activity.findViewById(R.id.spinnerForSections);
+            TestUtilities.navigateSpinnerToIndex(spinner,1,this);
+        }
+        else{
+            TestUtilities.navigateActionBarToIndex(activity.getActionBar(), 1, this);
+        }
         Map<String, String> bundleExtras = new HashMap<String, String>();
         bundleExtras.put(Constants.SELECTED_POSITION, "1");
         assertNavigationToTargetWithParameters(R.id.addButton, AddIdeaActivity.class, bundleExtras);
