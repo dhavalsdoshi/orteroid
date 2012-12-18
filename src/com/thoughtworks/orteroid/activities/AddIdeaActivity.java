@@ -143,19 +143,20 @@ public class AddIdeaActivity extends Activity {
 
     private void generateFailureNotification() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("The following idea failed :\n " + idea);
-        builder.setNegativeButton("Try Resending", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                postIdea();
-                dialog.dismiss();
-            }
-        });
-        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-            }
-        });
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(this)
+                   .setTitle("The following idea failed :\n " + idea)
+                   .setNegativeButton("Try Resending", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                postIdea();
+                                dialog.dismiss();
+                            }
+                        })
+                   .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -205,7 +206,6 @@ public class AddIdeaActivity extends Activity {
         intent.putExtra(Constants.BOARD_ID, board.id().toString());
         intent.putExtra(Constants.SELECTED_POSITION, selectedIndex.toString());
         startActivity(intent);
-        finish();
         super.onBackPressed();
     }
 }

@@ -39,14 +39,16 @@ public class SelectBoardActivity extends Activity {
 
 
     public void navigateToUrl(View view) {
-        EditText editText = (EditText) findViewById(R.id.url);
-        String url = editText.getText().toString();
-        String boardKey = url.substring(0, url.indexOf('/'));
-        String boardId = url.substring(url.indexOf('/') + 1, url.length());
+        EditText boardKeyText = (EditText) findViewById(R.id.boardKey);
+        EditText boardIdText = (EditText) findViewById(R.id.boardId);
+        String boardKey = boardKeyText.getText().toString();
+        String boardId = boardIdText.getText().toString();
+        if(boardId != null && boardKey != null){
         Intent intent = new Intent(this, ViewBoardActivity.class);
         intent.putExtra(Constants.BOARD_KEY, boardKey);
         intent.putExtra(Constants.BOARD_ID, boardId);
         startActivity(intent);
+        }
     }
 
     @Override

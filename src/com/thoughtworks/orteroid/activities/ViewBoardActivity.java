@@ -45,7 +45,22 @@ public class ViewBoardActivity extends Activity {
         setLayoutForDifferentVersions();
         BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
     }
+    private void setParameters(Intent intent, String urlOfBoard) {
+        if (urlOfBoard == null) {
+            boardKey = intent.getStringExtra(Constants.BOARD_KEY);
+            boardId = intent.getStringExtra(Constants.BOARD_ID);
+            if (intent.getStringExtra(Constants.SELECTED_POSITION) != null) {
+                selectedIndex = Integer.parseInt(intent.getStringExtra(Constants.SELECTED_POSITION));
+            } else {
+                selectedIndex = 0;
+            }
+        } else {
 
+            boardId = extractURLFragment(urlOfBoard);
+            urlOfBoard = urlOfBoard.substring(0, urlOfBoard.lastIndexOf('/'));
+            boardKey = extractURLFragment(urlOfBoard);
+        }
+    }
     private void setLayoutForDifferentVersions() {
         if (Build.VERSION.SDK_INT <= Constants.VERSION_CODE_FOR_ANDROID_3) {
             useSpinner();
@@ -56,35 +71,15 @@ public class ViewBoardActivity extends Activity {
     }
 
     private String decodeBoardKey() {
-        if(boardKey == null) return boardKey;
-            String name = null;
         try {
-            name = URLDecoder.decode(boardKey, "UTF-8");
+            return URLDecoder.decode(boardKey, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }
-        return name;
-    }
-
-    private void setParameters(Intent intent, String urlOfBoard) {
-        if (urlOfBoard == null) {
-            boardKey = intent.getStringExtra(Constants.BOARD_KEY);
-            boardId = intent.getStringExtra(Constants.BOARD_ID);
-
-            if (intent.getStringExtra(Constants.SELECTED_POSITION) != null) {
-                selectedIndex = Integer.parseInt(intent.getStringExtra(Constants.SELECTED_POSITION));
-            }
-            else {
-                selectedIndex = 0;
-            }
-        }
-        else {
-
-            boardId = extractURLFragment(urlOfBoard);
-            urlOfBoard = urlOfBoard.substring(0, urlOfBoard.lastIndexOf('/'));
-            boardKey = extractURLFragment(urlOfBoard);
+            throw new RuntimeException(e);
         }
     }
+
+
 
     private void useSpinner() {
         spinner = (Spinner) findViewById(R.id.spinnerForSections);
@@ -167,7 +162,6 @@ public class ViewBoardActivity extends Activity {
         ListView listView = (ListView) findViewById(android.R.id.list);
         listView.setAdapter(sectionListAdapter);
     }
-
 
 
     private ActionBar.OnNavigationListener actionBarNavigation(final Board board) {

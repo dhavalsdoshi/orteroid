@@ -36,14 +36,13 @@ public class MainActivity extends Activity {
     }
 
     public void viewBoard(View view) {
-        Intent intent = new Intent(this, SelectBoardActivity.class);
+        Intent intent = new Intent(this, ViewBoardActivity.class);
         startActivity(intent);
     }
 
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
-        finish();
         super.onBackPressed();
     }
 }

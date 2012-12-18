@@ -13,7 +13,7 @@ public class SelectBoardActivityTest extends BaseActivityTest<SelectBoardActivit
 
     public void testShouldContainEditTextWithDefaultHintWritten() {
         Activity activity = getActivity();
-        EditText editText = (EditText) activity.findViewById(R.id.url);
+        EditText editText = (EditText) activity.findViewById(R.id.boardKey);
         String defaultMessage = editText.getHint().toString();
 
         assertNotNull(editText);

@@ -1,6 +1,7 @@
 package com.thoughtworks.orteroid.activities;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Build;
 import android.widget.Button;
 import android.widget.ListView;
@@ -50,7 +51,12 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
         BoardRepository boardRepository = mock(BoardRepository.class);
         BoardRepository.setBoardRepository(boardRepository);
 
-        final Board board = new Board("test", 2, listOfSections);
+        String boardName = "test";
+        final Board board = new Board(boardName, 2, listOfSections);
+        Intent intent = new Intent((getInstrumentation().getTargetContext()),ViewBoardActivity.class);
+        intent.putExtra(Constants.BOARD_KEY, boardName);
+        String boardId = "2";
+        intent.putExtra(Constants.BOARD_ID, boardId);
 
         doAnswer(new Answer<Object>() {
             @Override
@@ -59,8 +65,10 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
                 return null;
             }
         }).when(boardRepository).retrieveBoard(anyString(), anyString(), any(Callback.class));
+        this.setActivityIntent(intent);
         super.setUp();
     }
+
 
     public void testShouldListThePointsOfDefaultSection() {
         Button firstButton = (Button) activity.findViewById(R.id.row_text);
