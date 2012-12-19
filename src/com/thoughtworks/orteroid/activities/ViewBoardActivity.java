@@ -3,13 +3,13 @@ package com.thoughtworks.orteroid.activities;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import com.thoughtworks.orteroid.Callback;
@@ -20,10 +20,10 @@ import com.thoughtworks.orteroid.repositories.BoardRepository;
 import com.thoughtworks.orteroid.utilities.ActionBarSetup;
 import com.thoughtworks.orteroid.utilities.ColorSticky;
 import com.thoughtworks.orteroid.utilities.SectionListAdapter;
+import com.thoughtworks.orteroid.utilities.SpinnerSetup;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.List;
 
 public class ViewBoardActivity extends Activity {
     private ActionBar actionBar;
@@ -116,13 +116,15 @@ public class ViewBoardActivity extends Activity {
     }
 
     private Callback<Board> viewBoardCallback(final ProgressDialog dialog) {
+        final Context context = this;
         return new Callback<Board>() {
             @Override
             public void execute(Board board) {
                 dialog.dismiss();
                 ViewBoardActivity.this.board = board;
                 if (actionBar == null) {
-                    setSpinner(board);
+                    SpinnerSetup.setSpinner(context,board,selectedIndex,spinner);
+                    setNavigationOfSpinner();
                     setTitle(board.name());
                 } else {
                     setActionBar(board);
@@ -137,12 +139,7 @@ public class ViewBoardActivity extends Activity {
         actionBar.setTitle(board.name());
     }
 
-    private void setSpinner(final Board board) {
-        List<String> sectionNames = board.getSectionNames();
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, sectionNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setSelection(selectedIndex);
+    private void setNavigationOfSpinner(){
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int selected, long id) {

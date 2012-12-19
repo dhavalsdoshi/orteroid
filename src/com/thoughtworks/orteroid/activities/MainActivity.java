@@ -41,11 +41,14 @@ public class MainActivity extends Activity {
 
     public void viewBoard(View view) {
         final Intent intent = new Intent(this, ViewBoardActivity.class);
+        alertForDetails(intent);
+    }
+
+    private void alertForDetails(final Intent intent) {
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
         LayoutInflater li = LayoutInflater.from(this);
         final View promptsView = li.inflate(R.layout.select_board, null);
         alert.setView(promptsView);
-
         alert.setPositiveButton("Go", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 EditText boardKeyText = (EditText) promptsView.findViewById(R.id.boardKey);

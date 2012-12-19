@@ -19,6 +19,7 @@ import com.thoughtworks.orteroid.models.Section;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
 import com.thoughtworks.orteroid.utilities.ActionBarSetup;
 import com.thoughtworks.orteroid.utilities.ColorSticky;
+import com.thoughtworks.orteroid.utilities.SpinnerSetup;
 import org.json.JSONException;
 
 import java.util.ArrayList;
@@ -177,15 +178,11 @@ public class AddIdeaActivity extends Activity {
     private void useSpinner() {
         setTitle(board.name());
         spinner = (Spinner) findViewById(R.id.spinnerForIdeas);
-        setSpinner();
+        SpinnerSetup.setSpinner(this,board,selectedIndex,spinner);
+        setNavigationForSpinner();
     }
 
-    private void setSpinner() {
-        List<String> sectionNames = board.getSectionNames();
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, sectionNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setSelection(selectedIndex);
+    private void setNavigationForSpinner(){
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int selected, long id) {
