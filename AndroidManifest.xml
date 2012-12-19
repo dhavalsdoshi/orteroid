@@ -40,10 +40,6 @@
                 android:name=".activities.AddIdeaActivity"
                 android:screenOrientation="portrait">
         </activity>
-        <activity
-                android:name=".activities.SelectBoardActivity"
-                android:screenOrientation="portrait">
-        </activity>
     </application>
 
 </manifest>

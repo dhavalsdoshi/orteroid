@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content">
 
-
-    <Button
-            android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:text="@string/Go"
-            android:onClick="navigateToUrl"
-            android:id="@+id/goButton" android:layout_gravity="center_horizontal|bottom"
-            android:textColor="@android:color/holo_green_light"
-            android:background="@android:color/black" android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"/>
     <EditText
             android:layout_width="192dip"
             android:layout_height="39dip"
