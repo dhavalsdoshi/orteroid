@@ -41,7 +41,6 @@ public class SectionListAdapter extends ArrayAdapter<Point> {
         TextView textView = (TextView) rowView.findViewById(R.id.row_text);
         textView.setTypeface(Font.setFont((Activity) this.getContext()));
         textView.setText(points.get(position).message());
-        textView.setBackgroundResource(R.drawable.sticky);
         GradientDrawable drawable = (GradientDrawable) textView.getBackground();
         drawable.setColor(Color.parseColor(colour));
         return rowView;

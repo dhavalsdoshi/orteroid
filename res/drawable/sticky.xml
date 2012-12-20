@@ -6,6 +6,8 @@
         android:shape="rectangle">
     <solid
             android:color="@android:color/holo_purple" />
+    <stroke
+            android:color="#ff888888" android:width="2dp" />
     <corners
             android:topLeftRadius="2dp"
             android:topRightRadius="2dp"
