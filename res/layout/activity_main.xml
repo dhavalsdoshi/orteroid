@@ -4,41 +4,54 @@
                 android:layout_height="match_parent"
                 tools:context=".MainActivity" android:focusable="false">
 
-    <TextView
-            android:id="@+id/view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="@string/app_name"
-            android:textIsSelectable="false"
-            android:textSize="25dp"/>
-
     <Button
             android:id="@+id/viewTestBoard"
-            android:layout_width="match_parent"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
-            android:textSize="30dip"
+            android:textSize="20dip"
             android:text="@string/option1"
             android:onClick="viewDemo"
             android:background="@drawable/sticky"
             android:textColor="@android:color/black"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="84dip"
-            android:layout_marginLeft="20dip"
-            android:layout_marginRight="20dip"/>
+            android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
+            android:layout_marginTop="90dp"/>
     <Button
             android:id="@+id/viewBoard"
-            android:layout_width="match_parent"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
-            android:textSize="30dip"
+            android:textSize="20dip"
             android:text="@string/option2"
             android:onClick="viewBoard"
             android:background="@drawable/sticky"
             android:textColor="@android:color/black"
-            android:layout_alignLeft="@+id/viewTestBoard"
+            android:layout_alignLeft="@+id/viewTestBoard" android:layout_alignParentTop="true"
+            android:layout_marginTop="230dp"/>
+    <TextView
+            android:layout_width="223dp"
+            android:layout_height="wrap_content"
+            android:text="Test Drive..???"
+            android:id="@+id/testDrive"
+            android:textSize="20dp" android:textStyle="bold"
+            android:layout_alignLeft="@+id/viewTestBoard" android:layout_alignParentTop="true"
+            android:layout_marginTop="50dp"/>
+    <TextView
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:text="Use a Board..??"
+            android:id="@+id/useABoard"
+            android:textSize="20dp" android:textStyle="bold"
+            android:layout_alignLeft="@+id/viewTestBoard" android:layout_centerVertical="true"
+            android:layout_marginTop="180dp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="37dp"
+            android:text="@string/app_details"
+            android:id="@+id/textView2"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_orange_dark" android:textSize="20dip"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="178dp"
-            android:layout_alignRight="@+id/viewTestBoard"/>
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_alignParentLeft="true"/>
 
 </RelativeLayout>

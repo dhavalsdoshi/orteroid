@@ -3,12 +3,13 @@
 
     <string name="app_name">IdeaBoardz</string>
     <string name="menu_settings">Settings</string>
-    <string name="option1">Test drive\nLets Spin</string>
-    <string name="option2">Go to a board\nLets View a Board</string>
+    <string name="option1">Lets take it for a Spin!</string>
+    <string name="option2">View Board</string>
     <string name="menu_add">Add Idea</string>
     <string name="BLACK">#000</string>
     <string name="Submit">Submit</string>
     <string name="Go">Go</string>
+    <string name="app_details">Brainstorm, retrospect, collaborate</string>
     <color name="black">#000</color>
     <color name="blue">#00f</color>
     <color name="red">#f00</color>

@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.utilities.Font;
@@ -22,8 +23,13 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         Button buttonForDemo = (Button) findViewById(R.id.viewTestBoard);
         Button buttonForViewing = (Button) findViewById(R.id.viewBoard);
+        TextView testDrive = (TextView)findViewById(R.id.testDrive);
+        TextView useBoard = (TextView)findViewById(R.id.useABoard);
         buttonForDemo.setTypeface(Font.setFont(this));
         buttonForViewing.setTypeface(Font.setFont(this));
+        testDrive.setTypeface(Font.setFont(this));
+        useBoard.setTypeface(Font.setFont(this));
+
     }
 
     @Override
