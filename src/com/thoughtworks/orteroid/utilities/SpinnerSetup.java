@@ -15,6 +15,6 @@ public class SpinnerSetup {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(selectedIndex);
-       return spinner;
+        return spinner;
     }
 }

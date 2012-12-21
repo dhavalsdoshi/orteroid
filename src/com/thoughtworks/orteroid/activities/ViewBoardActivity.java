@@ -29,8 +29,8 @@ public class ViewBoardActivity extends Activity {
     private ActionBar actionBar;
     private Board board;
     private Spinner spinner;
-    String boardKey;
-    String boardId;
+    private String boardKey;
+    private String boardId;
     private int selectedIndex;
 
     @Override
@@ -45,6 +45,7 @@ public class ViewBoardActivity extends Activity {
         setLayoutForDifferentVersions();
         BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
     }
+
     private void setParameters(Intent intent, String urlOfBoard) {
         if (urlOfBoard == null) {
             boardKey = intent.getStringExtra(Constants.BOARD_KEY);
@@ -61,6 +62,7 @@ public class ViewBoardActivity extends Activity {
             boardKey = extractURLFragment(urlOfBoard);
         }
     }
+
     private void setLayoutForDifferentVersions() {
         if (Build.VERSION.SDK_INT <= Constants.VERSION_CODE_FOR_ANDROID_3) {
             useSpinner();
@@ -79,8 +81,6 @@ public class ViewBoardActivity extends Activity {
         }
     }
 
-
-
     private void useSpinner() {
         spinner = (Spinner) findViewById(R.id.spinnerForSections);
     }
@@ -89,7 +89,6 @@ public class ViewBoardActivity extends Activity {
         int lastIndex = url.lastIndexOf('/');
         return url.substring(lastIndex + 1, url.length());
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -159,7 +158,6 @@ public class ViewBoardActivity extends Activity {
         ListView listView = (ListView) findViewById(android.R.id.list);
         listView.setAdapter(sectionListAdapter);
     }
-
 
     private ActionBar.OnNavigationListener actionBarNavigation(final Board board) {
         return new ActionBar.OnNavigationListener() {
