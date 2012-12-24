@@ -16,6 +16,7 @@ import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.models.Board;
+import com.thoughtworks.orteroid.models.Point;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
 import com.thoughtworks.orteroid.utilities.ActionBarSetup;
 import com.thoughtworks.orteroid.utilities.ColorSticky;
@@ -24,6 +25,7 @@ import com.thoughtworks.orteroid.utilities.SpinnerSetup;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.List;
 
 public class ViewBoardActivity extends Activity {
     private ActionBar actionBar;
@@ -43,7 +45,47 @@ public class ViewBoardActivity extends Activity {
         ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + decodeBoardKey() + " board", true);
         dialog.show();
         setLayoutForDifferentVersions();
-        BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
+        if(board == null){
+            BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
+        } else {
+            BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback(dialog));
+        }
+    }
+
+    private Callback<Board> viewBoardCallback(final ProgressDialog dialog) {
+        final Context context = this;
+        return new Callback<Board>() {
+            @Override
+            public void execute(Board board) {
+                dialog.dismiss();
+                ViewBoardActivity.this.board = board;
+                if (actionBar == null) {
+                    SpinnerSetup.setSpinner(context,board,selectedIndex,spinner);
+                    setNavigationOfSpinner();
+                    setTitle(board.name());
+                } else {
+                    setActionBar(board);
+                }
+            }
+        };
+    }
+
+    private Callback<List<Point>> viewPointsCallback(final ProgressDialog dialog) {
+        final Context context = this;
+        return new Callback<List<Point>>() {
+            @Override
+            public void execute(List<Point> points) {
+                dialog.dismiss();
+                ViewBoardActivity.this.board.update(points);
+                if (actionBar == null) {
+                    SpinnerSetup.setSpinner(context,board,selectedIndex,spinner);
+                    setNavigationOfSpinner();
+                    setTitle(board.name());
+                } else {
+                    setActionBar(board);
+                }
+            }
+        };
     }
 
     private void setParameters(Intent intent, String urlOfBoard) {
@@ -112,24 +154,6 @@ public class ViewBoardActivity extends Activity {
         intent.putExtra(Constants.SELECTED_POSITION, selectedIndex.toString());
         intent.putExtra(Constants.BOARD, ViewBoardActivity.this.board);
         startActivity(intent);
-    }
-
-    private Callback<Board> viewBoardCallback(final ProgressDialog dialog) {
-        final Context context = this;
-        return new Callback<Board>() {
-            @Override
-            public void execute(Board board) {
-                dialog.dismiss();
-                ViewBoardActivity.this.board = board;
-                if (actionBar == null) {
-                    SpinnerSetup.setSpinner(context,board,selectedIndex,spinner);
-                    setNavigationOfSpinner();
-                    setTitle(board.name());
-                } else {
-                    setActionBar(board);
-                }
-            }
-        };
     }
 
     private void setActionBar(Board board) {

@@ -3,6 +3,7 @@ package com.thoughtworks.orteroid.repositories;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.models.Board;
+import com.thoughtworks.orteroid.models.Point;
 import com.thoughtworks.orteroid.utilities.ContentFetcher;
 import com.thoughtworks.orteroid.utilities.JSONParser;
 import com.thoughtworks.orteroid.utilities.URLGenerator;
@@ -23,10 +24,25 @@ public class BoardRepository {
 
     public void retrieveBoard(String boardKey, String boardId, final Callback callback) {
         String boardURL = new URLGenerator().getBoardURL(boardKey, boardId);
-        Callback<List<String>> serverCallback = generateServerCallbackForGetRequest(callback);
-        ContentFetcher contentFetcher = new ContentFetcher(serverCallback, Constants.GET);
         String pointsURL = new URLGenerator().getPointsURL(boardKey, boardId);
-        contentFetcher.execute(boardURL, pointsURL);
+        Callback<List<String>> serverCallback = generateServerCallbackForGetRequestForBoard(callback);
+        executeAsyncTask(serverCallback, boardURL, pointsURL);
+    }
+
+    public void retrievePoints(String boardKey, String boardId, Callback<List<Point>> pointsCallback) {
+        String pointsURL = new URLGenerator().getPointsURL(boardKey, boardId);
+        Callback<List<String>> serverCallback = generateServerCallbackForGetRequestForPoints(pointsCallback);
+        executeAsyncTask(serverCallback, pointsURL);
+    }
+
+    private void executeAsyncTask(Callback<List<String>> serverCallback, String... urls) {
+        ContentFetcher contentFetcher = new ContentFetcher(serverCallback, Constants.GET);
+        int length = urls.length;
+        if(length == 1){
+            contentFetcher.execute(urls[0]);
+        } else {
+            contentFetcher.execute(urls[0], urls[1]);
+        }
     }
 
     public void addIdea(String idea, int sectionId, final Callback callback) {
@@ -41,6 +57,28 @@ public class BoardRepository {
         Callback<List<String>> serverCallback = generateServerCallbackForPostRequest(callback);
         ContentFetcher contentFetcher = new ContentFetcher(serverCallback, Constants.POST);
         contentFetcher.execute(response);
+    }
+
+    private Callback<List<String>> generateServerCallbackForGetRequestForBoard(final Callback<Board> callback) {
+        return new Callback<List<String>>() {
+            @Override
+            public void execute(List<String> jsonResponseList) throws JSONException {
+                JSONObject jsonObject = new JSONObject(jsonResponseList.get(0));
+                final Board boardSkeleton = JSONParser.parseToBoard(jsonObject);
+                boardSkeleton.update(JSONParser.parseToPoints(jsonResponseList.get(1)));
+                callback.execute(boardSkeleton);
+            }
+        };
+    }
+
+    private Callback<List<String>> generateServerCallbackForGetRequestForPoints(final Callback<List<Point>> pointsCallback) {
+        return new Callback<List<String>>() {
+            @Override
+            public void execute(List<String> jsonResponseList) throws JSONException {
+                final List<Point> points = JSONParser.parseToPoints(jsonResponseList.get(0));
+                pointsCallback.execute(points);
+            }
+        };
     }
 
     private Callback<List<String>> generateServerCallbackForPostRequest(final Callback callback) {
@@ -60,17 +98,6 @@ public class BoardRepository {
         };
     }
 
-    private Callback<List<String>> generateServerCallbackForGetRequest(final Callback<Board> callback) {
-        return new Callback<List<String>>() {
-            @Override
-            public void execute(List<String> jsonResponseList) throws JSONException {
-                JSONObject jsonObject = new JSONObject(jsonResponseList.get(0));
-                final Board boardSkeleton = JSONParser.parseToBoard(jsonObject);
-                boardSkeleton.update(JSONParser.parseToPoints(jsonResponseList.get(1)));
-                callback.execute(boardSkeleton);
-            }
-        };
-    }
 
     public static BoardRepository getInstance() {
         if (boardRepository == null) {
