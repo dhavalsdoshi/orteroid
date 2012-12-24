@@ -114,7 +114,6 @@ public class AddIdeaActivity extends Activity {
 
     public void addAnIdea(View view) {
         final EditText ideaText = (EditText) findViewById(R.id.ideaMessage);
-        idea = null;
         idea = ideaText.getText().toString();
         if(idea.length() != 0){
         postIdea();
@@ -125,8 +124,11 @@ public class AddIdeaActivity extends Activity {
     private void postIdea() {
         Callback callback = addIdeaCallback();
         int selectedNavigationIndex;
-        if (actionBar == null) selectedNavigationIndex = spinner.getSelectedItemPosition();
-        else selectedNavigationIndex = actionBar.getSelectedNavigationIndex();
+        if (actionBar == null) {
+            selectedNavigationIndex = spinner.getSelectedItemPosition();
+        }else {
+            selectedNavigationIndex = actionBar.getSelectedNavigationIndex();
+        }
         Integer sectionId = board.sections().get(selectedNavigationIndex).id();
 
         BoardRepository.getInstance().addIdea(idea, sectionId, callback);

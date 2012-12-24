@@ -17,20 +17,22 @@ import java.util.List;
 public class BoardRepository {
 
     private static BoardRepository boardRepository;
+    private static URLGenerator urlGenerator;
 
 
     private BoardRepository() {
+        urlGenerator = new URLGenerator();
     }
 
     public void retrieveBoard(String boardKey, String boardId, final Callback callback) {
-        String boardURL = new URLGenerator().getBoardURL(boardKey, boardId);
-        String pointsURL = new URLGenerator().getPointsURL(boardKey, boardId);
+        String boardURL = urlGenerator.getBoardURL(boardKey, boardId);
+        String pointsURL = urlGenerator.getPointsURL(boardKey, boardId);
         Callback<List<String>> serverCallback = generateServerCallbackForGetRequestForBoard(callback);
         executeAsyncTask(serverCallback, boardURL, pointsURL);
     }
 
     public void retrievePoints(String boardKey, String boardId, Callback<List<Point>> pointsCallback) {
-        String pointsURL = new URLGenerator().getPointsURL(boardKey, boardId);
+        String pointsURL = urlGenerator.getPointsURL(boardKey, boardId);
         Callback<List<String>> serverCallback = generateServerCallbackForGetRequestForPoints(pointsCallback);
         executeAsyncTask(serverCallback, pointsURL);
     }
@@ -46,7 +48,6 @@ public class BoardRepository {
     }
 
     public void addIdea(String idea, int sectionId, final Callback callback) {
-        URLGenerator urlGenerator = new URLGenerator();
         String encodedMessage = null;
         try {
             encodedMessage = URLEncoder.encode(idea, "UTF-8");
