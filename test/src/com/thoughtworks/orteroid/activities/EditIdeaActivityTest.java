@@ -12,6 +12,7 @@ import com.thoughtworks.orteroid.models.Point;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -53,7 +54,7 @@ public class EditIdeaActivityTest extends BaseActivityTest<EditIdeaActivity> {
 
         Button submitButton = (Button) activity.findViewById(R.id.submitEdit);
         editTextAndSubmit(editText, text, submitButton);
-        verify(BoardRepository.getInstance()).editIdea(text, 1 , (Callback) any());
+        verify(BoardRepository.getInstance()).editIdea(eq(text), eq(1) , (Callback) any());
     }
 
     private void editTextAndSubmit(final EditText editText, final String text, final Button submitButton) {

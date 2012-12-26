@@ -24,10 +24,10 @@ import java.util.List;
 
 public class ContentFetcher extends AsyncTask<String, Void, List<String>> {
 
-    private Callback callback;
+    private Callback<List<String>> callback;
     private String responseType;
 
-    public ContentFetcher(Callback callback, String responseType) {
+    public ContentFetcher(Callback<List<String>> callback, String responseType) {
         this.callback = callback;
         this.responseType = responseType;
     }
@@ -74,11 +74,7 @@ public class ContentFetcher extends AsyncTask<String, Void, List<String>> {
     @Override
     protected void onPostExecute(List<String> resultString) {
         super.onPostExecute(resultString);
-        try {
             callback.execute(resultString);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private String toString(InputStream content) {

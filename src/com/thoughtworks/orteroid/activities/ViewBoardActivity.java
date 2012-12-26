@@ -1,51 +1,46 @@
 package com.thoughtworks.orteroid.activities;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Spinner;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.models.Board;
 import com.thoughtworks.orteroid.models.Point;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
-import com.thoughtworks.orteroid.utilities.ActionBarSetup;
 import com.thoughtworks.orteroid.utilities.ColorSticky;
+import com.thoughtworks.orteroid.utilities.CustomActionBar;
 import com.thoughtworks.orteroid.utilities.SectionListAdapter;
-import com.thoughtworks.orteroid.utilities.SpinnerSetup;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
 
 public class ViewBoardActivity extends Activity {
-    private ActionBar actionBar;
+    private CustomActionBar customActionBar;
     private Board board;
-    private Spinner spinner;
     private String boardKey;
     private String boardId;
-    private Integer selectedIndex;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_board);
+        customActionBar = new CustomActionBar(this, R.id.spinnerForSections, actionBarCallback());
         Intent intent = getIntent();
         String urlOfBoard = intent.getDataString();
         setParameters(intent, urlOfBoard);
         ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + decodeBoardKey() + " board", true);
         dialog.show();
-        setLayoutForDifferentVersions();
+
+
         if(board == null){
             BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
         } else {
@@ -53,12 +48,18 @@ public class ViewBoardActivity extends Activity {
         }
     }
 
+    private Callback<Integer> actionBarCallback() {
+        return new Callback<Integer>() {
+            @Override
+            public void execute(Integer selectedSection) {
+                setPoints(board, selectedSection);
+            }
+        };
+    }
+
     public void addIdea(View view) {
         Intent intent = new Intent(this, AddIdeaActivity.class);
-        Integer selectedIndex;
-        if (actionBar == null) selectedIndex = spinner.getSelectedItemPosition();
-        else selectedIndex = actionBar.getSelectedNavigationIndex();
-        intent.putExtra(Constants.SELECTED_POSITION, selectedIndex.toString());
+        intent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex().toString());
         intent.putExtra(Constants.BOARD, this.board);
         startActivity(intent);
     }
@@ -67,10 +68,10 @@ public class ViewBoardActivity extends Activity {
         Intent intent = new Intent(this, EditIdeaActivity.class);
         Button selectedButton = (Button) view;
         String message = selectedButton.getText().toString();
-        Point selectedPoint = board.getPointFromMessage(message, selectedIndex);
+        Point selectedPoint = board.getPointFromMessage(message, customActionBar.selectedIndex());
         intent.putExtra(Constants.SELECTED_POINT, selectedPoint);
         intent.putExtra(Constants.BOARD, board);
-        intent.putExtra(Constants.SELECTED_POSITION, selectedIndex.toString());
+        intent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex().toString());
         startActivity(intent);
     }
 
@@ -101,13 +102,7 @@ public class ViewBoardActivity extends Activity {
             public void execute(Board board) {
                 dialog.dismiss();
                 ViewBoardActivity.this.board = board;
-                if (actionBar == null) {
-                    SpinnerSetup.setSpinner(context,board,selectedIndex,spinner);
-                    setNavigationOfSpinner();
-                    setTitle(board.name());
-                } else {
-                    setActionBar(board);
-                }
+                customActionBar.setActionBar(board, context);
             }
         };
     }
@@ -119,13 +114,7 @@ public class ViewBoardActivity extends Activity {
             public void execute(List<Point> points) {
                 dialog.dismiss();
                 ViewBoardActivity.this.board.update(points);
-                if (actionBar == null) {
-                    SpinnerSetup.setSpinner(context,board,selectedIndex,spinner);
-                    setNavigationOfSpinner();
-                    setTitle(board.name());
-                } else {
-                    setActionBar(board);
-                }
+                customActionBar.setActionBar(board, context);
             }
         };
     }
@@ -134,25 +123,18 @@ public class ViewBoardActivity extends Activity {
         if (urlOfBoard == null) {
             boardKey = intent.getStringExtra(Constants.BOARD_KEY);
             boardId = intent.getStringExtra(Constants.BOARD_ID);
+            int selectedIndex;
             if (intent.getStringExtra(Constants.SELECTED_POSITION) != null) {
                 selectedIndex = Integer.parseInt(intent.getStringExtra(Constants.SELECTED_POSITION));
             } else {
                 selectedIndex = 0;
             }
+            customActionBar.updateSelectedIndex(selectedIndex);
         } else {
 
             boardId = extractURLFragment(urlOfBoard);
             urlOfBoard = urlOfBoard.substring(0, urlOfBoard.lastIndexOf('/'));
             boardKey = extractURLFragment(urlOfBoard);
-        }
-    }
-
-    private void setLayoutForDifferentVersions() {
-        if (Build.VERSION.SDK_INT <= Constants.VERSION_CODE_FOR_ANDROID_3) {
-            useSpinner();
-            spinner.setVisibility(View.VISIBLE);
-        } else {
-            actionBar = ActionBarSetup.useActionBar(this, true);
         }
     }
 
@@ -165,34 +147,9 @@ public class ViewBoardActivity extends Activity {
         }
     }
 
-    private void useSpinner() {
-        spinner = (Spinner) findViewById(R.id.spinnerForSections);
-    }
-
     private String extractURLFragment(String url) {
         int lastIndex = url.lastIndexOf('/');
         return url.substring(lastIndex + 1, url.length());
-    }
-
-    private void setActionBar(Board board) {
-        actionBar.setListNavigationCallbacks(ActionBarSetup.setActionBar(board), actionBarNavigation(board));
-        actionBar.setSelectedNavigationItem(selectedIndex);
-        actionBar.setTitle(board.name());
-    }
-
-    private void setNavigationOfSpinner(){
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int selected, long id) {
-                int selectedSection = board.sections().get(selected).id();
-                selectedIndex = selected;
-                setPoints(board, selectedSection);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
     }
 
     private void setPoints(Board board, int selectedItem) {
@@ -202,15 +159,5 @@ public class ViewBoardActivity extends Activity {
         listView.setAdapter(sectionListAdapter);
     }
 
-    private ActionBar.OnNavigationListener actionBarNavigation(final Board board) {
-        return new ActionBar.OnNavigationListener() {
-            @Override
-            public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-                int selected = board.sections().get(itemPosition).id();
-                setPoints(board, selected);
-                selectedIndex = itemPosition;
-                return true;
-            }
-        };
-    }
+
 }

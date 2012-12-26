@@ -24,7 +24,7 @@ public class BoardRepository {
         urlGenerator = new URLGenerator();
     }
 
-    public void retrieveBoard(String boardKey, String boardId, final Callback callback) {
+    public void retrieveBoard(String boardKey, String boardId, final Callback<Board> callback) {
         String boardURL = urlGenerator.getBoardURL(boardKey, boardId);
         String pointsURL = urlGenerator.getPointsURL(boardKey, boardId);
         Callback<List<String>> serverCallback = generateServerCallbackForGetRequestForBoard(callback);
@@ -47,7 +47,7 @@ public class BoardRepository {
         }
     }
 
-    public void addIdea(String idea, int sectionId, final Callback callback) {
+    public void addIdea(String idea, int sectionId, final Callback<Boolean> callback) {
         String encodedMessage = null;
         try {
             encodedMessage = URLEncoder.encode(idea, "UTF-8");
@@ -60,7 +60,7 @@ public class BoardRepository {
         contentFetcher.execute(response);
     }
 
-    public void editIdea(String editedIdea, int ideaId, final Callback callback) {
+    public void editIdea(String editedIdea, int ideaId, final Callback<Boolean> callback) {
         String encodedMessage = editedIdea.replace(" ","%20");
         String response = urlGenerator.setUrlForEditingIdea(ideaId, encodedMessage);
         Callback<List<String>> serverCallback = generateServerCallbackForPutRequest(callback);
@@ -71,11 +71,15 @@ public class BoardRepository {
     private Callback<List<String>> generateServerCallbackForGetRequestForBoard(final Callback<Board> callback) {
         return new Callback<List<String>>() {
             @Override
-            public void execute(List<String> jsonResponseList) throws JSONException {
-                JSONObject jsonObject = new JSONObject(jsonResponseList.get(0));
-                final Board boardSkeleton = JSONParser.parseToBoard(jsonObject);
-                boardSkeleton.update(JSONParser.parseToPoints(jsonResponseList.get(1)));
-                callback.execute(boardSkeleton);
+            public void execute(List<String> jsonResponseList){
+                try{
+                    JSONObject jsonObject = new JSONObject(jsonResponseList.get(0));
+                    final Board boardSkeleton = JSONParser.parseToBoard(jsonObject);
+                    boardSkeleton.update(JSONParser.parseToPoints(jsonResponseList.get(1)));
+                    callback.execute(boardSkeleton);
+                } catch (JSONException e){
+                    throw new RuntimeException(e);
+                }
             }
         };
     }
@@ -83,18 +87,23 @@ public class BoardRepository {
     private Callback<List<String>> generateServerCallbackForGetRequestForPoints(final Callback<List<Point>> pointsCallback) {
         return new Callback<List<String>>() {
             @Override
-            public void execute(List<String> jsonResponseList) throws JSONException {
-                final List<Point> points = JSONParser.parseToPoints(jsonResponseList.get(0));
+            public void execute(List<String> jsonResponseList)  {
+                final List<Point> points;
+                try {
+                    points = JSONParser.parseToPoints(jsonResponseList.get(0));
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
                 pointsCallback.execute(points);
             }
         };
     }
 
 
-    private Callback<List<String>> generateServerCallbackForPostRequest(final Callback callback) {
+    private Callback<List<String>> generateServerCallbackForPostRequest(final Callback<Boolean> callback) {
         return new Callback<List<String>>() {
             @Override
-            public void execute(List<String> jsonResponseList) throws JSONException {
+            public void execute(List<String> jsonResponseList)  {
                 try {
                     JSONObject jsonObject = new JSONObject(jsonResponseList.get(0));
                     JSONParser.parseToPoint(jsonObject);
@@ -108,10 +117,10 @@ public class BoardRepository {
         };
     }
 
-    private Callback<List<String>> generateServerCallbackForPutRequest(final Callback callback) {
+    private Callback<List<String>> generateServerCallbackForPutRequest(final Callback<Boolean> callback) {
         return new Callback<List<String>>() {
             @Override
-            public void execute(List<String> jsonResponseList) throws JSONException {
+            public void execute(List<String> jsonResponseList){
                 callback.execute(true);
             }
         };

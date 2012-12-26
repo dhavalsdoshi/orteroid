@@ -47,14 +47,14 @@ public class EditIdeaActivity extends Activity {
     }
 
     private void sendEditedIdea() {
-        Callback callback = editIdeaCallback();
+        Callback<Boolean> callback = editIdeaCallback();
         BoardRepository.getInstance().editIdea(message, point.id(), callback);
     }
 
-    private Callback editIdeaCallback() {
+    private Callback<Boolean> editIdeaCallback() {
         return new Callback<Boolean>() {
             @Override
-            public void execute(Boolean result) throws JSONException {
+            public void execute(Boolean result) {
                 if (result) generateSuccessToast();
                 else generateFailureNotification();
             }
