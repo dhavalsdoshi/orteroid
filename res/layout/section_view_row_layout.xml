@@ -16,6 +16,7 @@
             android:layout_marginLeft="10dip"
             android:textSize="20dip"
             android:background="@drawable/sticky"
-            style="?android:attr/borderlessButtonStyle"/>
+            style="?android:attr/borderlessButtonStyle"
+            android:onClick="editIdea"/>
 
 </RelativeLayout>

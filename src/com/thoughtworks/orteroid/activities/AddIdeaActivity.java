@@ -116,7 +116,7 @@ public class AddIdeaActivity extends Activity {
         final EditText ideaText = (EditText) findViewById(R.id.ideaMessage);
         idea = ideaText.getText().toString();
         if(idea.length() != 0){
-        postIdea();
+            postIdea();
         }
         ideaText.setText(null);
     }

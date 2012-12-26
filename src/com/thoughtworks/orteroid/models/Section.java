@@ -64,4 +64,12 @@ public class Section implements Parcelable{
         }
     };
 
+    public Point getPointFromMessage(String message) {
+        for (Point point : points) {
+            if(point.message().equals(message)){
+                return point;
+            }
+        }
+        return null;
+    }
 }

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import com.thoughtworks.orteroid.Callback;
@@ -33,7 +34,7 @@ public class ViewBoardActivity extends Activity {
     private Spinner spinner;
     private String boardKey;
     private String boardId;
-    private int selectedIndex;
+    private Integer selectedIndex;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,47 @@ public class ViewBoardActivity extends Activity {
         } else {
             BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback(dialog));
         }
+    }
+
+    public void addIdea(View view) {
+        Intent intent = new Intent(this, AddIdeaActivity.class);
+        Integer selectedIndex;
+        if (actionBar == null) selectedIndex = spinner.getSelectedItemPosition();
+        else selectedIndex = actionBar.getSelectedNavigationIndex();
+        intent.putExtra(Constants.SELECTED_POSITION, selectedIndex.toString());
+        intent.putExtra(Constants.BOARD, this.board);
+        startActivity(intent);
+    }
+
+    public void editIdea(View view) {
+        Intent intent = new Intent(this, EditIdeaActivity.class);
+        Button selectedButton = (Button) view;
+        String message = selectedButton.getText().toString();
+        Point selectedPoint = board.getPointFromMessage(message, selectedIndex);
+        intent.putExtra(Constants.SELECTED_POINT, selectedPoint);
+        intent.putExtra(Constants.BOARD, board);
+        intent.putExtra(Constants.SELECTED_POSITION, selectedIndex.toString());
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
     }
 
     private Callback<Board> viewBoardCallback(final ProgressDialog dialog) {
@@ -132,30 +174,6 @@ public class ViewBoardActivity extends Activity {
         return url.substring(lastIndex + 1, url.length());
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    public void addIdea(View view) {
-        Intent intent = new Intent(this, AddIdeaActivity.class);
-        Integer selectedIndex;
-        if (actionBar == null) selectedIndex = spinner.getSelectedItemPosition();
-        else selectedIndex = actionBar.getSelectedNavigationIndex();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BOARD, this.board);
-        intent.putExtra(Constants.SELECTED_POSITION, selectedIndex.toString());
-        intent.putExtra(Constants.BOARD, ViewBoardActivity.this.board);
-        startActivity(intent);
-    }
-
     private void setActionBar(Board board) {
         actionBar.setListNavigationCallbacks(ActionBarSetup.setActionBar(board), actionBarNavigation(board));
         actionBar.setSelectedNavigationItem(selectedIndex);
@@ -167,6 +185,7 @@ public class ViewBoardActivity extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int selected, long id) {
                 int selectedSection = board.sections().get(selected).id();
+                selectedIndex = selected;
                 setPoints(board, selectedSection);
             }
 
@@ -189,16 +208,9 @@ public class ViewBoardActivity extends Activity {
             public boolean onNavigationItemSelected(int itemPosition, long itemId) {
                 int selected = board.sections().get(itemPosition).id();
                 setPoints(board, selected);
+                selectedIndex = itemPosition;
                 return true;
             }
         };
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
-        super.onBackPressed();
     }
 }

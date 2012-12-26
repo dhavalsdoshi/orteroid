@@ -16,7 +16,6 @@ public class MainActivityTest extends BaseActivityTest<MainActivity> {
         Map<String, String> bundleExtras = new HashMap<String, String>();
         bundleExtras.put(Constants.BOARD_KEY, "test");
         assertNavigationToTargetWithParameters(R.id.viewTestBoard, ViewBoardActivity.class, bundleExtras);
-
     }
 
 }

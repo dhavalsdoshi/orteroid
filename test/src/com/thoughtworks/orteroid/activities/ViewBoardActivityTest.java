@@ -135,4 +135,8 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
         assertNavigationToTargetWithParameters(R.id.addButton, AddIdeaActivity.class, bundleExtras);
     }
 
+    public void testShouldNavigateToEditIdeaActivity() {
+        assertNavigationToTarget(R.id.row_text, EditIdeaActivity.class);
+    }
+
 }

@@ -10,6 +10,10 @@ public class URLGenerator {
     }
 
     public String setUrlForAddingIdea(int sectionId, String idea) {
-        return "http://www.ideaboardz.com//points.json?point[section_id]=" + sectionId + "&point[message]=" + idea;
+        return "http://www.ideaboardz.com/points.json?point[section_id]=" + sectionId + "&point[message]=" + idea;
+    }
+
+    public String setUrlForEditingIdea(int ideaId, String idea) {
+        return "http://www.ideaboardz.com/points/" + ideaId + "?point[message]=" + idea;
     }
 }

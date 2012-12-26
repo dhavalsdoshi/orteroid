@@ -60,6 +60,14 @@ public class BoardRepository {
         contentFetcher.execute(response);
     }
 
+    public void editIdea(String editedIdea, int ideaId, final Callback callback) {
+        String encodedMessage = editedIdea.replace(" ","%20");
+        String response = urlGenerator.setUrlForEditingIdea(ideaId, encodedMessage);
+        Callback<List<String>> serverCallback = generateServerCallbackForPutRequest(callback);
+        ContentFetcher contentFetcher = new ContentFetcher(serverCallback, Constants.PUT);
+        contentFetcher.execute(response);
+    }
+
     private Callback<List<String>> generateServerCallbackForGetRequestForBoard(final Callback<Board> callback) {
         return new Callback<List<String>>() {
             @Override
@@ -82,6 +90,7 @@ public class BoardRepository {
         };
     }
 
+
     private Callback<List<String>> generateServerCallbackForPostRequest(final Callback callback) {
         return new Callback<List<String>>() {
             @Override
@@ -99,6 +108,14 @@ public class BoardRepository {
         };
     }
 
+    private Callback<List<String>> generateServerCallbackForPutRequest(final Callback callback) {
+        return new Callback<List<String>>() {
+            @Override
+            public void execute(List<String> jsonResponseList) throws JSONException {
+                callback.execute(true);
+            }
+        };
+    }
 
     public static BoardRepository getInstance() {
         if (boardRepository == null) {

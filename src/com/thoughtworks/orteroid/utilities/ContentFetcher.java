@@ -10,6 +10,7 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
@@ -61,8 +62,13 @@ public class ContentFetcher extends AsyncTask<String, Void, List<String>> {
     }
 
     private HttpRequestBase httpRequest(String url) {
-        if (responseType == Constants.GET) return new HttpGet(url);
-        return new HttpPost(url);
+        if (responseType == Constants.GET) {
+            return new HttpGet(url);
+        } else if (responseType == Constants.POST) {
+            return new HttpPost(url);
+        } else {
+            return new HttpPut(url);
+        }
     }
 
     @Override
