@@ -15,13 +15,9 @@ import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.models.Board;
-import com.thoughtworks.orteroid.models.Section;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
 import com.thoughtworks.orteroid.utilities.ColorSticky;
 import com.thoughtworks.orteroid.utilities.CustomActionBar;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AddIdeaActivity extends Activity {
 
@@ -32,15 +28,12 @@ public class AddIdeaActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.add_idea);
         Intent intent = getIntent();
         customActionBar = new CustomActionBar(this, R.id.spinnerForIdeas, actionBarCallback());
         String selectedPosition = intent.getStringExtra(Constants.SELECTED_POSITION);
         setSelectedPosition(selectedPosition);
         board = intent.getParcelableExtra(Constants.BOARD);
-        if (board == null) {
-            board = getDefaultBoard();           //TODO: what if board is null
-        }
-        setContentView(R.layout.add_idea);
         setBackgroundLayout();
         customActionBar.setActionBar(board, this);
     }
@@ -54,23 +47,8 @@ public class AddIdeaActivity extends Activity {
         };
     }
 
-    private Board getDefaultBoard() {
-        List<Section> listForDefault = new ArrayList<Section>() {{
-            add(new Section("section1", 0));
-        }};
-        String boardName = "test";
-        int boardId = 2;
-        return new Board(boardName, boardId, listForDefault);
-    }
-
     private void setSelectedPosition(String selectedPosition) {
-        int selectedIndex;
-        if (selectedPosition == null) {
-            selectedIndex = 0;
-        } else {
-            selectedIndex = Integer.parseInt(selectedPosition);
-        }
-        customActionBar.updateSelectedIndex(selectedIndex);
+        customActionBar.updateSelectedIndex(selectedPosition == null ? 0 : Integer.parseInt(selectedPosition));
     }
 
     @Override

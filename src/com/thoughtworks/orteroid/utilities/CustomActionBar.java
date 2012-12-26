@@ -38,10 +38,7 @@ public class CustomActionBar {
     }
 
     public Integer selectedIndex() {
-        Integer selectedIndex;
-        if (actionBar == null) selectedIndex = spinner.getSelectedItemPosition();
-        else selectedIndex = actionBar.getSelectedNavigationIndex();
-        return selectedIndex;
+        return actionBar == null ? spinner.getSelectedItemPosition() : actionBar.getSelectedNavigationIndex();
     }
 
     public  ActionBar useActionBar(boolean setNavigationMode) {
@@ -65,7 +62,7 @@ public class CustomActionBar {
 
     public  Spinner setSpinner(Context context,Board board) {
         List<String> sectionNames = board.getSectionNames();
-        ArrayAdapter adapter = new ArrayAdapter(context, android.R.layout.simple_spinner_item, sectionNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, sectionNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(selectedIndex);
@@ -86,7 +83,6 @@ public class CustomActionBar {
             public void onItemSelected(AdapterView<?> adapterView, View view, int itemPosition, long id) {
                 onActionBarItemSelected(itemPosition, board);
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
@@ -121,13 +117,11 @@ public class CustomActionBar {
 
     public ArrayAdapter<String> actionBarFor(final Board board) {
         List<Section> spinnerArray = board.sections();
-        List<String> sectionNames1 = new ArrayList<String>();
+        List<String> sectionNames = new ArrayList<String>();
         for (Section section : spinnerArray) {
-            sectionNames1.add(section.name());
+            sectionNames.add(section.name());
         }
-        final List<String> sectionNames = sectionNames1;
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(actionBar.getThemedContext(), android.R.layout.simple_spinner_dropdown_item, sectionNames);
-        return spinnerArrayAdapter;
+        return new ArrayAdapter<String>(actionBar.getThemedContext(), android.R.layout.simple_spinner_dropdown_item, sectionNames);
     }
 
 

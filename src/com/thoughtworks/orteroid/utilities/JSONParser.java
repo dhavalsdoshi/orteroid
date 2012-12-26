@@ -12,10 +12,15 @@ import java.util.List;
 
 public class JSONParser {
 
+    private static final String NAME_KEY = "name";
+    private static final String ID_KEY = "id";
+    private static final String SECTIONID_KEY = "section_id";
+    private static final String MESSAGE_KEY = "message";
+
     public static Board parseToBoard(JSONObject jsonObject) {
         try {
-            String name = jsonObject.getString("name");
-            Integer id = jsonObject.getInt("id");
+            String name = jsonObject.getString(NAME_KEY);
+            Integer id = jsonObject.getInt(ID_KEY);
             JSONArray sectionJSON = new JSONArray(jsonObject.getString("sections"));
             List<Section> sections = parseToSections(sectionJSON);
             return new Board(name, id, sections);
@@ -34,7 +39,7 @@ public class JSONParser {
 
         for (int i = 0; i < sectionJSON.length(); i++) {
             JSONObject jsonObject = sectionJSON.getJSONObject(i);
-            sections.add(new Section(jsonObject.getString("name"), jsonObject.getInt("id")));
+            sections.add(new Section(jsonObject.getString(NAME_KEY), jsonObject.getInt(ID_KEY)));
         }
         return sections;
     }
@@ -51,6 +56,6 @@ public class JSONParser {
     }
 
     public static Point parseToPoint(JSONObject jsonObject) throws JSONException {
-        return new Point(jsonObject.getInt("section_id"), jsonObject.getInt("id"), jsonObject.getString("message"));
+        return new Point(jsonObject.getInt(SECTIONID_KEY), jsonObject.getInt(ID_KEY), jsonObject.getString(MESSAGE_KEY));
     }
 }
