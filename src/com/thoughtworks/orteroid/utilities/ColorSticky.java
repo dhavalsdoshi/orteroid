@@ -7,11 +7,11 @@ public class ColorSticky {
 
     private static List<String> colours = new ArrayList<String>() {{
         add("#ffff88");
-        add("#ffb058");
-        add("#bcee6b");
-        add("#d07ddf");
+        add("#eed2fe");
+        add("#dcffe0");
+        add("#ffc690");
         add("#ccffff");
-        add("#17b6ff");
+        add("#c3ee8f");
     }};
 
     public static String getColorCode(int selectedIndex){
