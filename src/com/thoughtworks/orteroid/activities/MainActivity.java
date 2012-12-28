@@ -26,14 +26,10 @@ public class MainActivity extends Activity {
         Button buttonForFaq = (Button) findViewById(R.id.faq);
         Button buttonForFeedback = (Button) findViewById(R.id.feedback);
         Button buttonForViewing = (Button) findViewById(R.id.viewBoard);
-        TextView testDrive = (TextView)findViewById(R.id.testDrive);
-        TextView useBoard = (TextView)findViewById(R.id.useABoard);
         buttonForDemo.setTypeface(Font.setFont(this));
         buttonForViewing.setTypeface(Font.setFont(this));
         buttonForFaq.setTypeface(Font.setFont(this));
         buttonForFeedback.setTypeface(Font.setFont(this));
-        testDrive.setTypeface(Font.setFont(this));
-        useBoard.setTypeface(Font.setFont(this));
 
     }
 
