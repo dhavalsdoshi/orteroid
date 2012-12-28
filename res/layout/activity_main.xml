@@ -2,8 +2,8 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".MainActivity" android:focusable="false">
-
+                tools:context=".MainActivity"
+                android:focusable="false">
     <Button
             android:id="@+id/viewTestBoard"
             android:layout_width="230dp"
@@ -13,8 +13,9 @@
             android:onClick="viewDemo"
             android:background="@drawable/sticky"
             android:textColor="@android:color/black"
-            android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
-            android:layout_marginTop="90dp"/>
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="40dp"/>
     <Button
             android:id="@+id/viewBoard"
             android:layout_width="230dp"
@@ -24,23 +25,52 @@
             android:onClick="viewBoard"
             android:background="@drawable/sticky"
             android:textColor="@android:color/black"
-            android:layout_alignLeft="@+id/viewTestBoard" android:layout_alignParentTop="true"
-            android:layout_marginTop="230dp"/>
+            android:layout_alignLeft="@+id/viewTestBoard"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="100dp"/>
+    <Button
+            android:id="@+id/faq"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:textSize="20dip"
+            android:text="@string/option3"
+            android:onClick="faq"
+            android:background="@drawable/sticky"
+            android:textColor="@android:color/black"
+            android:layout_alignLeft="@+id/viewTestBoard"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="160dp"/>
+    <Button
+            android:id="@+id/feedback"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:textSize="20dip"
+            android:text="@string/option4"
+            android:onClick="feedback"
+            android:background="@drawable/sticky"
+            android:textColor="@android:color/black"
+            android:layout_alignLeft="@+id/viewTestBoard"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="220dp"/>
     <TextView
             android:layout_width="223dp"
             android:layout_height="wrap_content"
-            android:text="Test Drive..???"
+            android:text="@string/test_board"
             android:id="@+id/testDrive"
-            android:textSize="20dp" android:textStyle="bold"
-            android:layout_alignLeft="@+id/viewTestBoard" android:layout_alignParentTop="true"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_alignLeft="@+id/viewTestBoard"
+            android:layout_alignParentTop="true"
             android:layout_marginTop="50dp"/>
     <TextView
             android:layout_width="270dp"
             android:layout_height="wrap_content"
-            android:text="Use a Board..??"
+            android:text="@string/use_board"
             android:id="@+id/useABoard"
-            android:textSize="20dp" android:textStyle="bold"
-            android:layout_alignLeft="@+id/viewTestBoard" android:layout_centerVertical="true"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_alignLeft="@+id/viewTestBoard"
+            android:layout_centerVertical="true"
             android:layout_marginTop="180dp"/>
     <TextView
             android:layout_width="wrap_content"
@@ -48,10 +78,10 @@
             android:text="@string/app_details"
             android:id="@+id/heading"
             android:textStyle="bold"
-            android:textColor="@android:color/holo_orange_dark" android:textSize="20dip"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="20dip"
             android:layout_alignParentTop="true"
             android:layout_marginTop="6dp"
             android:layout_marginLeft="6dp"
             android:layout_alignParentLeft="true"/>
-
 </RelativeLayout>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,11 +23,15 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button buttonForDemo = (Button) findViewById(R.id.viewTestBoard);
+        Button buttonForFaq = (Button) findViewById(R.id.faq);
+        Button buttonForFeedback = (Button) findViewById(R.id.feedback);
         Button buttonForViewing = (Button) findViewById(R.id.viewBoard);
         TextView testDrive = (TextView)findViewById(R.id.testDrive);
         TextView useBoard = (TextView)findViewById(R.id.useABoard);
         buttonForDemo.setTypeface(Font.setFont(this));
         buttonForViewing.setTypeface(Font.setFont(this));
+        buttonForFaq.setTypeface(Font.setFont(this));
+        buttonForFeedback.setTypeface(Font.setFont(this));
         testDrive.setTypeface(Font.setFont(this));
         useBoard.setTypeface(Font.setFont(this));
 
@@ -48,6 +53,18 @@ public class MainActivity extends Activity {
     public void viewBoard(View view) {
         final Intent intent = new Intent(this, ViewBoardActivity.class);
         alertForDetails(intent);
+    }
+
+    public void faq(View view){
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://www.ideaboardz.com/page/faq"));
+        startActivity(browserIntent);
+    }
+
+    public void feedback(View view){
+        Intent intent = new Intent(this, ViewBoardActivity.class);
+        intent.putExtra(Constants.BOARD_KEY, "feedback");
+        intent.putExtra(Constants.BOARD_ID, "1");
+        startActivity(intent);
     }
 
     private void alertForDetails(final Intent intent) {
