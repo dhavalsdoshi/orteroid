@@ -61,11 +61,27 @@ public class BoardRepository {
     }
 
     public void editIdea(String editedIdea, int ideaId, final Callback<Boolean> callback) {
-        String encodedMessage = editedIdea.replace(" ","%20");
-        String response = urlGenerator.setUrlForEditingIdea(ideaId, encodedMessage);
+        String encodedMessage = editedIdea.replace(" ", "%20");
+        String response = urlGenerator.urlForEditingIdea(ideaId, encodedMessage);
         Callback<List<String>> serverCallback = generateServerCallbackForPutRequest(callback);
         ContentFetcher contentFetcher = new ContentFetcher(serverCallback, Constants.PUT);
         contentFetcher.execute(response);
+    }
+
+    public void deletePoint(Point selectedPoint, final Callback<Boolean> callback) {
+        String response = urlGenerator.urlForDeletingIdea(selectedPoint);
+        Callback<List<String>> serverCallback = generateServerCallbackForGetRequest(callback);
+        ContentFetcher contentFetcher = new ContentFetcher(serverCallback, Constants.GET);
+        contentFetcher.execute(response);
+    }
+
+    private Callback<List<String>> generateServerCallbackForGetRequest(final Callback<Boolean> callback) {
+        return new Callback<List<String>>() {
+            @Override
+            public void execute(List<String> jsonResponseList) {
+                callback.execute(true);
+            }
+        };
     }
 
     private Callback<List<String>> generateServerCallbackForGetRequestForBoard(final Callback<Board> callback) {
@@ -84,6 +100,7 @@ public class BoardRepository {
         };
     }
 
+
     private Callback<List<String>> generateServerCallbackForGetRequestForPoints(final Callback<List<Point>> pointsCallback) {
         return new Callback<List<String>>() {
             @Override
@@ -99,7 +116,6 @@ public class BoardRepository {
         };
     }
 
-
     private Callback<List<String>> generateServerCallbackForPostRequest(final Callback<Boolean> callback) {
         return new Callback<List<String>>() {
             @Override
@@ -112,7 +128,6 @@ public class BoardRepository {
                     callback.execute(false);
                     e.printStackTrace();
                 }
-
             }
         };
     }

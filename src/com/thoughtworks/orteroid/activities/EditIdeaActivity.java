@@ -100,7 +100,7 @@ public class EditIdeaActivity extends Activity {
         Intent migrationIntent = new Intent(this, ViewBoardActivity.class);
         migrationIntent.putExtra(Constants.BOARD_KEY, board.name().replace(" ", "%20"));
         migrationIntent.putExtra(Constants.BOARD_ID, board.id().toString());
-        intent.putExtra(Constants.SELECTED_POSITION, selectedIndex.toString());
+        migrationIntent.putExtra(Constants.SELECTED_POSITION, selectedIndex.toString());
         startActivity(migrationIntent);
     }
 

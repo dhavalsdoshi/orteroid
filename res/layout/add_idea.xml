@@ -20,6 +20,13 @@
                       android:orientation="vertical"
                       android:layout_width="fill_parent"
                       android:layout_height="wrap_content">
+            <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@android:style/Widget.ProgressBar.Small"
+                    android:id="@+id/progress_bar"
+                    android:layout_marginRight="5dp" android:layout_gravity="right|center_vertical"
+                    android:visibility="invisible"/>
 
             <EditText
                     android:layout_width="match_parent"

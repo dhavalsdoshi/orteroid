@@ -9,6 +9,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.thoughtworks.orteroid.Callback;
@@ -24,6 +25,7 @@ public class AddIdeaActivity extends Activity {
     private String idea;
     private Board board;
     private CustomActionBar customActionBar;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,8 @@ public class AddIdeaActivity extends Activity {
         idea = ideaText.getText().toString();
         if(idea.length() != 0){
             postIdea();
+            progressBar = (ProgressBar)findViewById(R.id.progress_bar);
+            progressBar.setVisibility(View.VISIBLE);
         }
         ideaText.setText(null);
     }
@@ -90,6 +94,7 @@ public class AddIdeaActivity extends Activity {
         return new Callback<Boolean>() {
             @Override
             public void execute(Boolean result) {
+                progressBar.setVisibility(View.INVISIBLE);
                 if (result) generateSuccessToast();
                 else generateFailureNotification();
             }

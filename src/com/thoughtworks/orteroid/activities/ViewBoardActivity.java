@@ -7,8 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
+import android.widget.*;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
@@ -28,6 +27,8 @@ public class ViewBoardActivity extends Activity {
     private Board board;
     private String boardKey;
     private String boardId;
+    private RelativeLayout selectedIdea;
+    private ImageButton deleteButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,6 @@ public class ViewBoardActivity extends Activity {
         setParameters(intent, urlOfBoard);
         ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + decodeBoardKey() + " board", true);
         dialog.show();
-
 
         if(board == null){
             BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
@@ -73,6 +73,27 @@ public class ViewBoardActivity extends Activity {
         intent.putExtra(Constants.BOARD, board);
         intent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex().toString());
         startActivity(intent);
+    }
+
+    public void deleteIdea(View view){
+        Button button = (Button)selectedIdea.findViewById(R.id.row_text);
+        String message = button.getText().toString();
+        Point selectedPoint = board.getPointFromMessage(message, customActionBar.selectedIndex());
+        Callback<Boolean> callback = deleteIdeaCallback();
+        BoardRepository.getInstance().deletePoint(selectedPoint, callback);
+    }
+
+    private Callback<Boolean> deleteIdeaCallback() {
+        return new Callback<Boolean>() {
+            @Override
+            public void execute(Boolean object) {
+                Intent migrationIntent = new Intent(ViewBoardActivity.this, ViewBoardActivity.class);
+                migrationIntent.putExtra(Constants.BOARD_KEY, board.name().replace(" ", "%20"));
+                migrationIntent.putExtra(Constants.BOARD_ID, board.id().toString());
+                migrationIntent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex().toString());
+                startActivity(migrationIntent);
+            }
+        };
     }
 
     @Override
@@ -152,11 +173,28 @@ public class ViewBoardActivity extends Activity {
         return url.substring(lastIndex + 1, url.length());
     }
 
-    private void setPoints(Board board, int selectedItem) {
+    private void setPoints(Board board, final int selectedItem) {
         String colourCode = ColorSticky.getColorCode(selectedItem);
         SectionListAdapter sectionListAdapter = new SectionListAdapter(this, board.pointsOfSection(selectedItem), colourCode);
-        ListView listView = (ListView) findViewById(android.R.id.list);
+        final ListView listView = (ListView) findViewById(android.R.id.list);
         listView.setAdapter(sectionListAdapter);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int index, long l) {
+                int firstVisiblePosition = listView.getFirstVisiblePosition();
+                int wantedPosition = index - firstVisiblePosition;
+                if ((wantedPosition >= 0) && (wantedPosition <= listView.getChildCount()))
+                {
+                    selectedIdea = (RelativeLayout)listView.getChildAt(wantedPosition);
+                } else {
+                    selectedIdea = (RelativeLayout)listView.getChildAt(index);
+                }
+                if(deleteButton != null) deleteButton.setVisibility(View.INVISIBLE);
+                deleteButton = (ImageButton) selectedIdea.findViewById(R.id.deleteButton);
+                deleteButton.setVisibility(View.VISIBLE);
+                return true;
+            }
+        });
     }
 
 

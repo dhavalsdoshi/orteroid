@@ -3,7 +3,9 @@ package com.thoughtworks.orteroid.activities;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Build;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import com.thoughtworks.orteroid.Callback;
@@ -133,6 +135,25 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
         Map<String, String> bundleExtras = new HashMap<String, String>();
         bundleExtras.put(Constants.SELECTED_POSITION, "1");
         assertNavigationToTargetWithParameters(R.id.addButton, AddIdeaActivity.class, bundleExtras);
+    }
+
+    public void testShouldShowDeleteButtonOnLongPressOfSticky(){
+        final Button button = (Button) activity.findViewById(R.id.row_text);
+
+        try {
+            runTestOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    button.performLongClick();
+                }
+            });
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        ImageButton deleteButton = (ImageButton) activity.findViewById(R.id.deleteButton);
+        int visibility = deleteButton.getVisibility();
+
+        assertEquals(View.VISIBLE, visibility);
     }
 
     public void testShouldNavigateToEditIdeaActivity() {

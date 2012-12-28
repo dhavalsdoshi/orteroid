@@ -17,6 +17,14 @@
             android:textSize="20dip"
             android:background="@drawable/sticky"
             style="?android:attr/borderlessButtonStyle"
-            android:onClick="editIdea"/>
+            android:onClick="editIdea" android:longClickable="true"/>
+    <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:id="@+id/deleteButton"
+            android:clickable="true" android:onClick="deleteIdea"
+            android:layout_alignRight="@+id/row_text" android:layout_alignTop="@+id/row_text"
+            android:src="@android:drawable/ic_menu_close_clear_cancel" android:visibility="invisible"
+            android:contentDescription="@string/delete"/>
 
 </RelativeLayout>
