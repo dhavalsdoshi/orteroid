@@ -44,6 +44,11 @@ public class EditIdeaActivity extends Activity {
         sendEditedIdea();
     }
 
+    public void deleteCurrentIdea(View view){
+        Callback<Boolean> callback = deleteIdeaCallback();
+        BoardRepository.getInstance().deletePoint(point, callback);
+    }
+
     private void sendEditedIdea() {
         Callback<Boolean> callback = editIdeaCallback();
         BoardRepository.getInstance().editIdea(message, point.id(), callback);
@@ -55,6 +60,15 @@ public class EditIdeaActivity extends Activity {
             public void execute(Boolean result) {
                 if (result) generateSuccessToast();
                 else generateFailureNotification();
+            }
+        };
+    }
+
+    private Callback<Boolean> deleteIdeaCallback() {
+        return new Callback<Boolean>() {
+            @Override
+            public void execute(Boolean response) {
+                migrateToViewBoardActivity();
             }
         };
     }
