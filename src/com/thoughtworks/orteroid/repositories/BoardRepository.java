@@ -96,12 +96,8 @@ public class BoardRepository {
                     final Board boardSkeleton = JSONParser.parseToBoard(jsonObject);
                     boardSkeleton.update(JSONParser.parseToPoints(jsonResponseList.get(1)));
                     callback.execute(boardSkeleton);
-                } catch (JSONException e){
-                    if(jsonResponseList.get(0).equals("404 error")){
-                        callback.execute(null);
-                    } else {
-                        new IllegalArgumentException("The input details are incorrect");
-                    }
+                } catch (JSONException e) {
+                    callback.execute(null);
                 }
             }
         };

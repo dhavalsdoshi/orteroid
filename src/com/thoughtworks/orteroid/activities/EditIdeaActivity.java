@@ -162,7 +162,7 @@ public class EditIdeaActivity extends Activity {
     private void connectionIssueNotification() {
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(this)
-                        .setTitle("Failed to connect to the internet")
+                        .setTitle("Failed to connect to the board")
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 Intent intent = new Intent(EditIdeaActivity.this, MainActivity.class);
