@@ -102,7 +102,6 @@ public class AddIdeaActivity extends Activity {
     }
 
     private void generateFailureNotification() {
-
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(this)
                    .setTitle("The following idea failed :\n " + idea)

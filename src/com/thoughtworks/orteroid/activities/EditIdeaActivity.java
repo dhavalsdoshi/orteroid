@@ -45,6 +45,29 @@ public class EditIdeaActivity extends Activity {
     }
 
     public void deleteCurrentIdea(View view){
+        generateConfirmationMessage();
+    }
+
+    private void generateConfirmationMessage() {
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(this)
+                        .setTitle("Are you sure you want to delete this Idea?")
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                                deleteIdea();
+                            }
+                        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void deleteIdea() {
         Callback<Boolean> callback = deleteIdeaCallback();
         BoardRepository.getInstance().deletePoint(point, callback);
     }
@@ -74,7 +97,6 @@ public class EditIdeaActivity extends Activity {
     }
 
     private void generateFailureNotification() {
-
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(this)
                         .setTitle("The following idea failed :\n " + message)
