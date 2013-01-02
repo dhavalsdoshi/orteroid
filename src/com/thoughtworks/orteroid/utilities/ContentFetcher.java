@@ -13,7 +13,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -56,15 +55,15 @@ public class ContentFetcher extends AsyncTask<String, Void, List<String>> {
             }
         } catch (IOException httpResponseError) {
             Log.e("HTTP Response", "IO error");
-            result = "404 error";
+            return "404 error";
         }
         return result;
     }
 
     private HttpRequestBase httpRequest(String url) {
-        if (responseType == Constants.GET) {
+        if (responseType.equals(Constants.GET)) {
             return new HttpGet(url);
-        } else if (responseType == Constants.POST) {
+        } else if (responseType.equals(Constants.POST)) {
             return new HttpPost(url);
         } else {
             return new HttpPut(url);
@@ -74,7 +73,8 @@ public class ContentFetcher extends AsyncTask<String, Void, List<String>> {
     @Override
     protected void onPostExecute(List<String> resultString) {
         super.onPostExecute(resultString);
-            callback.execute(resultString);
+        System.out.println(resultString + "========================");
+        callback.execute(resultString);
     }
 
     private String toString(InputStream content) {

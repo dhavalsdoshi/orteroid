@@ -1,8 +1,10 @@
 package com.thoughtworks.orteroid.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -86,12 +88,15 @@ public class ViewBoardActivity extends Activity {
     private Callback<Boolean> deleteIdeaCallback() {
         return new Callback<Boolean>() {
             @Override
-            public void execute(Boolean object) {
-                Intent migrationIntent = new Intent(ViewBoardActivity.this, ViewBoardActivity.class);
-                migrationIntent.putExtra(Constants.BOARD_KEY, board.name().replace(" ", "%20"));
-                migrationIntent.putExtra(Constants.BOARD_ID, board.id().toString());
-                migrationIntent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex().toString());
-                startActivity(migrationIntent);
+            public void execute(Boolean result) {
+                if(result != null) {
+                    Intent migrationIntent = new Intent(ViewBoardActivity.this, ViewBoardActivity.class);
+                    migrationIntent.putExtra(Constants.BOARD_KEY, board.name().replace(" ", "%20"));
+                    migrationIntent.putExtra(Constants.BOARD_ID, board.id().toString());
+                    migrationIntent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex().toString());
+                    startActivity(migrationIntent);
+                }
+                connectionIssueNotification();
             }
         };
     }
@@ -121,9 +126,12 @@ public class ViewBoardActivity extends Activity {
         return new Callback<Board>() {
             @Override
             public void execute(Board board) {
-                dialog.dismiss();
-                ViewBoardActivity.this.board = board;
-                customActionBar.setActionBar(board, context);
+                if(board != null) {
+                    dialog.dismiss();
+                    ViewBoardActivity.this.board = board;
+                    customActionBar.setActionBar(board, context);
+                }
+                connectionIssueNotification();
             }
         };
     }
@@ -133,9 +141,12 @@ public class ViewBoardActivity extends Activity {
         return new Callback<List<Point>>() {
             @Override
             public void execute(List<Point> points) {
-                dialog.dismiss();
-                ViewBoardActivity.this.board.update(points);
-                customActionBar.setActionBar(board, context);
+                if(points != null) {
+                    dialog.dismiss();
+                    ViewBoardActivity.this.board.update(points);
+                    customActionBar.setActionBar(board, context);
+                }
+                connectionIssueNotification();
             }
         };
     }
@@ -183,18 +194,32 @@ public class ViewBoardActivity extends Activity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int index, long l) {
                 int firstVisiblePosition = listView.getFirstVisiblePosition();
                 int wantedPosition = index - firstVisiblePosition;
-                if ((wantedPosition >= 0) && (wantedPosition <= listView.getChildCount()))
-                {
-                    selectedIdea = (RelativeLayout)listView.getChildAt(wantedPosition);
+                if ((wantedPosition >= 0) && (wantedPosition <= listView.getChildCount())) {
+                    selectedIdea = (RelativeLayout) listView.getChildAt(wantedPosition);
                 } else {
-                    selectedIdea = (RelativeLayout)listView.getChildAt(index);
+                    selectedIdea = (RelativeLayout) listView.getChildAt(index);
                 }
-                if(deleteButton != null) deleteButton.setVisibility(View.INVISIBLE);
+                if (deleteButton != null) deleteButton.setVisibility(View.INVISIBLE);
                 deleteButton = (ImageButton) selectedIdea.findViewById(R.id.deleteButton);
                 deleteButton.setVisibility(View.VISIBLE);
                 return true;
             }
         });
+    }
+
+    private void connectionIssueNotification() {
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(this)
+                        .setTitle("Failed to connect to the internet")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent intent = new Intent(ViewBoardActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                dialog.dismiss();
+                            }
+                        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 

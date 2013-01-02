@@ -81,7 +81,9 @@ public class EditIdeaActivity extends Activity {
         return new Callback<Boolean>() {
             @Override
             public void execute(Boolean result) {
-                if (result) generateSuccessToast();
+                if (result != null) {
+                    generateSuccessToast();
+                }
                 else generateFailureNotification();
             }
         };
@@ -91,7 +93,10 @@ public class EditIdeaActivity extends Activity {
         return new Callback<Boolean>() {
             @Override
             public void execute(Boolean response) {
-                migrateToViewBoardActivity();
+                if(response != null) {
+                    migrateToViewBoardActivity();
+                }
+                connectionIssueNotification();
             }
         };
     }
@@ -152,5 +157,20 @@ public class EditIdeaActivity extends Activity {
         GradientDrawable drawable = (GradientDrawable) editText.getBackground();
         drawable.setColor(Color.parseColor(ColorSticky.getColorCode(point.sectionId())));
         editText.invalidate();
+    }
+
+    private void connectionIssueNotification() {
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(this)
+                        .setTitle("Failed to connect to the internet")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent intent = new Intent(EditIdeaActivity.this, MainActivity.class);
+                                dialog.dismiss();
+                                startActivity(intent);
+                            }
+                        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

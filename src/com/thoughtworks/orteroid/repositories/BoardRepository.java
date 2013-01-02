@@ -76,10 +76,13 @@ public class BoardRepository {
     }
 
     private Callback<List<String>> generateServerCallbackForGetRequest(final Callback<Boolean> callback) {
-        return new Callback<List<String>>() {
+        return  new Callback<List<String>>() {
             @Override
             public void execute(List<String> jsonResponseList) {
                 callback.execute(true);
+                if(jsonResponseList.get(0).equals("404 error")){
+                    callback.execute(null);
+                }
             }
         };
     }
@@ -94,14 +97,17 @@ public class BoardRepository {
                     boardSkeleton.update(JSONParser.parseToPoints(jsonResponseList.get(1)));
                     callback.execute(boardSkeleton);
                 } catch (JSONException e){
-                    throw new RuntimeException(e);
+                    if(jsonResponseList.get(0).equals("404 error")){
+                        callback.execute(null);
+                    } else {
+                        new IllegalArgumentException("The input details are incorrect");
+                    }
                 }
             }
         };
     }
 
-
-    private Callback<List<String>> generateServerCallbackForGetRequestForPoints(final Callback<List<Point>> pointsCallback) {
+    private Callback<List<String>> generateServerCallbackForGetRequestForPoints(final Callback<List<Point>> callback) {
         return new Callback<List<String>>() {
             @Override
             public void execute(List<String> jsonResponseList)  {
@@ -109,9 +115,12 @@ public class BoardRepository {
                 try {
                     points = JSONParser.parseToPoints(jsonResponseList.get(0));
                 } catch (JSONException e) {
+                    if(jsonResponseList.get(0).equals("404 error")){
+                        callback.execute(null);
+                    }
                     throw new RuntimeException(e);
                 }
-                pointsCallback.execute(points);
+                callback.execute(points);
             }
         };
     }
@@ -136,6 +145,9 @@ public class BoardRepository {
         return new Callback<List<String>>() {
             @Override
             public void execute(List<String> jsonResponseList){
+                if(jsonResponseList.get(0).equals("404 error")){
+                    callback.execute(null);
+                }
                 callback.execute(true);
             }
         };
