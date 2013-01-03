@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
@@ -48,6 +49,18 @@ public class ViewBoardActivity extends Activity {
         } else {
             BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback(dialog));
         }
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        EasyTracker.getInstance().activityStart(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        EasyTracker.getInstance().activityStop(this);
     }
 
     private Callback<Integer> actionBarCallback() {
@@ -95,8 +108,9 @@ public class ViewBoardActivity extends Activity {
                     migrationIntent.putExtra(Constants.BOARD_ID, board.id().toString());
                     migrationIntent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex().toString());
                     startActivity(migrationIntent);
+                } else {
+                    connectionIssueNotification();
                 }
-                connectionIssueNotification();
             }
         };
     }
@@ -130,8 +144,9 @@ public class ViewBoardActivity extends Activity {
                     dialog.dismiss();
                     ViewBoardActivity.this.board = board;
                     customActionBar.setActionBar(board, context);
+                } else {
+                    connectionIssueNotification();
                 }
-                connectionIssueNotification();
             }
         };
     }
@@ -145,8 +160,9 @@ public class ViewBoardActivity extends Activity {
                     dialog.dismiss();
                     ViewBoardActivity.this.board.update(points);
                     customActionBar.setActionBar(board, context);
+                } else {
+                    connectionIssueNotification();
                 }
-                connectionIssueNotification();
             }
         };
     }

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
@@ -36,6 +37,18 @@ public class EditIdeaActivity extends Activity {
         this.point = intent.getParcelableExtra(Constants.SELECTED_POINT);
         setupText();
         setBackgroundLayout();
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        EasyTracker.getInstance().activityStart(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        EasyTracker.getInstance().activityStop(this);
     }
 
     public void editIdea(View view){
@@ -95,8 +108,9 @@ public class EditIdeaActivity extends Activity {
             public void execute(Boolean response) {
                 if(response != null) {
                     migrateToViewBoardActivity();
+                }else {
+                    connectionIssueNotification();
                 }
-                connectionIssueNotification();
             }
         };
     }
