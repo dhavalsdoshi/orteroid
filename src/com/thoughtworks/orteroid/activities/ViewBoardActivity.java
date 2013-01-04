@@ -9,7 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
-import com.google.analytics.tracking.android.EasyTracker;
+//import com.google.analytics.tracking.android.EasyTracker;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
@@ -39,26 +39,28 @@ public class ViewBoardActivity extends Activity {
         Intent intent = getIntent();
         String urlOfBoard = intent.getDataString();
         setParameters(intent, urlOfBoard);
-        ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + decodeBoardKey() + " board", true);
-        dialog.show();
 
         if (board == null) {
+            ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + decodeBoardKey() + " board", true);
+            dialog.show();
             BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
         } else {
-            BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback(dialog));
+            BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback());
         }
+    }
+
+    public void refresh(View view){
+        BoardRepository.getInstance().retrievePoints(boardKey,boardId,viewPointsCallback());
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        EasyTracker.getInstance().activityStart(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        EasyTracker.getInstance().activityStop(this);
     }
 
     private Callback<Integer> actionBarCallback() {
@@ -90,14 +92,27 @@ public class ViewBoardActivity extends Activity {
         startActivity(intent);
     }
 
+
     public void voteForIdea(View view) {
         Button button = (Button) selectedIdea.findViewById(R.id.row_text);
         String message = button.getText().toString();
         Point selectedPoint = board.getPointFromMessage(message, customActionBar.selectedIndex());
         Callback<Boolean> callback = voteIdeaCallback();
         BoardRepository.getInstance().voteForIdea(selectedPoint, callback);
+        generateToastForVote();
     }
+    private void generateToastForVote() {
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.toast_layout_root));
 
+        TextView text = (TextView) layout.findViewById(R.id.text);
+        text.setText("Voting...");
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
+    }
     private Callback<Boolean> voteIdeaCallback() {
         return new Callback<Boolean>() {
             @Override
@@ -186,13 +201,12 @@ public class ViewBoardActivity extends Activity {
         };
     }
 
-    private Callback<List<Point>> viewPointsCallback(final ProgressDialog dialog) {
+    private Callback<List<Point>> viewPointsCallback() {
         final Context context = this;
         return new Callback<List<Point>>() {
             @Override
             public void execute(List<Point> points) {
                 if (points != null) {
-                    dialog.dismiss();
                     ViewBoardActivity.this.board.update(points);
                     customActionBar.setActionBar(board, context);
                 } else {

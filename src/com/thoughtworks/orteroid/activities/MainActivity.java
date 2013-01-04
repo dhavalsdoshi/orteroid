@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import com.google.analytics.tracking.android.EasyTracker;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.utilities.Font;
@@ -35,13 +34,11 @@ public class MainActivity extends Activity {
     @Override
     public void onStart(){
         super.onStart();
-        EasyTracker.getInstance().activityStart(this);
     }
 
     @Override
     public void onStop(){
         super.onStop();
-        EasyTracker.getInstance().activityStop(this);
     }
 
     @Override

@@ -64,4 +64,31 @@ public class Point implements Parcelable{
     public String votes() {
         return votes.toString();
     }
+    public Point clone(){
+        return new Point(sectionId,id,message,votes);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Point point = (Point) o;
+
+        if (id != point.id) return false;
+        if (sectionId != point.sectionId) return false;
+        if (!message.equals(point.message)) return false;
+        if (votes != null ? !votes.equals(point.votes) : point.votes != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + message.hashCode();
+        result = 31 * result + sectionId;
+        result = 31 * result + (votes != null ? votes.hashCode() : 0);
+        return result;
+    }
 }

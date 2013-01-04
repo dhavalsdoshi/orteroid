@@ -53,7 +53,7 @@ public class Board implements Parcelable {
     public void update(List<Point> points) {
         for (Point point : points) {
             for (Section section : sections) {
-                if (point.sectionId().equals(section.id())){
+                if (point.sectionId().equals(section.id()) && !section.contains(point)){
                     section.addPoint(point);
                 }
             }

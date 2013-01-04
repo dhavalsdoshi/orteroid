@@ -38,10 +38,10 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
     @Override
     protected void setUp() throws Exception {
         List<Section> listOfSections = new ArrayList<Section>();
-        Point point = new Point(1, 1, "point");
-        Point secondPoint = new Point(1, 1, "point2");
-        Point thirdPoint = new Point(2, 1, "point3");
-        Point fourthPoint = new Point(1, 1, "point4");
+        final Point point = new Point(1, 1, "point",1);
+        final Point secondPoint = new Point(1, 1, "point2",1);
+        final Point thirdPoint = new Point(2, 1, "point3",1);
+        final Point fourthPoint = new Point(1, 1, "point4",1);
         Section section = new Section("What went well", 1);
         Section section2 = new Section("What did not go well", 2);
         section.addPoint(point);
@@ -67,6 +67,19 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
                 return null;
             }
         }).when(boardRepository).retrieveBoard(anyString(), anyString(), any(Callback.class));
+        doAnswer(new Answer<Object>() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                ((Callback) invocation.getArguments()[2]).execute(new ArrayList<Point>(){{
+                    add(point);
+                    add(secondPoint);
+                    add(thirdPoint);
+                    add(fourthPoint.clone());
+                    add(new Point(1, 3, "point5",1));
+                }});
+                return null;
+            }
+        }).when(boardRepository).retrievePoints(anyString(), anyString(), any(Callback.class));
         this.setActivityIntent(intent);
         super.setUp();
     }
@@ -82,6 +95,30 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
         assertEquals("point", firstButton.getText());
         assertEquals("point2", secondButton.getText());
         assertEquals("point4", thirdButton.getText());
+    }
+
+    public void testShouldUpdateTheBoardWithNewIdea(){
+        final ImageButton button = (ImageButton) activity.findViewById(R.id.refreshButton);
+
+        try {
+            runTestOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    button.performClick();
+                }
+            });
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        this.getInstrumentation().waitForIdleSync();
+
+
+        ListView listView = (ListView) activity.findViewById(android.R.id.list);
+        Button fourthIdea = (Button) listView.getChildAt(3).findViewById(R.id.row_text);
+
+        assertEquals(4,listView.getCount());
+        assertEquals("point5", fourthIdea.getText());
+
     }
 
     public void testShouldFindTotalNumberOfNavigationItemsInCorrespondingSpinner() {
