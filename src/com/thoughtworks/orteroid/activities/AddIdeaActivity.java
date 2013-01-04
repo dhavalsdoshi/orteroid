@@ -86,9 +86,9 @@ public class AddIdeaActivity extends Activity {
     public void addAnIdea(View view) {
         final EditText ideaText = (EditText) findViewById(R.id.ideaMessage);
         idea = ideaText.getText().toString();
-        if(idea.length() != 0){
+        if (idea.length() != 0) {
             postIdea();
-            progressBar = (ProgressBar)findViewById(R.id.progress_bar);
+            progressBar = (ProgressBar) findViewById(R.id.progress_bar);
             progressBar.setVisibility(View.VISIBLE);
         }
         ideaText.setText(null);
@@ -114,18 +114,18 @@ public class AddIdeaActivity extends Activity {
     private void generateFailureNotification() {
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(this)
-                   .setTitle("The following idea failed :\n " + idea)
-                   .setNegativeButton("Try Resending", new DialogInterface.OnClickListener() {
+                        .setTitle("The following idea failed :\n " + idea)
+                        .setNegativeButton("Try Resending", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 postIdea();
                                 dialog.dismiss();
                             }
                         })
-                   .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-                       public void onClick(DialogInterface dialog, int id) {
-                           dialog.dismiss();
-                       }
-                   });
+                        .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -146,11 +146,9 @@ public class AddIdeaActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, ViewBoardActivity.class);
-        intent.putExtra(Constants.BOARD_KEY, board.name().replace(" ", "%20"));
-        intent.putExtra(Constants.BOARD_ID, board.id().toString());
-        intent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex().toString());
-        startActivity(intent);
-        super.onBackPressed();
+        Intent intent = new Intent();
+        intent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex());
+       setResult(Activity.RESULT_CANCELED,intent);
+       super.onBackPressed();
     }
 }

@@ -50,7 +50,6 @@ public class Section implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-     //   Log.v("","Write to parcel: "+ flags);
         parcel.writeInt(id);
         parcel.writeString(name);
     }
@@ -71,5 +70,9 @@ public class Section implements Parcelable{
             }
         }
         return null;
+    }
+
+    public void empty() {
+        points.clear();
     }
 }

@@ -39,22 +39,22 @@ public class EditIdeaActivity extends Activity {
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
     }
 
-    public void editIdea(View view){
+    public void editIdea(View view) {
         EditText editText = (EditText) findViewById(R.id.editIdea);
         message = editText.getText().toString();
         sendEditedIdea();
     }
 
-    public void deleteCurrentIdea(View view){
+    public void deleteCurrentIdea(View view) {
         generateConfirmationMessage();
     }
 
@@ -93,8 +93,7 @@ public class EditIdeaActivity extends Activity {
             public void execute(Boolean result) {
                 if (result != null) {
                     generateSuccessToast();
-                }
-                else generateFailureNotification();
+                } else generateFailureNotification();
             }
         };
     }
@@ -103,9 +102,9 @@ public class EditIdeaActivity extends Activity {
         return new Callback<Boolean>() {
             @Override
             public void execute(Boolean response) {
-                if(response != null) {
+                if (response != null) {
                     migrateToViewBoardActivity();
-                }else {
+                } else {
                     connectionIssueNotification();
                 }
             }
@@ -146,26 +145,10 @@ public class EditIdeaActivity extends Activity {
     }
 
     private void migrateToViewBoardActivity() {
-        Intent intent = getIntent();
-        Board board= intent.getParcelableExtra(Constants.BOARD);
-        Integer selectedIndex = Integer.valueOf(intent.getStringExtra(Constants.SELECTED_POSITION));
-        Intent migrationIntent = new Intent(this, ViewBoardActivity.class);
-        migrationIntent.putExtra(Constants.BOARD_KEY, board.name().replace(" ", "%20"));
-        migrationIntent.putExtra(Constants.BOARD_ID, board.id().toString());
-        migrationIntent.putExtra(Constants.SELECTED_POSITION, selectedIndex.toString());
-        startActivity(migrationIntent);
+        finish();
     }
-    @Override
-    public void onBackPressed() {
-        Intent intent = getIntent();
-        Board board= intent.getParcelableExtra(Constants.BOARD);
-        Integer selectedIndex = Integer.valueOf(intent.getStringExtra(Constants.SELECTED_POSITION));
-        Intent migrationIntent = new Intent(this, ViewBoardActivity.class);
-        migrationIntent.putExtra(Constants.BOARD_KEY, board.name().replace(" ", "%20"));
-        migrationIntent.putExtra(Constants.BOARD_ID, board.id().toString());
-        migrationIntent.putExtra(Constants.SELECTED_POSITION, selectedIndex.toString());
-        startActivity(migrationIntent);
-    }
+
+
 
     private void setupText() {
         EditText editText = (EditText) findViewById(R.id.editIdea);

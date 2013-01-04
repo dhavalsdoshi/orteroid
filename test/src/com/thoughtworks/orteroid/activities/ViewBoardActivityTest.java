@@ -4,10 +4,7 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Build;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.Spinner;
+import android.widget.*;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
@@ -71,11 +68,9 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
                 ((Callback) invocation.getArguments()[2]).execute(new ArrayList<Point>(){{
-                    add(point);
-                    add(secondPoint);
-                    add(thirdPoint);
+                    add(new Point(1, 1, "point10",5));
                     add(fourthPoint.clone());
-                    add(new Point(1, 3, "point5",1));
+                    add(new Point(1, 3, "point5",3));
                 }});
                 return null;
             }
@@ -114,9 +109,12 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
 
 
         ListView listView = (ListView) activity.findViewById(android.R.id.list);
-        Button fourthIdea = (Button) listView.getChildAt(3).findViewById(R.id.row_text);
+        Button fourthIdea = (Button) listView.getChildAt(2).findViewById(R.id.row_text);
+        Button firstButton = (Button) activity.findViewById(R.id.row_text);
 
-        assertEquals(4,listView.getCount());
+        assertEquals(3,listView.getCount());
+        assertEquals("point10", firstButton.getText());
+        assertEquals("+5", ((TextView)activity.findViewById(R.id.votes)).getText());
         assertEquals("point5", fourthIdea.getText());
 
     }

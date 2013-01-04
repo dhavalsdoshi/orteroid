@@ -32,12 +32,12 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
     }
 
@@ -59,12 +59,12 @@ public class MainActivity extends Activity {
         alertForDetails(intent);
     }
 
-    public void faq(View view){
+    public void faq(View view) {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://www.ideaboardz.com/page/faq"));
         startActivity(browserIntent);
     }
 
-    public void feedback(View view){
+    public void feedback(View view) {
         Intent intent = new Intent(this, ViewBoardActivity.class);
         intent.putExtra(Constants.BOARD_KEY, "feedback");
         intent.putExtra(Constants.BOARD_ID, "1");
