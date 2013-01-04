@@ -40,7 +40,7 @@ public class BoardRepository {
     private void executeAsyncTask(Callback<List<String>> serverCallback, String... urls) {
         ContentFetcher contentFetcher = new ContentFetcher(serverCallback, Constants.GET);
         int length = urls.length;
-        if(length == 1){
+        if (length == 1) {
             contentFetcher.execute(urls[0]);
         } else {
             contentFetcher.execute(urls[0], urls[1]);
@@ -55,7 +55,7 @@ public class BoardRepository {
             e.printStackTrace();
         }
         String response = urlGenerator.setUrlForAddingIdea(sectionId, encodedMessage);
-        Callback<List<String>> serverCallback = generateServerCallbackForPostRequest(callback);
+        Callback<List<String>> serverCallback = generateServerCallbackForPostIdeaRequest(callback);
         ContentFetcher contentFetcher = new ContentFetcher(serverCallback, Constants.POST);
         contentFetcher.execute(response);
     }
@@ -75,12 +75,19 @@ public class BoardRepository {
         contentFetcher.execute(response);
     }
 
+    public void voteForIdea(Point selectedPoint, Callback<Boolean> callback) {
+        String request = urlGenerator.urlForVotingForAnIdea(selectedPoint);
+        Callback<List<String>> serverCallback = generateServerCallbackForPostRequest(callback);
+        ContentFetcher contentFetcher = new ContentFetcher(serverCallback, Constants.POST);
+        contentFetcher.execute(request);
+    }
+
     private Callback<List<String>> generateServerCallbackForGetRequest(final Callback<Boolean> callback) {
-        return  new Callback<List<String>>() {
+        return new Callback<List<String>>() {
             @Override
             public void execute(List<String> jsonResponseList) {
                 callback.execute(true);
-                if(jsonResponseList.get(0).equals("404 error")){
+                if (jsonResponseList.get(0).equals("404 error")) {
                     callback.execute(null);
                 }
             }
@@ -90,8 +97,8 @@ public class BoardRepository {
     private Callback<List<String>> generateServerCallbackForGetRequestForBoard(final Callback<Board> callback) {
         return new Callback<List<String>>() {
             @Override
-            public void execute(List<String> jsonResponseList){
-                try{
+            public void execute(List<String> jsonResponseList) {
+                try {
                     JSONObject jsonObject = new JSONObject(jsonResponseList.get(0));
                     final Board boardSkeleton = JSONParser.parseToBoard(jsonObject);
                     boardSkeleton.update(JSONParser.parseToPoints(jsonResponseList.get(1)));
@@ -106,12 +113,12 @@ public class BoardRepository {
     private Callback<List<String>> generateServerCallbackForGetRequestForPoints(final Callback<List<Point>> callback) {
         return new Callback<List<String>>() {
             @Override
-            public void execute(List<String> jsonResponseList)  {
+            public void execute(List<String> jsonResponseList) {
                 final List<Point> points;
                 try {
                     points = JSONParser.parseToPoints(jsonResponseList.get(0));
                 } catch (JSONException e) {
-                    if(jsonResponseList.get(0).equals("404 error")){
+                    if (jsonResponseList.get(0).equals("404 error")) {
                         callback.execute(null);
                     }
                     throw new RuntimeException(e);
@@ -121,10 +128,10 @@ public class BoardRepository {
         };
     }
 
-    private Callback<List<String>> generateServerCallbackForPostRequest(final Callback<Boolean> callback) {
+    private Callback<List<String>> generateServerCallbackForPostIdeaRequest(final Callback<Boolean> callback) {
         return new Callback<List<String>>() {
             @Override
-            public void execute(List<String> jsonResponseList)  {
+            public void execute(List<String> jsonResponseList) {
                 try {
                     JSONObject jsonObject = new JSONObject(jsonResponseList.get(0));
                     JSONParser.parseToPoint(jsonObject);
@@ -137,11 +144,20 @@ public class BoardRepository {
         };
     }
 
+    private Callback<List<String>> generateServerCallbackForPostRequest(final Callback<Boolean> callback) {
+        return new Callback<List<String>>() {
+            @Override
+            public void execute(List<String> jsonResponseList) {
+                callback.execute(true);
+            }
+        };
+    }
+
     private Callback<List<String>> generateServerCallbackForPutRequest(final Callback<Boolean> callback) {
         return new Callback<List<String>>() {
             @Override
-            public void execute(List<String> jsonResponseList){
-                if(jsonResponseList.get(0).equals("404 error")){
+            public void execute(List<String> jsonResponseList) {
+                if (jsonResponseList.get(0).equals("404 error")) {
                     callback.execute(null);
                 }
                 callback.execute(true);

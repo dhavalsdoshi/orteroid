@@ -56,6 +56,6 @@ public class JSONParser {
     }
 
     public static Point parseToPoint(JSONObject jsonObject) throws JSONException {
-        return new Point(jsonObject.getInt(SECTIONID_KEY), jsonObject.getInt(ID_KEY), jsonObject.getString(MESSAGE_KEY));
+        return new Point(jsonObject.getInt(SECTIONID_KEY), jsonObject.getInt(ID_KEY), jsonObject.getString(MESSAGE_KEY), jsonObject.getInt("votes_count"));
     }
 }

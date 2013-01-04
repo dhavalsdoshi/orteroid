@@ -158,6 +158,17 @@ public class EditIdeaActivity extends Activity {
         migrationIntent.putExtra(Constants.SELECTED_POSITION, selectedIndex.toString());
         startActivity(migrationIntent);
     }
+    @Override
+    public void onBackPressed() {
+        Intent intent = getIntent();
+        Board board= intent.getParcelableExtra(Constants.BOARD);
+        Integer selectedIndex = Integer.valueOf(intent.getStringExtra(Constants.SELECTED_POSITION));
+        Intent migrationIntent = new Intent(this, ViewBoardActivity.class);
+        migrationIntent.putExtra(Constants.BOARD_KEY, board.name().replace(" ", "%20"));
+        migrationIntent.putExtra(Constants.BOARD_ID, board.id().toString());
+        migrationIntent.putExtra(Constants.SELECTED_POSITION, selectedIndex.toString());
+        startActivity(migrationIntent);
+    }
 
     private void setupText() {
         EditText editText = (EditText) findViewById(R.id.editIdea);

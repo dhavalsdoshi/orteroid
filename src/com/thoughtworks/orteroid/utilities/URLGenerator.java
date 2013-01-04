@@ -22,4 +22,8 @@ public class URLGenerator {
     public String urlForDeletingIdea(Point selectedPoint) {
         return "http://www.ideaboardz.com/points/delete/" + selectedPoint.id() + ".json";
     }
+
+    public String urlForVotingForAnIdea(Point selectedPoint) {
+        return "http://www.ideaboardz.com/points/" + selectedPoint.id() + "/votes.json" + "?vote[point_id]=" + selectedPoint.id();
+    }
 }

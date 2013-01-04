@@ -9,17 +9,20 @@ public class Point implements Parcelable{
     private int id;
     private String message;
     private int sectionId;
+    private Integer votes;
 
-    public Point(int sectionId, int id, String message) {
+    public Point(int sectionId, int id, String message, Integer votes) {
         this.id = id;
         this.message = message;
         this.sectionId = sectionId;
+        this.votes = votes;
     }
 
     private Point(Parcel parcel) {
         this.id = parcel.readInt();
         this.message = parcel.readString();
         this.sectionId = parcel.readInt();
+        this.votes = parcel.readInt();
     }
 
     public String message() {
@@ -41,6 +44,7 @@ public class Point implements Parcelable{
         parcel.writeInt(id);
         parcel.writeString(message);
         parcel.writeInt(sectionId);
+        parcel.writeInt(votes);
     }
 
     public static final Parcelable.Creator<Point> CREATOR = new Parcelable.Creator<Point>() {
@@ -55,5 +59,9 @@ public class Point implements Parcelable{
 
     public int id() {
         return id;
+    }
+
+    public String votes() {
+        return votes.toString();
     }
 }

@@ -22,7 +22,7 @@
                     android:id="@+id/deleteButton"
                     android:clickable="true"
                     android:onClick="deleteCurrentIdea"
-                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    android:src="@android:drawable/ic_menu_delete"
                     android:contentDescription="@string/delete" android:layout_gravity="right|center_vertical"/>
             <EditText
                     android:layout_width="match_parent"

@@ -38,10 +38,13 @@ public class SectionListAdapter extends ArrayAdapter<Point> {
         } else {
             rowView = convertView;
         }
-        TextView textView = (TextView) rowView.findViewById(R.id.row_text);
-        textView.setTypeface(Font.setFont((Activity) this.getContext()));
-        textView.setText(points.get(position).message());
-        GradientDrawable drawable = (GradientDrawable) textView.getBackground();
+        TextView ideas = (TextView) rowView.findViewById(R.id.row_text);
+        ideas.setTypeface(Font.setFont((Activity) this.getContext()));
+        ideas.setText(points.get(position).message());
+        TextView votes = (TextView) rowView.findViewById(R.id.votes);
+        votes.setTypeface(Font.setFont((Activity) this.getContext()));
+        votes.setText("+" + points.get(position).votes());
+        GradientDrawable drawable = (GradientDrawable) ideas.getBackground();
         drawable.setColor(Color.parseColor(colour));
         return rowView;
     }

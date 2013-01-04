@@ -18,13 +18,47 @@
             android:background="@drawable/sticky"
             style="?android:attr/borderlessButtonStyle"
             android:onClick="editIdea" android:longClickable="true"/>
-    <ImageButton
-            android:layout_width="30dp"
-            android:layout_height="25dp"
-            android:id="@+id/deleteButton"
-            android:clickable="true" android:onClick="deleteIdea"
-            android:layout_alignRight="@+id/row_text" android:layout_alignTop="@+id/row_text"
-            android:src="@android:drawable/ic_menu_close_clear_cancel" android:visibility="invisible"
-            android:contentDescription="@string/delete"/>
 
+    <Button
+            android:layout_width="35dp"
+            android:layout_height="20dp"
+            android:id="@+id/votes"
+            android:layout_alignRight="@+id/row_text" android:layout_alignBottom="@+id/row_text"
+            android:layout_margin="1dp" android:background="@android:color/transparent"/>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/menu_options"
+                    android:layout_width="wrap_content"
+                    android:layout_height="41dp"
+                    android:background="@drawable/option_menu_background"
+                    android:padding="3dip"
+                    android:visibility="gone"
+                    android:layout_alignLeft="@+id/row_text" android:layout_below="@+id/row_text">
+        <ImageButton
+                android:layout_width="44dp"
+                android:layout_height="42dp"
+                android:id="@+id/deleteButton"
+                android:clickable="true" android:onClick="deleteIdea"
+                android:src="@android:drawable/ic_menu_delete"
+                android:contentDescription="@string/delete"
+                android:layout_alignLeft="@+id/row_text" android:layout_below="@+id/row_text"
+                android:layout_alignParentBottom="true" android:padding="5dip"/>
+        <ImageButton
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/editButton"
+                android:clickable="true" android:onClick="editIdea"
+                android:src="@android:drawable/ic_menu_edit"
+                android:contentDescription="@string/edit"
+                android:padding="5dip"
+                android:layout_toRightOf="@+id/deleteButton" android:layout_alignTop="@+id/deleteButton"/>
+        <ImageButton
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/voteButton"
+                android:clickable="true" android:onClick="voteForIdea"
+                android:src="@android:drawable/ic_menu_share"
+                android:padding="5dip"
+                android:layout_toRightOf="@+id/editButton" android:layout_alignTop="@+id/deleteButton"/>
+    </RelativeLayout>
 </RelativeLayout>

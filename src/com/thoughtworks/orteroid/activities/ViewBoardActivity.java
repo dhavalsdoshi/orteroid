@@ -7,8 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.*;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.thoughtworks.orteroid.Callback;
@@ -31,7 +30,6 @@ public class ViewBoardActivity extends Activity {
     private String boardKey;
     private String boardId;
     private RelativeLayout selectedIdea;
-    private ImageButton deleteButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +42,7 @@ public class ViewBoardActivity extends Activity {
         ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + decodeBoardKey() + " board", true);
         dialog.show();
 
-        if(board == null){
+        if (board == null) {
             BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
         } else {
             BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback(dialog));
@@ -52,13 +50,13 @@ public class ViewBoardActivity extends Activity {
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         EasyTracker.getInstance().activityStart(this);
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
         EasyTracker.getInstance().activityStop(this);
     }
@@ -81,7 +79,9 @@ public class ViewBoardActivity extends Activity {
 
     public void editIdea(View view) {
         Intent intent = new Intent(this, EditIdeaActivity.class);
-        Button selectedButton = (Button) view;
+        Button selectedButton;
+        if(selectedIdea == null) selectedButton = (Button)view;
+        else selectedButton = (Button) selectedIdea.findViewById(R.id.row_text);
         String message = selectedButton.getText().toString();
         Point selectedPoint = board.getPointFromMessage(message, customActionBar.selectedIndex());
         intent.putExtra(Constants.SELECTED_POINT, selectedPoint);
@@ -90,19 +90,48 @@ public class ViewBoardActivity extends Activity {
         startActivity(intent);
     }
 
-    public void deleteIdea(View view){
-        Button button = (Button)selectedIdea.findViewById(R.id.row_text);
+    public void voteForIdea(View view) {
+        Button button = (Button) selectedIdea.findViewById(R.id.row_text);
+        String message = button.getText().toString();
+        Point selectedPoint = board.getPointFromMessage(message, customActionBar.selectedIndex());
+        Callback<Boolean> callback = voteIdeaCallback();
+        BoardRepository.getInstance().voteForIdea(selectedPoint, callback);
+    }
+
+    private Callback<Boolean> voteIdeaCallback() {
+        return new Callback<Boolean>() {
+            @Override
+            public void execute(Boolean object) {
+            }
+        };
+    }
+
+    public void deleteIdea(View view) {
+        Button button = (Button) selectedIdea.findViewById(R.id.row_text);
         String message = button.getText().toString();
         Point selectedPoint = board.getPointFromMessage(message, customActionBar.selectedIndex());
         Callback<Boolean> callback = deleteIdeaCallback();
+        showDeletionToast();
         BoardRepository.getInstance().deletePoint(selectedPoint, callback);
+    }
+
+    private void showDeletionToast() {
+            LayoutInflater inflater = getLayoutInflater();
+            View layout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.toast_layout_root));
+            TextView text = (TextView) layout.findViewById(R.id.text);
+            text.setText("deleting idea");
+            Toast toast = new Toast(getApplicationContext());
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.setDuration(Toast.LENGTH_LONG);
+            toast.setView(layout);
+            toast.show();
     }
 
     private Callback<Boolean> deleteIdeaCallback() {
         return new Callback<Boolean>() {
             @Override
             public void execute(Boolean result) {
-                if(result != null) {
+                if (result != null) {
                     Intent migrationIntent = new Intent(ViewBoardActivity.this, ViewBoardActivity.class);
                     migrationIntent.putExtra(Constants.BOARD_KEY, board.name().replace(" ", "%20"));
                     migrationIntent.putExtra(Constants.BOARD_ID, board.id().toString());
@@ -129,10 +158,16 @@ public class ViewBoardActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
-        super.onBackPressed();
+        if (selectedIdea == null) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            super.onBackPressed();
+        }else{
+            View menuOptionView = selectedIdea.findViewById(R.id.menu_options);
+            selectedIdea = null;
+            menuOptionView.setVisibility(View.GONE);
+        }
     }
 
     private Callback<Board> viewBoardCallback(final ProgressDialog dialog) {
@@ -140,7 +175,7 @@ public class ViewBoardActivity extends Activity {
         return new Callback<Board>() {
             @Override
             public void execute(Board board) {
-                if(board != null) {
+                if (board != null) {
                     dialog.dismiss();
                     ViewBoardActivity.this.board = board;
                     customActionBar.setActionBar(board, context);
@@ -156,7 +191,7 @@ public class ViewBoardActivity extends Activity {
         return new Callback<List<Point>>() {
             @Override
             public void execute(List<Point> points) {
-                if(points != null) {
+                if (points != null) {
                     dialog.dismiss();
                     ViewBoardActivity.this.board.update(points);
                     customActionBar.setActionBar(board, context);
@@ -208,6 +243,11 @@ public class ViewBoardActivity extends Activity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int index, long l) {
+                if(selectedIdea != null){
+                    View menuOptionView = selectedIdea.findViewById(R.id.menu_options);
+                    menuOptionView.setVisibility(View.GONE);
+
+                }
                 int firstVisiblePosition = listView.getFirstVisiblePosition();
                 int wantedPosition = index - firstVisiblePosition;
                 if ((wantedPosition >= 0) && (wantedPosition <= listView.getChildCount())) {
@@ -215,12 +255,15 @@ public class ViewBoardActivity extends Activity {
                 } else {
                     selectedIdea = (RelativeLayout) listView.getChildAt(index);
                 }
-                if (deleteButton != null) deleteButton.setVisibility(View.INVISIBLE);
-                deleteButton = (ImageButton) selectedIdea.findViewById(R.id.deleteButton);
-                deleteButton.setVisibility(View.VISIBLE);
+
+                View menuOptionView = selectedIdea.findViewById(R.id.menu_options);
+                menuOptionView.setVisibility(View.VISIBLE);
                 return true;
             }
+
+
         });
+
     }
 
     private void connectionIssueNotification() {
