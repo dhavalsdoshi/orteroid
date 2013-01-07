@@ -101,6 +101,7 @@ public class ViewBoardActivity extends Activity {
             else selectedButton = (Button) selectedIdea.findViewById(R.id.row_text);
             String message = selectedButton.getText().toString();
             selectedPoint = board.getPointFromMessage(message, customActionBar.selectedIndex());
+            selectedIdea = null;
             intent.putExtra(Constants.SELECTED_POINT, selectedPoint);
             intent.putExtra(Constants.BOARD, board);
             intent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex().toString());
@@ -194,7 +195,6 @@ public class ViewBoardActivity extends Activity {
         if (selectedIdea == null) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-            finish();
             super.onBackPressed();
         } else {
             View menuOptionView = selectedIdea.findViewById(R.id.menu_options);
