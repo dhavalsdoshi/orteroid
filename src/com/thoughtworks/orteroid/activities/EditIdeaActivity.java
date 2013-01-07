@@ -153,7 +153,7 @@ public class EditIdeaActivity extends Activity {
     private void setupText() {
         EditText editText = (EditText) findViewById(R.id.editIdea);
         editText.setText(point.message());
-        editText.setTypeface(Font.setFont(this));
+        editText.setTypeface(Font.setFontForIdea(this));
     }
 
     private void setBackgroundLayout() {

@@ -40,7 +40,7 @@
                 android:layout_height="42dp"
                 android:id="@+id/deleteButton"
                 android:clickable="true" android:onClick="deleteIdea"
-                android:src="@android:drawable/ic_menu_delete"
+                android:src="@drawable/delete_icon"
                 android:contentDescription="@string/delete"
                 android:layout_alignLeft="@+id/row_text" android:layout_below="@+id/row_text"
                 android:layout_alignParentBottom="true" android:padding="5dip"/>
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/editButton"
                 android:clickable="true" android:onClick="editIdea"
-                android:src="@android:drawable/ic_menu_edit"
+                android:src="@drawable/add_icon"
                 android:contentDescription="@string/edit"
                 android:padding="5dip"
                 android:layout_toRightOf="@+id/deleteButton" android:layout_alignTop="@+id/deleteButton"/>
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/voteButton"
                 android:clickable="true" android:onClick="voteForIdea"
-                android:src="@android:drawable/ic_menu_share"
+                android:src="@drawable/vote"
                 android:padding="5dip"
                 android:layout_toRightOf="@+id/editButton" android:layout_alignTop="@+id/deleteButton"/>
     </RelativeLayout>

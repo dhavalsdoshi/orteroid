@@ -23,7 +23,7 @@ public class CustomActionBar {
     private ActionBar actionBar;
     private Activity activity;
     private Callback<Integer> actionBarCallback;
-    private Integer selectedIndex;
+    private Integer selectedIndex = 0;
 
     public CustomActionBar(Activity activity, int spinnerId, Callback<Integer> actionBarCallback) {
         this.activity = activity;

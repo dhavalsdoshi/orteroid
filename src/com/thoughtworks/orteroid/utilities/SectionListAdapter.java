@@ -39,10 +39,10 @@ public class SectionListAdapter extends ArrayAdapter<Point> {
             rowView = convertView;
         }
         TextView ideas = (TextView) rowView.findViewById(R.id.row_text);
-        ideas.setTypeface(Font.setFont((Activity) this.getContext()));
+        ideas.setTypeface(Font.setFontForIdea((Activity) this.getContext()));
         ideas.setText(points.get(position).message());
         TextView votes = (TextView) rowView.findViewById(R.id.votes);
-        votes.setTypeface(Font.setFont((Activity) this.getContext()));
+        votes.setTypeface(Font.setFontForIdea((Activity) this.getContext()));
         votes.setText("+" + points.get(position).votes());
         GradientDrawable drawable = (GradientDrawable) ideas.getBackground();
         drawable.setColor(Color.parseColor(colour));
