@@ -52,14 +52,18 @@ public class ViewBoardActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(data != null){
-        int selectedPosition = data.getIntExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex());
-        customActionBar.updateSelectedIndex(selectedPosition);
+        if (data != null) {
+            int selectedPosition = data.getIntExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex());
+            customActionBar.updateSelectedIndex(selectedPosition);
         }
         refresh(null);
     }
 
     public void refresh(View view) {
+        ImageButton refreshButton = (ImageButton) findViewById(R.id.refreshButton);
+        refreshButton.setVisibility(View.GONE);
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress);
+        progressBar.setVisibility(View.VISIBLE);
         BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback());
     }
 
@@ -86,20 +90,21 @@ public class ViewBoardActivity extends Activity {
         Intent intent = new Intent(this, AddIdeaActivity.class);
         intent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex().toString());
         intent.putExtra(Constants.BOARD, this.board);
-        startActivityForResult(intent,REQUEST_CODE);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     public void editIdea(View view) {
         Intent intent = new Intent(this, EditIdeaActivity.class);
-        Button selectedButton;
-        if (selectedIdea == null) selectedButton = (Button) view;
-        else selectedButton = (Button) selectedIdea.findViewById(R.id.row_text);
-        String message = selectedButton.getText().toString();
-        Point selectedPoint = board.getPointFromMessage(message, customActionBar.selectedIndex());
-        intent.putExtra(Constants.SELECTED_POINT, selectedPoint);
-        intent.putExtra(Constants.BOARD, board);
-        intent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex().toString());
-        startActivityForResult(intent, REQUEST_CODE);
+        Point selectedPoint = null;
+            Button selectedButton;
+            if (selectedIdea == null) selectedButton = (Button) view;
+            else selectedButton = (Button) selectedIdea.findViewById(R.id.row_text);
+            String message = selectedButton.getText().toString();
+            selectedPoint = board.getPointFromMessage(message, customActionBar.selectedIndex());
+            intent.putExtra(Constants.SELECTED_POINT, selectedPoint);
+            intent.putExtra(Constants.BOARD, board);
+            intent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex().toString());
+            startActivityForResult(intent, REQUEST_CODE);
     }
 
 
@@ -220,6 +225,10 @@ public class ViewBoardActivity extends Activity {
             @Override
             public void execute(List<Point> points) {
                 if (points != null) {
+                    ImageButton refreshButton = (ImageButton) findViewById(R.id.refreshButton);
+                    refreshButton.setVisibility(View.VISIBLE);
+                    ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress);
+                    progressBar.setVisibility(View.GONE);
                     ViewBoardActivity.this.board.update(points);
                     customActionBar.setActionBar(board, context);
                 } else {
