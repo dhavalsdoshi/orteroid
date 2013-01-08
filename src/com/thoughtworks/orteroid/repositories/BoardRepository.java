@@ -1,6 +1,8 @@
 package com.thoughtworks.orteroid.repositories;
 
+import android.content.SharedPreferences;
 import com.thoughtworks.orteroid.Callback;
+import com.thoughtworks.orteroid.activities.MainActivity;
 import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.models.Board;
 import com.thoughtworks.orteroid.models.Point;
@@ -12,12 +14,14 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
 
 public class BoardRepository {
 
     private static BoardRepository boardRepository;
     private static URLGenerator urlGenerator;
+
 
 
     private BoardRepository() {
@@ -175,4 +179,7 @@ public class BoardRepository {
     public static void setBoardRepository(BoardRepository boardRepository) {
         BoardRepository.boardRepository = boardRepository;
     }
+
+
+
 }

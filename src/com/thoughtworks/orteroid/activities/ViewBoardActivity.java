@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
@@ -19,6 +20,8 @@ import com.thoughtworks.orteroid.repositories.BoardRepository;
 import com.thoughtworks.orteroid.utilities.ColorSticky;
 import com.thoughtworks.orteroid.utilities.CustomActionBar;
 import com.thoughtworks.orteroid.utilities.SectionListAdapter;
+import com.thoughtworks.orteroid.utilities.SharedData;
+import org.json.JSONArray;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -32,6 +35,16 @@ public class ViewBoardActivity extends Activity {
     private String boardId;
     private RelativeLayout selectedIdea;
 
+     void addRecentBoardNameToSharedPreferences() {
+         SharedData.add(boardId, boardKey,this);
+        JSONArray jsonArray = SharedData.getJsonArrayOfRecentBoard();
+
+        SharedPreferences sharedPreferences = getSharedPreferences(SharedData.PREFS_NAME, 0);
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putString("boards", jsonArray.toString());
+        edit.commit();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +53,7 @@ public class ViewBoardActivity extends Activity {
         Intent intent = getIntent();
         String urlOfBoard = intent.getDataString();
         setParameters(intent, urlOfBoard);
-
+        addRecentBoardNameToSharedPreferences();
         if (board == null) {
             ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + decodeBoardKey() + " board", true);
             dialog.show();
@@ -48,6 +61,7 @@ public class ViewBoardActivity extends Activity {
         } else {
             BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback());
         }
+
     }
 
     @Override

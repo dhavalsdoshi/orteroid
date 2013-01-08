@@ -16,6 +16,8 @@ public class JSONParser {
     private static final String ID_KEY = "id";
     private static final String SECTIONID_KEY = "section_id";
     private static final String MESSAGE_KEY = "message";
+    public static final String BOARD_NAME = "board_name";
+    public static final String BOARD_ID = "board_id";
 
     public static Board parseToBoard(JSONObject jsonObject) {
         try {
@@ -58,4 +60,35 @@ public class JSONParser {
     public static Point parseToPoint(JSONObject jsonObject) throws JSONException {
         return new Point(jsonObject.getInt(SECTIONID_KEY), jsonObject.getInt(ID_KEY), jsonObject.getString(MESSAGE_KEY), jsonObject.getInt("votes_count"));
     }
+
+
+    public static String[] parseStringToRecentBoardsName(String data) {
+        return getDataList(data,BOARD_NAME);
+    }
+    public static String[] parseStringToRecentBoardsId(String data) {
+        return getDataList(data,BOARD_ID);
+    }
+
+    private static String[] getDataList(String data, String boardDetail) {
+        if(data == null) return null;
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = new JSONArray(data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        List<String> items = new ArrayList<String>();
+        try {
+            for (int index = 0; index < jsonArray.length(); index++) {
+                JSONObject jsonObject = (JSONObject) jsonArray.get(index);
+                items.add(jsonObject.get(boardDetail).toString());
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String[] arrayOfData = new String[items.size()];
+        return items.toArray(arrayOfData);
+    }
+
+
 }

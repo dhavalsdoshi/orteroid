@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,8 +15,12 @@ import android.widget.EditText;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.utilities.Font;
+import com.thoughtworks.orteroid.utilities.JSONParser;
+import com.thoughtworks.orteroid.utilities.SharedData;
 
 public class MainActivity extends Activity {
+
+    private MainActivity context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +30,13 @@ public class MainActivity extends Activity {
         Button buttonForFaq = (Button) findViewById(R.id.faq);
         Button buttonForFeedback = (Button) findViewById(R.id.feedback);
         Button buttonForViewing = (Button) findViewById(R.id.viewBoard);
+        Button buttonForRecentBoards = (Button) findViewById(R.id.recent);
         buttonForDemo.setTypeface(Font.setFont(this));
         buttonForViewing.setTypeface(Font.setFont(this));
         buttonForFaq.setTypeface(Font.setFont(this));
         buttonForFeedback.setTypeface(Font.setFont(this));
+        buttonForRecentBoards.setTypeface(Font.setFont(this));
+
     }
 
     @Override
@@ -49,9 +57,7 @@ public class MainActivity extends Activity {
 
     public void viewDemo(View view) {
         Intent intent = new Intent(this, ViewBoardActivity.class);
-        intent.putExtra(Constants.BOARD_KEY, "test");
-        intent.putExtra(Constants.BOARD_ID, "2");
-        startActivity(intent);
+        startViewBoardActivity("test", "2", intent);
     }
 
     public void viewBoard(View view) {
@@ -64,11 +70,32 @@ public class MainActivity extends Activity {
         startActivity(browserIntent);
     }
 
+    public void recent(View view) {
+        alertForRecentBoards();
+    }
+
+    private void alertForRecentBoards() {
+
+        SharedPreferences sharedPreferences = getSharedPreferences(SharedData.PREFS_NAME, 0);
+        String data = sharedPreferences.getString("boards", null);
+        final String[] recentBoardNames = JSONParser.parseStringToRecentBoardsName(data);
+        final String[] recentBoardId = JSONParser.parseStringToRecentBoardsId(data);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Make your selection");
+        builder.setItems(recentBoardNames, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                Intent intent = new Intent(context,ViewBoardActivity.class);
+                startViewBoardActivity(recentBoardNames[item],recentBoardId[item],intent);
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     public void feedback(View view) {
         Intent intent = new Intent(this, ViewBoardActivity.class);
-        intent.putExtra(Constants.BOARD_KEY, "feedback");
-        intent.putExtra(Constants.BOARD_ID, "1");
-        startActivity(intent);
+        startViewBoardActivity("feedback", "1", intent);
     }
 
     private void alertForDetails(final Intent intent) {
@@ -83,14 +110,18 @@ public class MainActivity extends Activity {
                 String boardKey = boardKeyText.getText().toString();
                 String boardId = boardIdText.getText().toString();
                 if (boardId != null && boardKey != null) {
-                    intent.putExtra(Constants.BOARD_KEY, boardKey);
-                    intent.putExtra(Constants.BOARD_ID, boardId);
-                    startActivity(intent);
+                    startViewBoardActivity(boardKey, boardId, intent);
                 }
             }
         });
 
         alert.show();
+    }
+
+    private void startViewBoardActivity(String boardKey, String boardId, Intent intent) {
+        intent.putExtra(Constants.BOARD_KEY, boardKey);
+        intent.putExtra(Constants.BOARD_ID, boardId);
+        startActivity(intent);
     }
 
     @Override
