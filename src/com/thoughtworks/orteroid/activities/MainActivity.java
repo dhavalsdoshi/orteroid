@@ -7,16 +7,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.View;
+import android.view.*;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.utilities.Font;
 import com.thoughtworks.orteroid.utilities.JSONParser;
 import com.thoughtworks.orteroid.utilities.SharedData;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 public class MainActivity extends Activity {
 
@@ -80,17 +83,44 @@ public class MainActivity extends Activity {
         String data = sharedPreferences.getString("boards", null);
         final String[] recentBoardNames = JSONParser.parseStringToRecentBoardsName(data);
         final String[] recentBoardId = JSONParser.parseStringToRecentBoardsId(data);
+        String[] decodedRecentBoardNames = null;
+        int index = 0;
+        if(recentBoardNames == null || recentBoardNames.length == 0) {
+            generateToastForNoRecentBoards();
+            return;
+        }
+        for (String recentBoardName : recentBoardNames) {
+            try {
+                decodedRecentBoardNames[index] = URLDecoder.decode(recentBoardName, "UTF-8") ;
+                index++;
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Make your selection");
         builder.setItems(recentBoardNames, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 Intent intent = new Intent(context,ViewBoardActivity.class);
-                startViewBoardActivity(recentBoardNames[item],recentBoardId[item],intent);
+                    startViewBoardActivity(recentBoardNames[item],recentBoardId[item],intent);
             }
         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private void generateToastForNoRecentBoards() {
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.toast_layout_root));
+
+        TextView text = (TextView) layout.findViewById(R.id.text);
+        text.setText("No Recent Boards.");
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
     }
 
     public void feedback(View view) {

@@ -63,8 +63,11 @@ public class JSONParser {
 
 
     public static String[] parseStringToRecentBoardsName(String data) {
-        return getDataList(data,BOARD_NAME);
+        String[] dataList = getDataList(data, BOARD_NAME);
+        return dataList;
     }
+
+
     public static String[] parseStringToRecentBoardsId(String data) {
         return getDataList(data,BOARD_ID);
     }

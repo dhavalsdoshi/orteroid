@@ -5,19 +5,35 @@ import android.content.SharedPreferences;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 public class SharedData {
     public static final String PREFS_NAME = "file";
     private static JSONArray jsonArray = new JSONArray();
+
     public static JSONArray getJsonArrayOfRecentBoard() {
         return jsonArray;
     }
 
-    public static void add(String boardId, String boardKey,Activity activity) {
-        if(boardId.equals("2") || boardId.equals("1")) return;
+
+    private static JSONArray fixRecentBoardSize(JSONArray recentBoards) {
+        if (recentBoards.length() <= 3) return recentBoards;
+        JSONArray jsonArrayOfFixedSize = new JSONArray();
+        try {
+            jsonArrayOfFixedSize.put(recentBoards.get(0));
+            jsonArrayOfFixedSize.put(recentBoards.get(1));
+            jsonArrayOfFixedSize.put(recentBoards.get(2));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonArrayOfFixedSize;
+    }
+
+    public static void add(String boardId, String boardKey, Activity activity) {
+        if (boardId.equals("2") || boardId.equals("1")) return;
 
         SharedPreferences sharedPreferences = activity.getSharedPreferences(SharedData.PREFS_NAME, 0);
-        String data = sharedPreferences.getString("boards", null);
-        if(data == null || isBoardAlreadyInList(boardId, data)) return;
+        String previusRecentBoardList = sharedPreferences.getString("boards", null);
+        if (isBoardAlreadyInList(boardId, previusRecentBoardList)) return;
         final JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("board_name", boardKey);
@@ -25,13 +41,22 @@ public class SharedData {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        jsonArray.put(jsonObject);
+        jsonArray = putObjectOnFirst(jsonObject);
+        jsonArray = fixRecentBoardSize(jsonArray);
     }
 
-    private static boolean isBoardAlreadyInList(String boardId, String data) {
-        final String[] recentBoardId = JSONParser.parseStringToRecentBoardsId(data);
+    private static JSONArray putObjectOnFirst(JSONObject jsonObject) {
+        JSONArray jsonArray1 = new JSONArray();
+        jsonArray1.put(jsonObject);
+        jsonArray1.put(jsonArray);
+        return jsonArray1;
+    }
+
+    private static boolean isBoardAlreadyInList(String boardId, String previusRecentBoardList) {
+        if(previusRecentBoardList == null) return false;
+        final String[] recentBoardId = JSONParser.parseStringToRecentBoardsId(previusRecentBoardList);
         for (String id : recentBoardId) {
-            if(boardId.equals(id)) return true;
+            if (boardId.equals(id)) return true;
         }
         return false;
     }
