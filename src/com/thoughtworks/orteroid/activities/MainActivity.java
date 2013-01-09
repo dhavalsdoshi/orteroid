@@ -83,12 +83,12 @@ public class MainActivity extends Activity {
         String data = sharedPreferences.getString("boards", null);
         final String[] recentBoardNames = JSONParser.parseStringToRecentBoardsName(data);
         final String[] recentBoardId = JSONParser.parseStringToRecentBoardsId(data);
-        String[] decodedRecentBoardNames = null;
         int index = 0;
         if(recentBoardNames == null || recentBoardNames.length == 0) {
             generateToastForNoRecentBoards();
             return;
         }
+        String[] decodedRecentBoardNames = new String[recentBoardNames.length];
         for (String recentBoardName : recentBoardNames) {
             try {
                 decodedRecentBoardNames[index] = URLDecoder.decode(recentBoardName, "UTF-8") ;
@@ -100,7 +100,7 @@ public class MainActivity extends Activity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Make your selection");
-        builder.setItems(recentBoardNames, new DialogInterface.OnClickListener() {
+        builder.setItems(decodedRecentBoardNames, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 Intent intent = new Intent(context,ViewBoardActivity.class);
                     startViewBoardActivity(recentBoardNames[item],recentBoardId[item],intent);

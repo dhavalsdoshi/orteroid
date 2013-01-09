@@ -33,7 +33,9 @@ public class SharedData {
 
         SharedPreferences sharedPreferences = activity.getSharedPreferences(SharedData.PREFS_NAME, 0);
         String previusRecentBoardList = sharedPreferences.getString("boards", null);
-        if (isBoardAlreadyInList(boardId, previusRecentBoardList)) return;
+        if (previusRecentBoardList != null)
+            if (previusRecentBoardList.length() != 0)
+                if (isBoardAlreadyInList(boardId, previusRecentBoardList)) return;
         final JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("board_name", boardKey);
@@ -48,12 +50,19 @@ public class SharedData {
     private static JSONArray putObjectOnFirst(JSONObject jsonObject) {
         JSONArray jsonArray1 = new JSONArray();
         jsonArray1.put(jsonObject);
-        jsonArray1.put(jsonArray);
+        if(jsonArray != null)
+        for (int index = 0; index < jsonArray.length(); index++) {
+            try {
+                jsonArray1.put(jsonArray.getJSONObject(index));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
         return jsonArray1;
     }
 
     private static boolean isBoardAlreadyInList(String boardId, String previusRecentBoardList) {
-        if(previusRecentBoardList == null) return false;
         final String[] recentBoardId = JSONParser.parseStringToRecentBoardsId(previusRecentBoardList);
         for (String id : recentBoardId) {
             if (boardId.equals(id)) return true;

@@ -83,7 +83,7 @@ public class JSONParser {
         List<String> items = new ArrayList<String>();
         try {
             for (int index = 0; index < jsonArray.length(); index++) {
-                JSONObject jsonObject = (JSONObject) jsonArray.get(index);
+                JSONObject jsonObject =  jsonArray.getJSONObject(index);
                 items.add(jsonObject.get(boardDetail).toString());
             }
         } catch (JSONException e) {
