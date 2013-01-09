@@ -53,7 +53,6 @@ public class ViewBoardActivity extends Activity {
         Intent intent = getIntent();
         String urlOfBoard = intent.getDataString();
         setParameters(intent, urlOfBoard);
-        addRecentBoardNameToSharedPreferences();
         if (board == null) {
             ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + decodeBoardKey() + " board", true);
             dialog.show();
@@ -61,7 +60,6 @@ public class ViewBoardActivity extends Activity {
         } else {
             BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback());
         }
-
     }
 
     @Override
@@ -225,6 +223,7 @@ public class ViewBoardActivity extends Activity {
                 if (board != null) {
                     dialog.dismiss();
                     ViewBoardActivity.this.board = board;
+                    addRecentBoardNameToSharedPreferences();
                     customActionBar.setActionBar(board, context);
                 } else {
                     connectionIssueNotification();

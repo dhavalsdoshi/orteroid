@@ -17,6 +17,7 @@ import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.utilities.Font;
 import com.thoughtworks.orteroid.utilities.JSONParser;
 import com.thoughtworks.orteroid.utilities.SharedData;
+import com.crittercism.app.Crittercism;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -27,6 +28,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Crittercism.init(getApplicationContext(), "50ed62ad8cb83141b400000d");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button buttonForDemo = (Button) findViewById(R.id.viewTestBoard);
