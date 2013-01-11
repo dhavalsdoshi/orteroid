@@ -57,7 +57,7 @@ public class ViewBoardActivity extends Activity {
             dialog.show();
             BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
         } else {
-            BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback(0));
+            BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback());
         }
     }
 
@@ -67,22 +67,16 @@ public class ViewBoardActivity extends Activity {
             int selectedPosition = data.getIntExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex());
             customActionBar.updateSelectedIndex(selectedPosition);
         }
-        refresh(0);
+        refresh(null);
     }
 
-    public void refreshWithCurrentView(View view) {
-        ListView listView = (ListView) findViewById(android.R.id.list);
-        int firstVisiblePosition = listView.getFirstVisiblePosition();
-        refresh(firstVisiblePosition);
-    }
-
-    public void refresh(int firstVisiblePosition) {
+    public void refresh(View view) {
 
         ImageButton refreshButton = (ImageButton) findViewById(R.id.refreshButton);
         refreshButton.setVisibility(View.GONE);
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress);
         progressBar.setVisibility(View.VISIBLE);
-        BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback(firstVisiblePosition));
+        BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback());
     }
 
     @Override
@@ -155,7 +149,7 @@ public class ViewBoardActivity extends Activity {
         return new Callback<Boolean>() {
             @Override
             public void execute(Boolean object) {
-                refreshWithCurrentView(null);
+                refresh(null);
             }
         };
     }
@@ -188,7 +182,7 @@ public class ViewBoardActivity extends Activity {
             @Override
             public void execute(Boolean result) {
                 if (result != null) {
-                    refreshWithCurrentView(null);
+                    refresh(null);
                 } else {
                     connectionIssueNotification();
                 }
@@ -238,7 +232,7 @@ public class ViewBoardActivity extends Activity {
         };
     }
 
-    private Callback<List<Point>> viewPointsCallback(final int firstVisiblePosition) {
+    private Callback<List<Point>> viewPointsCallback() {
         final Context context = this;
         return new Callback<List<Point>>() {
             @Override
