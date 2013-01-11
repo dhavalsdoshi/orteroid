@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
-//import com.google.analytics.tracking.android.EasyTracker;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
@@ -156,7 +155,7 @@ public class ViewBoardActivity extends Activity {
         return new Callback<Boolean>() {
             @Override
             public void execute(Boolean object) {
-                refresh(0);
+                refreshWithCurrentView(null);
             }
         };
     }
@@ -189,7 +188,7 @@ public class ViewBoardActivity extends Activity {
             @Override
             public void execute(Boolean result) {
                 if (result != null) {
-                    refresh(0);
+                    refreshWithCurrentView(null);
                 } else {
                     connectionIssueNotification();
                 }
