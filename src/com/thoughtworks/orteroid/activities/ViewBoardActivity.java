@@ -58,7 +58,7 @@ public class ViewBoardActivity extends Activity {
             dialog.show();
             BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
         } else {
-            BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback());
+            BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback(0));
         }
     }
 
@@ -68,15 +68,22 @@ public class ViewBoardActivity extends Activity {
             int selectedPosition = data.getIntExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex());
             customActionBar.updateSelectedIndex(selectedPosition);
         }
-        refresh(null);
+        refresh(0);
     }
 
-    public void refresh(View view) {
+    public void refreshWithCurrentView(View view) {
+        ListView listView = (ListView) findViewById(android.R.id.list);
+        int firstVisiblePosition = listView.getFirstVisiblePosition();
+        refresh(firstVisiblePosition);
+    }
+
+    public void refresh(int firstVisiblePosition) {
+
         ImageButton refreshButton = (ImageButton) findViewById(R.id.refreshButton);
         refreshButton.setVisibility(View.GONE);
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress);
         progressBar.setVisibility(View.VISIBLE);
-        BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback());
+        BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback(firstVisiblePosition));
     }
 
     @Override
@@ -108,16 +115,16 @@ public class ViewBoardActivity extends Activity {
     public void editIdea(View view) {
         Intent intent = new Intent(this, EditIdeaActivity.class);
         Point selectedPoint = null;
-            Button selectedButton;
-            if (selectedIdea == null) selectedButton = (Button) view;
-            else selectedButton = (Button) selectedIdea.findViewById(R.id.row_text);
-            String message = selectedButton.getText().toString();
-            selectedPoint = board.getPointFromMessage(message, customActionBar.selectedIndex());
-            selectedIdea = null;
-            intent.putExtra(Constants.SELECTED_POINT, selectedPoint);
-            intent.putExtra(Constants.BOARD, board);
-            intent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex().toString());
-            startActivityForResult(intent, REQUEST_CODE);
+        Button selectedButton;
+        if (selectedIdea == null) selectedButton = (Button) view;
+        else selectedButton = (Button) selectedIdea.findViewById(R.id.row_text);
+        String message = selectedButton.getText().toString();
+        selectedPoint = board.getPointFromMessage(message, customActionBar.selectedIndex());
+        selectedIdea = null;
+        intent.putExtra(Constants.SELECTED_POINT, selectedPoint);
+        intent.putExtra(Constants.BOARD, board);
+        intent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex().toString());
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
 
@@ -149,7 +156,7 @@ public class ViewBoardActivity extends Activity {
         return new Callback<Boolean>() {
             @Override
             public void execute(Boolean object) {
-                refresh(view);
+                refresh(0);
             }
         };
     }
@@ -182,7 +189,7 @@ public class ViewBoardActivity extends Activity {
             @Override
             public void execute(Boolean result) {
                 if (result != null) {
-                    refresh(view);
+                    refresh(0);
                 } else {
                     connectionIssueNotification();
                 }
@@ -232,7 +239,7 @@ public class ViewBoardActivity extends Activity {
         };
     }
 
-    private Callback<List<Point>> viewPointsCallback() {
+    private Callback<List<Point>> viewPointsCallback(final int firstVisiblePosition) {
         final Context context = this;
         return new Callback<List<Point>>() {
             @Override
@@ -286,9 +293,12 @@ public class ViewBoardActivity extends Activity {
 
     private void setPoints(Board board, final int selectedItem) {
         String colourCode = ColorSticky.getColorCode(selectedItem);
+
         SectionListAdapter sectionListAdapter = new SectionListAdapter(this, board.pointsOfSection(selectedItem), colourCode);
         final ListView listView = (ListView) findViewById(android.R.id.list);
+        int currentItem = listView.getFirstVisiblePosition();
         listView.setAdapter(sectionListAdapter);
+        listView.setSelectionFromTop(currentItem, 0);
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int index, long l) {
