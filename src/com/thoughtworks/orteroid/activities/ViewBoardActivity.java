@@ -122,9 +122,8 @@ public class ViewBoardActivity extends Activity {
 
 
     public void voteForIdea(View view) {
-        Button button = (Button) selectedIdea.findViewById(R.id.row_text);
-        View viewForOptionMenu = selectedIdea.findViewById(R.id.menu_options);
-        viewForOptionMenu.setVisibility(View.GONE);
+        View parent = (View) view.getParent();
+        Button button = (Button) parent.findViewById(R.id.row_text);
         String message = button.getText().toString();
         Point selectedPoint = board.getPointFromMessage(message, customActionBar.selectedIndex());
         Callback<Boolean> callback = voteIdeaCallback(view);
@@ -204,15 +203,10 @@ public class ViewBoardActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if (selectedIdea == null) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             super.onBackPressed();
-        } else {
-            View menuOptionView = selectedIdea.findViewById(R.id.menu_options);
-            selectedIdea = null;
-            menuOptionView.setVisibility(View.GONE);
-        }
+
     }
 
     private Callback<Board> viewBoardCallback(final ProgressDialog dialog) {
@@ -292,30 +286,6 @@ public class ViewBoardActivity extends Activity {
         int currentItem = listView.getFirstVisiblePosition();
         listView.setAdapter(sectionListAdapter);
         listView.setSelectionFromTop(currentItem, 0);
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int index, long l) {
-                if (selectedIdea != null) {
-                    View menuOptionView = selectedIdea.findViewById(R.id.menu_options);
-                    menuOptionView.setVisibility(View.GONE);
-
-                }
-                int firstVisiblePosition = listView.getFirstVisiblePosition();
-                int wantedPosition = index - firstVisiblePosition;
-                if ((wantedPosition >= 0) && (wantedPosition <= listView.getChildCount())) {
-                    selectedIdea = (RelativeLayout) listView.getChildAt(wantedPosition);
-                } else {
-                    selectedIdea = (RelativeLayout) listView.getChildAt(index);
-                }
-
-                View menuOptionView = selectedIdea.findViewById(R.id.menu_options);
-                menuOptionView.setVisibility(View.VISIBLE);
-                return true;
-            }
-
-
-        });
-
     }
 
     private void connectionIssueNotification() {
