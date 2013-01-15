@@ -81,11 +81,11 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
 
 
     public void testShouldListThePointsOfDefaultSection() {
-        Button firstButton = (Button) activity.findViewById(R.id.row_text);
+        Button firstButton = (Button) activity.findViewById(R.id.idea_text);
 
         ListView listView = (ListView) activity.findViewById(android.R.id.list);
-        Button secondButton = (Button) listView.getChildAt(1).findViewById(R.id.row_text);
-        Button thirdButton = (Button) listView.getChildAt(2).findViewById(R.id.row_text);
+        Button secondButton = (Button) listView.getChildAt(1).findViewById(R.id.idea_text);
+        Button thirdButton = (Button) listView.getChildAt(2).findViewById(R.id.idea_text);
 
         assertEquals("point", firstButton.getText());
         assertEquals("point2", secondButton.getText());
@@ -109,8 +109,8 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
 
 
         ListView listView = (ListView) activity.findViewById(android.R.id.list);
-        Button fourthIdea = (Button) listView.getChildAt(2).findViewById(R.id.row_text);
-        Button firstButton = (Button) activity.findViewById(R.id.row_text);
+        Button fourthIdea = (Button) listView.getChildAt(2).findViewById(R.id.idea_text);
+        Button firstButton = (Button) activity.findViewById(R.id.idea_text);
 
         assertEquals(3,listView.getCount());
         assertEquals("point10", firstButton.getText());
@@ -154,7 +154,7 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
             TestUtilities.navigateActionBarToIndex(activity.getActionBar(), 1, this);
         }
 
-        Button firstButton = (Button) activity.findViewById(R.id.row_text);
+        Button firstButton = (Button) activity.findViewById(R.id.idea_text);
 
         assertEquals("point3", firstButton.getText());
     }
@@ -173,7 +173,7 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
     }
 
     public void testShouldShowDeleteButtonOnLongPressOfSticky(){
-        final Button button = (Button) activity.findViewById(R.id.row_text);
+        final Button button = (Button) activity.findViewById(R.id.idea_text);
 
         try {
             runTestOnUiThread(new Runnable() {
@@ -192,7 +192,7 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
     }
 
     public void testShouldNavigateToEditIdeaActivity() {
-        assertNavigationToTarget(R.id.row_text, EditIdeaActivity.class);
+        assertNavigationToTarget(R.id.idea_text, EditIdeaActivity.class);
     }
 
 }

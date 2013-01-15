@@ -106,12 +106,11 @@ public class ViewBoardActivity extends Activity {
     }
 
     public void editIdea(View view) {
+        View viewParent =  (View) view.getParent();
+        TextView textView = (TextView) viewParent.findViewById(R.id.idea_text);
         Intent intent = new Intent(this, EditIdeaActivity.class);
         Point selectedPoint = null;
-        Button selectedButton;
-        if (selectedIdea == null) selectedButton = (Button) view;
-        else selectedButton = (Button) selectedIdea.findViewById(R.id.row_text);
-        String message = selectedButton.getText().toString();
+        String message = textView.getText().toString();
         selectedPoint = board.getPointFromMessage(message, customActionBar.selectedIndex());
         selectedIdea = null;
         intent.putExtra(Constants.SELECTED_POINT, selectedPoint);
@@ -123,8 +122,8 @@ public class ViewBoardActivity extends Activity {
 
     public void voteForIdea(View view) {
         View parent = (View) view.getParent();
-        Button button = (Button) parent.findViewById(R.id.row_text);
-        String message = button.getText().toString();
+        TextView textView = (TextView) parent.findViewById(R.id.idea_text);
+        String message = textView.getText().toString();
         Point selectedPoint = board.getPointFromMessage(message, customActionBar.selectedIndex());
         Callback<Boolean> callback = voteIdeaCallback(view);
         BoardRepository.getInstance().voteForIdea(selectedPoint, callback);
@@ -139,7 +138,7 @@ public class ViewBoardActivity extends Activity {
         text.setText("Voting...");
         Toast toast = new Toast(getApplicationContext());
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show();
     }
@@ -154,14 +153,36 @@ public class ViewBoardActivity extends Activity {
     }
 
     public void deleteIdea(View view) {
-        View view1 = selectedIdea.findViewById(R.id.idea_menu);
-        view1.setVisibility(View.GONE);
-        Button button = (Button) selectedIdea.findViewById(R.id.row_text);
-        String message = button.getText().toString();
+        generateConfirmationMessage(view);
+    }
+    private void delete(View view){
+        View parent = (View) view.getParent();
+        parent.setVisibility(View.GONE);
+        TextView textView = (TextView) parent.findViewById(R.id.idea_text);
+        String message = textView.getText().toString();
         Point selectedPoint = board.getPointFromMessage(message, customActionBar.selectedIndex());
         Callback<Boolean> callback = deleteIdeaCallback(view);
         showDeletionToast();
         BoardRepository.getInstance().deletePoint(selectedPoint, callback);
+    }
+
+    private void generateConfirmationMessage(final View view) {
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(this)
+                        .setTitle("Are you sure you want to delete this Idea?")
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                                delete(view);
+                            }
+                        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void showDeletionToast() {
@@ -171,7 +192,7 @@ public class ViewBoardActivity extends Activity {
         text.setText("deleting idea");
         Toast toast = new Toast(getApplicationContext());
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show();
     }

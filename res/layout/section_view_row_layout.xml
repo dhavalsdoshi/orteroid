@@ -8,7 +8,7 @@
     <Button
             android:id="@+id/row_text"
             android:layout_width="500dip"
-            android:layout_height="wrap_content"
+            android:layout_height="108dp"
             android:padding="4dip"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
@@ -18,20 +18,49 @@
             android:textSize="20dip"
             android:background="@drawable/sticky"
             style="?android:attr/borderlessButtonStyle"
-            android:onClick="editIdea" android:longClickable="true"/>
+            android:onClick="editIdea"
+            />
+    <LinearLayout android:layout_width="70dip"
+                  android:layout_height="40dip"
+                  android:id="@+id/votes" android:layout_alignRight="@+id/row_text"
+                  android:layout_alignBottom="@+id/row_text"
+                  android:onClick="voteForIdea"
+                  android:background="@drawable/button" android:padding="2dip"
+                  android:layout_margin="2dip">
 
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/votes"
-            android:onClick="voteForIdea"
-            android:layout_alignRight="@+id/row_text" android:layout_alignBottom="@+id/row_text"
-            android:layout_margin="1dp" android:clickable="true" android:padding="6dip"/>
+        <TextView
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_alignRight="@+id/row_text" android:layout_alignBottom="@+id/row_text"
+                android:layout_margin="1dp" android:padding="22dip"
+                android:background="@drawable/vote_icon" android:focusableInTouchMode="true"/>
+        <TextView
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:id="@+id/vote_count"
+                android:layout_alignRight="@+id/row_text" android:layout_alignBottom="@+id/row_text"
+                android:layout_margin="1dp"
+                android:padding="6dip"
+                android:background="@android:color/transparent" android:focusableInTouchMode="true"/>
+    </LinearLayout>
     <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dip"
+            android:layout_height="40dip"
             android:id="@+id/delete"
-            android:src="@drawable/delete_icon" android:layout_alignLeft="@+id/row_text" android:layout_alignParentTop="true"/>
+            android:src="@android:drawable/ic_menu_delete"
+            android:layout_alignRight="@+id/row_text" android:layout_above="@+id/votes"
+            android:background="@drawable/button" android:padding="8dip"
+            android:onClick="deleteIdea"
+            android:layout_margin="2dip"/>
+    <TextView
+            android:layout_width="200dp"
+            android:layout_height="68dp"
+            android:id="@+id/idea_text" android:layout_alignParentLeft="true"
+            android:layout_marginLeft="18dp"
+            android:layout_alignTop="@+id/row_text" android:layout_alignBottom="@+id/row_text"
+            />
 
 
 </RelativeLayout>

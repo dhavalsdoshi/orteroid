@@ -22,7 +22,7 @@ public class SectionListAdapter extends ArrayAdapter<Point> {
     String colour;
 
     public SectionListAdapter(Context context, List<Point> objects, String colourCode) {
-        super(context, R.layout.section_view_row_layout, R.id.row_text, objects);
+        super(context, R.layout.section_view_row_layout, R.id.idea_text, objects);
         this.context = context;
         this.points = objects;
         this.colour = colourCode;
@@ -38,13 +38,17 @@ public class SectionListAdapter extends ArrayAdapter<Point> {
         } else {
             rowView = convertView;
         }
-        TextView ideas = (TextView) rowView.findViewById(R.id.row_text);
+        TextView ideas = (TextView) rowView.findViewById(R.id.idea_text);
         ideas.setTypeface(Font.setFontForIdea((Activity) this.getContext()));
         ideas.setText(points.get(position).message());
-        TextView votes = (TextView) rowView.findViewById(R.id.votes);
+        ideas.setTextSize(18);
+        TextView votes = (TextView) rowView.findViewById(R.id.vote_count);
         votes.setTypeface(Font.setFontForIdea((Activity) this.getContext()));
-        votes.setText("+" + points.get(position).votes());
-        GradientDrawable drawable = (GradientDrawable) ideas.getBackground();
+        String votesForPoint = points.get(position).votes();
+        if(votesForPoint == null)votes.setText("+" + 0);
+        else votes.setText("+" + votesForPoint);
+        View view = rowView.findViewById(R.id.row_text);
+        GradientDrawable drawable = (GradientDrawable) view.getBackground();
         drawable.setColor(Color.parseColor(colour));
         return rowView;
     }
