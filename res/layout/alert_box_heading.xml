@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/idea_menu"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="67dp"
+            android:id="@+id/heading" android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:phoneNumber="false"
+            android:textColor="#67ff24" android:textSize="25dip"
+            android:background="@android:color/black"
+            android:scaleType="fitCenter"
+            android:paddingLeft="40dip" android:paddingTop="20dip" android:paddingRight="4dip"
+            android:paddingBottom="4dip" android:password="false"/>
+</RelativeLayout>

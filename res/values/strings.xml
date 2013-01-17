@@ -17,6 +17,7 @@
     <string name="delete">delete</string>
     <string name="edit">edit</string>
     <string name="option5">Recent boards</string>
+    <string name="choose_section">Choose section..!!!</string>
     <color name="black">#000</color>
     <color name="blue">#00f</color>
     <color name="red">#f00</color>

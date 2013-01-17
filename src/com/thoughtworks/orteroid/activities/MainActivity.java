@@ -8,20 +8,16 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.*;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-import com.google.analytics.tracking.android.EasyTracker;
+import android.widget.*;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
+import com.thoughtworks.orteroid.utilities.BoardListAdapter;
 import com.thoughtworks.orteroid.utilities.Font;
 import com.thoughtworks.orteroid.utilities.JSONParser;
 import com.thoughtworks.orteroid.utilities.SharedData;
-import com.crittercism.app.Crittercism;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity {
 
@@ -48,13 +44,13 @@ public class MainActivity extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-       // EasyTracker.getInstance().activityStart(this);
+        // EasyTracker.getInstance().activityStart(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-       // EasyTracker.getInstance().activityStop(this);
+        // EasyTracker.getInstance().activityStop(this);
     }
 
     @Override
@@ -87,30 +83,36 @@ public class MainActivity extends Activity {
         SharedPreferences sharedPreferences = getSharedPreferences(SharedData.PREFS_NAME, 0);
         String data = sharedPreferences.getString("boards", null);
         final String[] recentBoardNames = JSONParser.parseStringToRecentBoardsName(data);
-        final String[] recentBoardId = JSONParser.parseStringToRecentBoardsId(data);
+        List<String> recentBoards = new ArrayList<String>();
         int index = 0;
-        if(recentBoardNames == null || recentBoardNames.length == 0) {
+        String[] decodedRecentBoardNames = new String[recentBoardNames.length];
+        for (String recentBoardName : recentBoardNames) {
+            decodedRecentBoardNames[index] = recentBoardName;
+            index++;
+        }
+        if (recentBoardNames == null || recentBoardNames.length == 0) {
             generateToastForNoRecentBoards();
             return;
         }
-        String[] decodedRecentBoardNames = new String[recentBoardNames.length];
-        for (String recentBoardName : recentBoardNames) {
-            try {
-                decodedRecentBoardNames[index] = URLDecoder.decode(recentBoardName, "UTF-8") ;
-                index++;
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+        for (String recentBoardName : decodedRecentBoardNames) {
+            recentBoards.add(recentBoardName);
         }
+        final String[] recentBoardId = JSONParser.parseStringToRecentBoardsId(data);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Make your selection");
-        builder.setItems(decodedRecentBoardNames, new DialogInterface.OnClickListener() {
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.alert_box_heading, null);
+        TextView textView = (TextView) view.findViewById(R.id.heading);
+        textView.setText("Recent boardz..!!!");
+        builder.setCustomTitle(view);
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                Intent intent = new Intent(context,ViewBoardActivity.class);
-                    startViewBoardActivity(recentBoardNames[item],recentBoardId[item],intent);
+                Intent intent = new Intent(context, ViewBoardActivity.class);
+                startViewBoardActivity(recentBoardNames[item], recentBoardId[item], intent);
             }
-        });
+        };
+        ListAdapter adapter = new BoardListAdapter(this, recentBoards);
+        builder.setAdapter(adapter, listener);
         AlertDialog alert = builder.create();
         alert.show();
     }
@@ -148,9 +150,8 @@ public class MainActivity extends Activity {
                 String url = urlEditText.getText().toString();
                 if (boardId.length() != 0 && boardKey.length() != 0) {
                     startViewBoardActivity(boardKey, boardId, intent);
-                }
-                else if(url.length() != 0){
-                    startViewBoardActivity(getBoardKeyFromUrl(url),getBoardIdFromUrl(url),intent);
+                } else if (url.length() != 0) {
+                    startViewBoardActivity(getBoardKeyFromUrl(url), getBoardIdFromUrl(url), intent);
                 }
             }
         });
@@ -159,14 +160,13 @@ public class MainActivity extends Activity {
     }
 
 
-
     private String getBoardKeyFromUrl(String url) {
-        String smallUrl = url.substring(0,url.lastIndexOf('/'));
-        return url.substring(smallUrl.lastIndexOf('/')+1, smallUrl.length());
+        String smallUrl = url.substring(0, url.lastIndexOf('/'));
+        return url.substring(smallUrl.lastIndexOf('/') + 1, smallUrl.length());
     }
 
     private String getBoardIdFromUrl(String url) {
-        return url.substring(url.lastIndexOf('/')+1, url.length());
+        return url.substring(url.lastIndexOf('/') + 1, url.length());
     }
 
     private void startViewBoardActivity(String boardKey, String boardId, Intent intent) {

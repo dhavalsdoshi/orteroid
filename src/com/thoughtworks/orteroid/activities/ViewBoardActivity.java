@@ -16,10 +16,7 @@ import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.models.Board;
 import com.thoughtworks.orteroid.models.Point;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
-import com.thoughtworks.orteroid.utilities.ColorSticky;
-import com.thoughtworks.orteroid.utilities.CustomActionBar;
-import com.thoughtworks.orteroid.utilities.SectionListAdapter;
-import com.thoughtworks.orteroid.utilities.SharedData;
+import com.thoughtworks.orteroid.utilities.*;
 import org.json.JSONArray;
 
 import java.io.UnsupportedEncodingException;
@@ -56,11 +53,9 @@ public class ViewBoardActivity extends Activity {
             final Callback<Board> boardCallback = viewBoardCallback(dialog);
             BoardRepository.getInstance().retrieveBoard(boardKey, boardId, boardCallback);
             dialog.setCancelable(true);
-            dialog.setOnCancelListener(new DialogInterface.OnCancelListener()
-            {
+            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
-                public void onCancel(DialogInterface dialog)
-                {
+                public void onCancel(DialogInterface dialog) {
                     finish();
                 }
             });
@@ -121,7 +116,6 @@ public class ViewBoardActivity extends Activity {
         Point selectedPoint = null;
         String message = textView.getText().toString();
         selectedPoint = board.getPointFromMessage(message, customActionBar.selectedIndex());
-        String selectedIdea = null;
         intent.putExtra(Constants.SELECTED_POINT, selectedPoint);
         intent.putExtra(Constants.BOARD, board);
         intent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex().toString());
@@ -259,19 +253,25 @@ public class ViewBoardActivity extends Activity {
 
     private void setPopUpOfSections() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select the section");
         CharSequence sequence[] = new CharSequence[board.sections().size()];
         int index = 0;
+        LayoutInflater inflater = getLayoutInflater();
+        View view=inflater.inflate(R.layout.alert_box_heading, null);
+        TextView textView = (TextView) view.findViewById(R.id.heading);
+        textView.setText(R.string.choose_section);
+        builder.setCustomTitle(view);
         for (String name : board.getSectionNames()) {
             sequence[index] = name;
             index++;
         }
-        builder.setItems(sequence, new DialogInterface.OnClickListener() {
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 customActionBar.updateSelectedIndex(item);
                 return;
             }
-        });
+        };
+        ListAdapter adapter = new BoardListAdapter(this,board.getSectionNames());
+        builder.setAdapter(adapter, listener);
         AlertDialog alert = builder.create();
         alert.show();
     }
