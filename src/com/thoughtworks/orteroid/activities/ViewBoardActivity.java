@@ -32,9 +32,8 @@ public class ViewBoardActivity extends Activity {
     private Board board;
     private String boardKey;
     private String boardId;
-    private RelativeLayout selectedIdea;
 
-     void addRecentBoardNameToSharedPreferences() {
+    void addRecentBoardNameToSharedPreferences() {
          SharedData.add(boardId, boardKey,this);
         JSONArray jsonArray = SharedData.getJsonArrayOfRecentBoard();
 
@@ -54,6 +53,17 @@ public class ViewBoardActivity extends Activity {
         setParameters(intent, urlOfBoard);
         if (board == null) {
             ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + decodeBoardKey() + " board", true);
+            final Callback<Board> boardCallback = viewBoardCallback(dialog);
+            BoardRepository.getInstance().retrieveBoard(boardKey, boardId, boardCallback);
+            dialog.setCancelable(true);
+            dialog.setOnCancelListener(new DialogInterface.OnCancelListener()
+            {
+                @Override
+                public void onCancel(DialogInterface dialog)
+                {
+                    finish();
+                }
+            });
             dialog.show();
             BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
         } else {
@@ -112,7 +122,7 @@ public class ViewBoardActivity extends Activity {
         Point selectedPoint = null;
         String message = textView.getText().toString();
         selectedPoint = board.getPointFromMessage(message, customActionBar.selectedIndex());
-        selectedIdea = null;
+        String selectedIdea = null;
         intent.putExtra(Constants.SELECTED_POINT, selectedPoint);
         intent.putExtra(Constants.BOARD, board);
         intent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex().toString());

@@ -141,13 +141,29 @@ public class MainActivity extends Activity {
                 EditText boardIdText = (EditText) promptsView.findViewById(R.id.boardId);
                 String boardKey = boardKeyText.getText().toString();
                 String boardId = boardIdText.getText().toString();
-                if (boardId != null && boardKey != null) {
+                EditText urlEditText = (EditText) promptsView.findViewById(R.id.url);
+                String url = urlEditText.getText().toString();
+                if (boardId.length() != 0 && boardKey.length() != 0) {
                     startViewBoardActivity(boardKey, boardId, intent);
+                }
+                else if(url.length() != 0){
+                    startViewBoardActivity(getBoardKeyFromUrl(url),getBoardIdFromUrl(url),intent);
                 }
             }
         });
 
         alert.show();
+    }
+
+
+
+    private String getBoardKeyFromUrl(String url) {
+        String smallUrl = url.substring(0,url.lastIndexOf('/'));
+        return url.substring(smallUrl.lastIndexOf('/')+1, smallUrl.length());
+    }
+
+    private String getBoardIdFromUrl(String url) {
+        return url.substring(url.lastIndexOf('/')+1, url.length());
     }
 
     private void startViewBoardActivity(String boardKey, String boardId, Intent intent) {

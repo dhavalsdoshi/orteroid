@@ -81,11 +81,11 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
 
 
     public void testShouldListThePointsOfDefaultSection() {
-        Button firstButton = (Button) activity.findViewById(R.id.idea_text);
+        TextView firstButton = (TextView) activity.findViewById(R.id.idea_text);
 
         ListView listView = (ListView) activity.findViewById(android.R.id.list);
-        Button secondButton = (Button) listView.getChildAt(1).findViewById(R.id.idea_text);
-        Button thirdButton = (Button) listView.getChildAt(2).findViewById(R.id.idea_text);
+        TextView secondButton = (TextView) listView.getChildAt(1).findViewById(R.id.idea_text);
+        TextView thirdButton = (TextView) listView.getChildAt(2).findViewById(R.id.idea_text);
 
         assertEquals("point", firstButton.getText());
         assertEquals("point2", secondButton.getText());
@@ -109,12 +109,12 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
 
 
         ListView listView = (ListView) activity.findViewById(android.R.id.list);
-        Button fourthIdea = (Button) listView.getChildAt(2).findViewById(R.id.idea_text);
-        Button firstButton = (Button) activity.findViewById(R.id.idea_text);
+        TextView fourthIdea = (TextView) listView.getChildAt(2).findViewById(R.id.idea_text);
+        TextView firstButton = (TextView) activity.findViewById(R.id.idea_text);
 
         assertEquals(3,listView.getCount());
         assertEquals("point10", firstButton.getText());
-        assertEquals("+5", ((TextView)activity.findViewById(R.id.votes)).getText());
+        assertEquals("+5", ((TextView)listView.findViewById(R.id.vote_count)).getText());
         assertEquals("point5", fourthIdea.getText());
 
     }
@@ -154,45 +154,8 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
             TestUtilities.navigateActionBarToIndex(activity.getActionBar(), 1, this);
         }
 
-        Button firstButton = (Button) activity.findViewById(R.id.idea_text);
+        TextView firstButton = (TextView) activity.findViewById(R.id.idea_text);
 
         assertEquals("point3", firstButton.getText());
     }
-
-    public void testShouldNavigateToAddIdeaActivity() {
-        if(Build.VERSION.SDK_INT <= Constants.VERSION_CODE_FOR_ANDROID_3) {
-            Spinner spinner = (Spinner) activity.findViewById(R.id.spinnerForSections);
-            TestUtilities.navigateSpinnerToIndex(spinner,1,this);
-        }
-        else{
-            TestUtilities.navigateActionBarToIndex(activity.getActionBar(), 1, this);
-        }
-        Map<String, String> bundleExtras = new HashMap<String, String>();
-        bundleExtras.put(Constants.SELECTED_POSITION, "1");
-        assertNavigationToTargetWithParameters(R.id.addButton, AddIdeaActivity.class, bundleExtras);
-    }
-
-    public void testShouldShowDeleteButtonOnLongPressOfSticky(){
-        final Button button = (Button) activity.findViewById(R.id.idea_text);
-
-        try {
-            runTestOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    button.performLongClick();
-                }
-            });
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
-        ImageButton deleteButton = (ImageButton) activity.findViewById(R.id.deleteButton);
-        int visibility = deleteButton.getVisibility();
-
-        assertEquals(View.VISIBLE, visibility);
-    }
-
-    public void testShouldNavigateToEditIdeaActivity() {
-        assertNavigationToTarget(R.id.idea_text, EditIdeaActivity.class);
-    }
-
 }
