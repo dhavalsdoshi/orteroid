@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
+import com.crittercism.app.Crittercism;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.utilities.BoardListAdapter;
@@ -25,7 +26,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        Crittercism.init(getApplicationContext(), "50ed62ad8cb83141b400000d");
+        Crittercism.init(getApplicationContext(), "50ed62ad8cb83141b400000d");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button buttonForDemo = (Button) findViewById(R.id.viewTestBoard);
@@ -70,7 +71,7 @@ public class MainActivity extends Activity {
     }
 
     public void faq(View view) {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://www.ideaboardz.com/page/faq"));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://www.ideaboardz.com/page/faq#android"));
         startActivity(browserIntent);
     }
 
@@ -132,7 +133,7 @@ public class MainActivity extends Activity {
 
     public void feedback(View view) {
         Intent intent = new Intent(this, ViewBoardActivity.class);
-        startViewBoardActivity("feedback", "1", intent);
+        startViewBoardActivity("Feedback", "6733", intent);
     }
 
     private void alertForDetails(final Intent intent) {
