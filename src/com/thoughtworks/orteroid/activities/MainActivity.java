@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.utilities.Font;
@@ -28,7 +29,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Crittercism.init(getApplicationContext(), "50ed62ad8cb83141b400000d");
+//        Crittercism.init(getApplicationContext(), "50ed62ad8cb83141b400000d");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button buttonForDemo = (Button) findViewById(R.id.viewTestBoard);
@@ -47,11 +48,13 @@ public class MainActivity extends Activity {
     @Override
     public void onStart() {
         super.onStart();
+       // EasyTracker.getInstance().activityStart(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
+       // EasyTracker.getInstance().activityStop(this);
     }
 
     @Override

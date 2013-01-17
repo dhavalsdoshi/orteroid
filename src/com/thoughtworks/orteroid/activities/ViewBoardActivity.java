@@ -65,7 +65,6 @@ public class ViewBoardActivity extends Activity {
                 }
             });
             dialog.show();
-            BoardRepository.getInstance().retrieveBoard(boardKey, boardId, viewBoardCallback(dialog));
         } else {
             BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback());
         }
@@ -250,11 +249,31 @@ public class ViewBoardActivity extends Activity {
                     ViewBoardActivity.this.board = board;
                     addRecentBoardNameToSharedPreferences();
                     customActionBar.setActionBar(board, context);
+                    setPopUpOfSections();
                 } else {
                     connectionIssueNotification();
                 }
             }
         };
+    }
+
+    private void setPopUpOfSections() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select the section");
+        CharSequence sequence[] = new CharSequence[board.sections().size()];
+        int index = 0;
+        for (String name : board.getSectionNames()) {
+            sequence[index] = name;
+            index++;
+        }
+        builder.setItems(sequence, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                customActionBar.updateSelectedIndex(item);
+                return;
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private Callback<List<Point>> viewPointsCallback() {
