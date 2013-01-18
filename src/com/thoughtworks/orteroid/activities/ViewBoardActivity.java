@@ -243,7 +243,6 @@ public class ViewBoardActivity extends Activity {
                     ViewBoardActivity.this.board = board;
                     addRecentBoardNameToSharedPreferences();
                     customActionBar.setActionBar(board, context);
-                    setPopUpOfSections();
                 } else {
                     connectionIssueNotification();
                 }
@@ -251,30 +250,7 @@ public class ViewBoardActivity extends Activity {
         };
     }
 
-    private void setPopUpOfSections() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        CharSequence sequence[] = new CharSequence[board.sections().size()];
-        int index = 0;
-        LayoutInflater inflater = getLayoutInflater();
-        View view=inflater.inflate(R.layout.alert_box_heading, null);
-        TextView textView = (TextView) view.findViewById(R.id.heading);
-        textView.setText(R.string.choose_section);
-        builder.setCustomTitle(view);
-        for (String name : board.getSectionNames()) {
-            sequence[index] = name;
-            index++;
-        }
-        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                customActionBar.updateSelectedIndex(item);
-                return;
-            }
-        };
-        ListAdapter adapter = new BoardListAdapter(this,board.getSectionNames());
-        builder.setAdapter(adapter, listener);
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
+
 
     private Callback<List<Point>> viewPointsCallback() {
         final Context context = this;

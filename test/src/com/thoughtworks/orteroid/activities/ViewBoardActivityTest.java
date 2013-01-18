@@ -3,7 +3,6 @@ package com.thoughtworks.orteroid.activities;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Build;
-import android.view.View;
 import android.widget.*;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
@@ -17,9 +16,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -75,6 +72,7 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
                 return null;
             }
         }).when(boardRepository).retrievePoints(anyString(), anyString(), any(Callback.class));
+
         this.setActivityIntent(intent);
         super.setUp();
     }
