@@ -3,6 +3,7 @@ package com.thoughtworks.orteroid.utilities;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,7 +38,7 @@ public class CustomActionBar {
 
     }
 
-    public Integer selectedIndex() {
+        public Integer selectedIndex() {
         return actionBar == null ? spinner.getSelectedItemPosition() : actionBar.getSelectedNavigationIndex();
     }
 

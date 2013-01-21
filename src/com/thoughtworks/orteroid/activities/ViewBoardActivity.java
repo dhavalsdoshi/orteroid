@@ -2,73 +2,52 @@ package com.thoughtworks.orteroid.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
-import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.models.Board;
 import com.thoughtworks.orteroid.models.Point;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
-import com.thoughtworks.orteroid.utilities.*;
-import org.json.JSONArray;
+import com.thoughtworks.orteroid.utilities.ColorSticky;
+import com.thoughtworks.orteroid.utilities.CustomActionBar;
+import com.thoughtworks.orteroid.utilities.SectionListAdapter;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.List;
 
+import static com.thoughtworks.orteroid.constants.Constants.*;
+
 public class ViewBoardActivity extends Activity {
-    public static final int REQUEST_CODE = 0;
     private CustomActionBar customActionBar;
     private Board board;
     private String boardKey;
     private String boardId;
+    private int selectedPosition;
 
-    void addRecentBoardNameToSharedPreferences() {
-         SharedData.add(boardId, boardKey,this);
-        JSONArray jsonArray = SharedData.getJsonArrayOfRecentBoard();
 
-        SharedPreferences sharedPreferences = getSharedPreferences(SharedData.PREFS_NAME, 0);
-        SharedPreferences.Editor edit = sharedPreferences.edit();
-        edit.putString("boards", jsonArray.toString());
-        edit.commit();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_board);
-        customActionBar = new CustomActionBar(this, R.id.spinnerForSections, actionBarCallback());
         Intent intent = getIntent();
-        String urlOfBoard = intent.getDataString();
-        setParameters(intent, urlOfBoard);
-        if (board == null) {
-            ProgressDialog dialog = ProgressDialog.show(ViewBoardActivity.this, null, "Fetching details of " + decodeBoardKey() + " board", true);
-            final Callback<Board> boardCallback = viewBoardCallback(dialog);
-            BoardRepository.getInstance().retrieveBoard(boardKey, boardId, boardCallback);
-            dialog.setCancelable(true);
-            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    finish();
-                }
-            });
-            dialog.show();
-        } else {
-            BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback());
-        }
+        board = intent.getParcelableExtra(BOARD);
+        boardKey = intent.getStringExtra(BOARD_KEY);
+        boardId = intent.getStringExtra(BOARD_ID);
+        selectedPosition = intent.getIntExtra(SELECTED_POSITION,0);
+        customActionBar = new CustomActionBar(this, R.id.spinnerForSections, actionBarCallback());
+        customActionBar.updateSelectedIndex(selectedPosition);
+        BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
-            int selectedPosition = data.getIntExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex());
+            int selectedPosition = data.getIntExtra(SELECTED_POSITION, customActionBar.selectedIndex());
             customActionBar.updateSelectedIndex(selectedPosition);
         }
         refresh(null);
@@ -104,21 +83,21 @@ public class ViewBoardActivity extends Activity {
 
     public void addIdea(View view) {
         Intent intent = new Intent(this, AddIdeaActivity.class);
-        intent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex().toString());
-        intent.putExtra(Constants.BOARD, this.board);
+        intent.putExtra(SELECTED_POSITION, customActionBar.selectedIndex().toString());
+        intent.putExtra(BOARD, this.board);
         startActivityForResult(intent, REQUEST_CODE);
     }
 
     public void editIdea(View view) {
-        View viewParent =  (View) view.getParent();
+        View viewParent = (View) view.getParent();
         TextView textView = (TextView) viewParent.findViewById(R.id.idea_text);
         Intent intent = new Intent(this, EditIdeaActivity.class);
-        Point selectedPoint = null;
+        Point selectedPoint;
         String message = textView.getText().toString();
         selectedPoint = board.getPointFromMessage(message, customActionBar.selectedIndex());
-        intent.putExtra(Constants.SELECTED_POINT, selectedPoint);
-        intent.putExtra(Constants.BOARD, board);
-        intent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex().toString());
+        intent.putExtra(SELECTED_POINT, selectedPoint);
+        intent.putExtra(BOARD, board);
+        intent.putExtra(SELECTED_POSITION, customActionBar.selectedIndex().toString());
         startActivityForResult(intent, REQUEST_CODE);
     }
 
@@ -158,7 +137,8 @@ public class ViewBoardActivity extends Activity {
     public void deleteIdea(View view) {
         generateConfirmationMessage(view);
     }
-    private void delete(View view){
+
+    private void delete(View view) {
         View parent = (View) view.getParent();
         parent.setVisibility(View.GONE);
         TextView textView = (TextView) parent.findViewById(R.id.idea_text);
@@ -227,30 +207,10 @@ public class ViewBoardActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            super.onBackPressed();
-
+        Intent intent = new Intent();
+        setResult(Activity.RESULT_CANCELED,intent);
+        super.onBackPressed();
     }
-
-    private Callback<Board> viewBoardCallback(final ProgressDialog dialog) {
-        final Context context = this;
-        return new Callback<Board>() {
-            @Override
-            public void execute(Board board) {
-                if (board != null) {
-                    dialog.dismiss();
-                    ViewBoardActivity.this.board = board;
-                    addRecentBoardNameToSharedPreferences();
-                    customActionBar.setActionBar(board, context);
-                } else {
-                    connectionIssueNotification();
-                }
-            }
-        };
-    }
-
-
 
     private Callback<List<Point>> viewPointsCallback() {
         final Context context = this;
@@ -271,38 +231,6 @@ public class ViewBoardActivity extends Activity {
         };
     }
 
-    private void setParameters(Intent intent, String urlOfBoard) {
-        if (urlOfBoard == null) {
-            boardKey = intent.getStringExtra(Constants.BOARD_KEY);
-            boardId = intent.getStringExtra(Constants.BOARD_ID);
-            int selectedIndex;
-            if (intent.getStringExtra(Constants.SELECTED_POSITION) != null) {
-                selectedIndex = Integer.parseInt(intent.getStringExtra(Constants.SELECTED_POSITION));
-            } else {
-                selectedIndex = 0;
-            }
-            customActionBar.updateSelectedIndex(selectedIndex);
-        } else {
-
-            boardId = extractURLFragment(urlOfBoard);
-            urlOfBoard = urlOfBoard.substring(0, urlOfBoard.lastIndexOf('/'));
-            boardKey = extractURLFragment(urlOfBoard);
-        }
-    }
-
-    private String decodeBoardKey() {
-        try {
-            return URLDecoder.decode(boardKey, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String extractURLFragment(String url) {
-        int lastIndex = url.lastIndexOf('/');
-        return url.substring(lastIndex + 1, url.length());
-    }
 
     private void setPoints(Board board, final int selectedItem) {
         String colourCode = ColorSticky.getColorCode(selectedItem);

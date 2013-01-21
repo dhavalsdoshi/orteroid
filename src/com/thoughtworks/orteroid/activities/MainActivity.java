@@ -61,12 +61,12 @@ public class MainActivity extends Activity {
     }
 
     public void viewDemo(View view) {
-        Intent intent = new Intent(this, ViewBoardActivity.class);
-        startViewBoardActivity("test", "2", intent);
+        Intent intent = new Intent(this, ViewSectionActivity.class);
+        startViewSectionActivity("test", "2", intent);
     }
 
     public void viewBoard(View view) {
-        final Intent intent = new Intent(this, ViewBoardActivity.class);
+        final Intent intent = new Intent(this, ViewSectionActivity.class);
         alertForDetails(intent);
     }
 
@@ -108,8 +108,8 @@ public class MainActivity extends Activity {
         builder.setCustomTitle(view);
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                Intent intent = new Intent(context, ViewBoardActivity.class);
-                startViewBoardActivity(recentBoardNames[item], recentBoardId[item], intent);
+                Intent intent = new Intent(context, ViewSectionActivity.class);
+                startViewSectionActivity(recentBoardNames[item], recentBoardId[item], intent);
             }
         };
         ListAdapter adapter = new BoardListAdapter(this, recentBoards);
@@ -132,8 +132,8 @@ public class MainActivity extends Activity {
     }
 
     public void feedback(View view) {
-        Intent intent = new Intent(this, ViewBoardActivity.class);
-        startViewBoardActivity("Feedback", "6733", intent);
+        Intent intent = new Intent(this, ViewSectionActivity.class);
+        startViewSectionActivity("Feedback", "6733", intent);
     }
 
     private void alertForDetails(final Intent intent) {
@@ -150,9 +150,9 @@ public class MainActivity extends Activity {
                 EditText urlEditText = (EditText) promptsView.findViewById(R.id.url);
                 String url = urlEditText.getText().toString();
                 if (boardId.length() != 0 && boardKey.length() != 0) {
-                    startViewBoardActivity(boardKey, boardId, intent);
+                    startViewSectionActivity(boardKey, boardId, intent);
                 } else if (url.length() != 0) {
-                    startViewBoardActivity(getBoardKeyFromUrl(url), getBoardIdFromUrl(url), intent);
+                    startViewSectionActivity(getBoardKeyFromUrl(url), getBoardIdFromUrl(url), intent);
                 }
             }
         });
@@ -170,7 +170,7 @@ public class MainActivity extends Activity {
         return url.substring(url.lastIndexOf('/') + 1, url.length());
     }
 
-    private void startViewBoardActivity(String boardKey, String boardId, Intent intent) {
+    private void startViewSectionActivity(String boardKey, String boardId, Intent intent) {
         intent.putExtra(Constants.BOARD_KEY, boardKey);
         intent.putExtra(Constants.BOARD_ID, boardId);
         startActivity(intent);

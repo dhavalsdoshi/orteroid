@@ -85,13 +85,19 @@ public class AddIdeaActivity extends Activity {
 
     public void addAnIdea(View view) {
         final EditText ideaText = (EditText) findViewById(R.id.ideaMessage);
-        idea = ideaText.getText().toString();
+        String rawIdea = ideaText.getText().toString();
+        idea = convertLineBreakToSpace(rawIdea);
         if (idea.length() != 0) {
             postIdea();
             progressBar = (ProgressBar) findViewById(R.id.progress_bar);
             progressBar.setVisibility(View.VISIBLE);
         }
         ideaText.setText(null);
+    }
+
+    private String convertLineBreakToSpace(String rawIdea) {
+          idea =  rawIdea.replaceAll("\n"," ");
+        return idea;
     }
 
     private void postIdea() {
@@ -148,7 +154,7 @@ public class AddIdeaActivity extends Activity {
     public void onBackPressed() {
         Intent intent = new Intent();
         intent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex());
-       setResult(Activity.RESULT_CANCELED,intent);
+        setResult(Activity.RESULT_CANCELED, intent);
        super.onBackPressed();
     }
 }

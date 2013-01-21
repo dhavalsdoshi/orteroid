@@ -54,13 +54,9 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
         String boardId = "2";
         intent.putExtra(Constants.BOARD_ID, boardId);
 
-        doAnswer(new Answer<Object>() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                ((Callback) invocation.getArguments()[2]).execute(board);
-                return null;
-            }
-        }).when(boardRepository).retrieveBoard(anyString(), anyString(), any(Callback.class));
+
+
+
         doAnswer(new Answer<Object>() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {

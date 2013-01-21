@@ -49,6 +49,10 @@
                 android:name=".activities.EditIdeaActivity"
                 android:screenOrientation="portrait">
         </activity>
+        <activity
+                android:name=".activities.ViewSectionActivity"
+                android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

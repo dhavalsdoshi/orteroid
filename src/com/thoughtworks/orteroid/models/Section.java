@@ -10,7 +10,7 @@ public class Section implements Parcelable{
 
     private String name;
     private Integer id;
-    private List<Point> points;
+    private List<Point> points = new ArrayList<Point>();
 
     public Section(String name, Integer id) {
         this.name = name;
@@ -28,7 +28,7 @@ public class Section implements Parcelable{
     }
 
     public boolean contains(Point point) {
-        return points.contains(point);
+     return points.contains(point);
     }
 
     public void addPoint(Point point) {

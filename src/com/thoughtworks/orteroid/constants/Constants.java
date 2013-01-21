@@ -10,4 +10,5 @@ public class Constants {
     public static final String SELECTED_POINT = "com.thoughtworks.orteroid.SelectedPoint";
     public static final int VERSION_CODE_FOR_ANDROID_3 = 11;
     public static final String PUT = "com.thoughtworks.orteroid.PUT";
+    public static final int REQUEST_CODE = 0;
 }

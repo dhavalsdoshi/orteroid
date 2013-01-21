@@ -39,10 +39,6 @@ public class ContentFetcher extends AsyncTask<String, Void, List<String>> {
         }
         return list;
     }
-//    @Override
-//    protected void onCancelled(){
-//        cancel(true);
-//    }
 
     public String response(String url) {
         HttpClient httpClient = new DefaultHttpClient();
