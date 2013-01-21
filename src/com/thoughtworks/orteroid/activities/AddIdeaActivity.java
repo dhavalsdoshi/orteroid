@@ -41,12 +41,12 @@ public class AddIdeaActivity extends Activity {
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
     }
 
@@ -96,7 +96,7 @@ public class AddIdeaActivity extends Activity {
     }
 
     private String convertLineBreakToSpace(String rawIdea) {
-          idea =  rawIdea.replaceAll("\n"," ");
+        idea = rawIdea.replaceAll("\n", " ");
         return idea;
     }
 
@@ -155,6 +155,6 @@ public class AddIdeaActivity extends Activity {
         Intent intent = new Intent();
         intent.putExtra(Constants.SELECTED_POSITION, customActionBar.selectedIndex());
         setResult(Activity.RESULT_CANCELED, intent);
-       super.onBackPressed();
+        super.onBackPressed();
     }
 }

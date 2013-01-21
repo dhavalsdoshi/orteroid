@@ -18,6 +18,7 @@ public class MainActivityTest extends BaseActivityTest<MainActivity> {
         bundleExtras.put(Constants.BOARD_ID, "2");
         assertNavigationToTargetWithParameters(R.id.viewTestBoard, ViewBoardActivity.class, bundleExtras);
     }
+
     public void testShouldNavigateToFeedbackBoard() {
         Map<String, String> bundleExtras = new HashMap<String, String>();
         bundleExtras.put(Constants.BOARD_KEY, "feedback");

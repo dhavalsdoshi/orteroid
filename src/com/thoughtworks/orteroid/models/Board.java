@@ -56,7 +56,7 @@ public class Board implements Parcelable {
         }
         for (Point point : points) {
             for (Section section : sections) {
-                if (point.sectionId().equals(section.id()) && !section.contains(point)){
+                if (point.sectionId().equals(section.id()) && !section.contains(point)) {
                     section.addPoint(point);
                 }
             }

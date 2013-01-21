@@ -3,7 +3,6 @@ package com.thoughtworks.orteroid.utilities;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.view.View;
 import android.widget.AdapterView;
@@ -38,15 +37,15 @@ public class CustomActionBar {
 
     }
 
-        public Integer selectedIndex() {
+    public Integer selectedIndex() {
         return actionBar == null ? spinner.getSelectedItemPosition() : actionBar.getSelectedNavigationIndex();
     }
 
-    public  ActionBar useActionBar(boolean setNavigationMode) {
+    public ActionBar useActionBar(boolean setNavigationMode) {
         actionBar = activity.getActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setIcon(R.drawable.ic_launcher);
-        if(setNavigationMode)actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        if (setNavigationMode) actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         return actionBar;
 
     }
@@ -61,7 +60,7 @@ public class CustomActionBar {
         }
     }
 
-    public  Spinner setSpinner(Context context,Board board) {
+    public Spinner setSpinner(Context context, Board board) {
         List<String> sectionNames = board.getSectionNames();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, sectionNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -77,13 +76,13 @@ public class CustomActionBar {
     }
 
 
-
-    private void setNavigationOfSpinner(final Board board){
+    private void setNavigationOfSpinner(final Board board) {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int itemPosition, long id) {
                 onActionBarItemSelected(itemPosition, board);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
@@ -109,7 +108,7 @@ public class CustomActionBar {
 
     public void updateSelectedIndex(int selectedIndex) {
         this.selectedIndex = selectedIndex;
-        if(actionBar == null)
+        if (actionBar == null)
             spinner.setSelection(selectedIndex);
         else
             actionBar.setSelectedNavigationItem(selectedIndex);

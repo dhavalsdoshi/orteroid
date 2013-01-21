@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Section implements Parcelable{
+public class Section implements Parcelable {
 
     private String name;
     private Integer id;
@@ -28,7 +28,7 @@ public class Section implements Parcelable{
     }
 
     public boolean contains(Point point) {
-     return points.contains(point);
+        return points.contains(point);
     }
 
     public void addPoint(Point point) {
@@ -53,6 +53,7 @@ public class Section implements Parcelable{
         parcel.writeInt(id);
         parcel.writeString(name);
     }
+
     public static final Parcelable.Creator<Section> CREATOR = new Parcelable.Creator<Section>() {
         public Section createFromParcel(Parcel in) {
             return new Section(in);
@@ -65,7 +66,7 @@ public class Section implements Parcelable{
 
     public Point getPointFromMessage(String message) {
         for (Point point : points) {
-            if(point.message().equals(message)){
+            if (point.message().equals(message)) {
                 return point;
             }
         }

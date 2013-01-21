@@ -28,8 +28,6 @@ public class SectionListAdapter extends ArrayAdapter<Point> {
         this.colour = colourCode;
     }
 
-
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater = ((Activity) context).getLayoutInflater();
@@ -45,7 +43,7 @@ public class SectionListAdapter extends ArrayAdapter<Point> {
         TextView votes = (TextView) rowView.findViewById(R.id.vote_count);
         votes.setTypeface(Font.setFontForIdea((Activity) this.getContext()));
         String votesForPoint = points.get(position).votes();
-        if(votesForPoint == null)votes.setText("+" + 0);
+        if (votesForPoint == null) votes.setText("+" + 0);
         else votes.setText("+" + votesForPoint);
         View view = rowView.findViewById(R.id.row_text);
         GradientDrawable drawable = (GradientDrawable) view.getBackground();

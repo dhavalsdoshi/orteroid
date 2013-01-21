@@ -20,24 +20,24 @@ public class EditIdeaActivityTest extends BaseActivityTest<EditIdeaActivity> {
 
     Point point;
 
-    public EditIdeaActivityTest(){
+    public EditIdeaActivityTest() {
         super(EditIdeaActivity.class);
     }
 
     public void setUp() throws Exception {
-        point = new Point(1,1,"dummy text",1);
+        point = new Point(1, 1, "dummy text", 1);
         BoardRepository boardRepository = mock(BoardRepository.class);
         BoardRepository.setBoardRepository(boardRepository);
-        Board board = new Board("dummy",2,null);
-        Intent intent = new Intent(getInstrumentation().getTargetContext(),EditIdeaActivity.class);
+        Board board = new Board("dummy", 2, null);
+        Intent intent = new Intent(getInstrumentation().getTargetContext(), EditIdeaActivity.class);
         intent.putExtra(Constants.SELECTED_POINT, point);
         intent.putExtra(Constants.BOARD, board);
-        intent.putExtra(Constants.SELECTED_POSITION,"3");
+        intent.putExtra(Constants.SELECTED_POSITION, "3");
         this.setActivityIntent(intent);
         super.setUp();
     }
 
-    public void testShouldContainStickyWithExistingStickyContent(){
+    public void testShouldContainStickyWithExistingStickyContent() {
         Activity activity = getActivity();
         EditText editText = (EditText) activity.findViewById(R.id.editIdea);
         String existingText = editText.getText().toString();
@@ -46,7 +46,7 @@ public class EditIdeaActivityTest extends BaseActivityTest<EditIdeaActivity> {
         assertEquals("dummy text", existingText);
     }
 
-    public void testShouldEditIdeaWhenSubmitPressed(){
+    public void testShouldEditIdeaWhenSubmitPressed() {
         Activity activity = getActivity();
         EditText editText = (EditText) activity.findViewById(R.id.editIdea);
         String text = "Edited Text";
@@ -54,7 +54,7 @@ public class EditIdeaActivityTest extends BaseActivityTest<EditIdeaActivity> {
 
         Button submitButton = (Button) activity.findViewById(R.id.submitEdit);
         editTextAndSubmit(editText, text, submitButton);
-        verify(BoardRepository.getInstance()).editIdea(eq(text), eq(1) , (Callback) any());
+        verify(BoardRepository.getInstance()).editIdea(eq(text), eq(1), (Callback) any());
     }
 
     private void editTextAndSubmit(final EditText editText, final String text, final Button submitButton) {

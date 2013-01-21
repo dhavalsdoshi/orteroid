@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
-import com.thoughtworks.orteroid.models.Board;
 import com.thoughtworks.orteroid.models.Point;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
 import com.thoughtworks.orteroid.utilities.ColorSticky;
@@ -84,7 +83,13 @@ public class EditIdeaActivity extends Activity {
 
     private void sendEditedIdea() {
         Callback<Boolean> callback = editIdeaCallback();
+        message = convertLineBreakToSpace(message);
         BoardRepository.getInstance().editIdea(message, point.id(), callback);
+    }
+
+    private String convertLineBreakToSpace(String rawIdea) {
+        String message = rawIdea.replaceAll("\n", " ");
+        return message;
     }
 
     private Callback<Boolean> editIdeaCallback() {
@@ -147,7 +152,6 @@ public class EditIdeaActivity extends Activity {
     private void migrateToViewBoardActivity() {
         finish();
     }
-
 
 
     private void setupText() {

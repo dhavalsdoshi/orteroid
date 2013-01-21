@@ -50,15 +50,15 @@ public class SharedData {
     private static JSONArray putObjectOnFirst(JSONObject jsonObject) {
         JSONArray jsonArray1 = new JSONArray();
         jsonArray1.put(jsonObject);
-        if(jsonArray != null)
-        for (int index = 0; index < jsonArray.length(); index++) {
-            try {
-                jsonArray1.put(jsonArray.getJSONObject(index));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        if (jsonArray != null)
+            for (int index = 0; index < jsonArray.length(); index++) {
+                try {
+                    jsonArray1.put(jsonArray.getJSONObject(index));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-        }
+            }
         return jsonArray1;
     }
 

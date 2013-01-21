@@ -14,7 +14,7 @@ public class ColorSticky {
         add("#c3ee8f");
     }};
 
-    public static String getColorCode(int selectedIndex){
-        return colours.get(selectedIndex%6);
+    public static String getColorCode(int selectedIndex) {
+        return colours.get(selectedIndex % 6);
     }
 }

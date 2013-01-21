@@ -9,14 +9,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
-import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.models.Board;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
+import com.thoughtworks.orteroid.utilities.Font;
 import com.thoughtworks.orteroid.utilities.SectionNameListAdapter;
 import com.thoughtworks.orteroid.utilities.SharedData;
 import org.json.JSONArray;
@@ -30,7 +29,7 @@ public class ViewSectionActivity extends Activity {
     private String boardKey;
     private String boardId;
     private Board board;
-    private Context context  = this;
+    private Context context = this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +39,8 @@ public class ViewSectionActivity extends Activity {
         String urlOfBoard = intent.getDataString();
         setParameters(intent, urlOfBoard);
         TextView boardNameHeader = (TextView) findViewById(R.id.board_name_header);
-        boardNameHeader.setText(boardKey);
+        boardNameHeader.setText(decodeBoardKey());
+        boardNameHeader.setTypeface(Font.setFontForIdea(this));
         if (board == null) {
             ProgressDialog dialog = ProgressDialog.show(ViewSectionActivity.this, null, "Fetching details of " + decodeBoardKey() + " board", true);
             final Callback<Board> boardCallback = viewBoardCallback(dialog);
@@ -56,9 +56,11 @@ public class ViewSectionActivity extends Activity {
         }
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     }
+
     void addRecentBoardNameToSharedPreferences() {
         SharedData.add(boardId, boardKey, this);
         JSONArray jsonArray = SharedData.getJsonArrayOfRecentBoard();
@@ -68,7 +70,9 @@ public class ViewSectionActivity extends Activity {
         edit.putString("boards", jsonArray.toString());
         edit.commit();
     }
+
     private Callback<Board> viewBoardCallback(final ProgressDialog dialog) {
+        final Activity activity = this;
         return new Callback<Board>() {
             @Override
             public void execute(Board board) {
@@ -77,7 +81,7 @@ public class ViewSectionActivity extends Activity {
                     ViewSectionActivity.this.board = board;
                     ListView listView = (ListView) findViewById(android.R.id.list);
                     System.out.println(board.getSectionNames());
-                    listView.setAdapter(new SectionNameListAdapter(context,board.getSectionNames()));
+                    listView.setAdapter(new SectionNameListAdapter(context, board.getSectionNames(), activity));
                     addRecentBoardNameToSharedPreferences();
                 } else {
                     connectionIssueNotification();
@@ -85,6 +89,7 @@ public class ViewSectionActivity extends Activity {
             }
         };
     }
+
     private void connectionIssueNotification() {
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(this)
@@ -101,14 +106,14 @@ public class ViewSectionActivity extends Activity {
     }
 
 
-
     private String decodeBoardKey() {
         try {
             return URLDecoder.decode(boardKey, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
-        }    }
+        }
+    }
 
     private void setParameters(Intent intent, String urlOfBoard) {
         if (urlOfBoard == null) {
@@ -125,18 +130,19 @@ public class ViewSectionActivity extends Activity {
         int lastIndex = url.lastIndexOf('/');
         return url.substring(lastIndex + 1, url.length());
     }
-    public void viewPoints(View view){
-        Button button = (Button) view;
+
+    public void viewPoints(View view) {
+        TextView button = (TextView) view.findViewById(R.id.section_names);
         String selectedSectionName = button.getText().toString();
         int selectedSection = 0;
         for (String name : board.getSectionNames()) {
-            if(name.equals(selectedSectionName)) selectedSection = board.getSectionNames().indexOf(name);
+            if (name.equals(selectedSectionName)) selectedSection = board.getSectionNames().indexOf(name);
         }
-        Intent intent = new Intent(this,ViewBoardActivity.class);
+        Intent intent = new Intent(this, ViewBoardActivity.class);
         intent.putExtra(BOARD, this.board);
-        intent.putExtra(BOARD_KEY,this.boardKey);
-        intent.putExtra(BOARD_ID,this.boardId);
-        intent.putExtra(SELECTED_POSITION , selectedSection);
+        intent.putExtra(BOARD_KEY, this.boardKey);
+        intent.putExtra(BOARD_ID, this.boardId);
+        intent.putExtra(SELECTED_POSITION, selectedSection);
         startActivityForResult(intent, REQUEST_CODE);
     }
 

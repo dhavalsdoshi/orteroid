@@ -24,17 +24,18 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 
-public class ViewSectionActivityTest  extends BaseActivityTest<ViewSectionActivity>{
+public class ViewSectionActivityTest extends BaseActivityTest<ViewSectionActivity> {
     public ViewSectionActivityTest() {
         super(ViewSectionActivity.class);
     }
+
     @Override
     protected void setUp() throws Exception {
         List<Section> listOfSections = new ArrayList<Section>();
-        final Point point = new Point(1, 1, "point",1);
-        final Point secondPoint = new Point(1, 1, "point2",1);
-        final Point thirdPoint = new Point(2, 1, "point3",1);
-        final Point fourthPoint = new Point(1, 1, "point4",1);
+        final Point point = new Point(1, 1, "point", 1);
+        final Point secondPoint = new Point(1, 1, "point2", 1);
+        final Point thirdPoint = new Point(2, 1, "point3", 1);
+        final Point fourthPoint = new Point(1, 1, "point4", 1);
         Section section = new Section("What went well", 1);
         Section section2 = new Section("What did not go well", 2);
         section.addPoint(point);
@@ -48,7 +49,7 @@ public class ViewSectionActivityTest  extends BaseActivityTest<ViewSectionActivi
 
         String boardName = "test";
         final Board board = new Board(boardName, 2, listOfSections);
-        Intent intent = new Intent((getInstrumentation().getTargetContext()),ViewBoardActivity.class);
+        Intent intent = new Intent((getInstrumentation().getTargetContext()), ViewBoardActivity.class);
         intent.putExtra(Constants.BOARD_KEY, boardName);
         String boardId = "2";
         intent.putExtra(Constants.BOARD_ID, boardId);
@@ -64,6 +65,7 @@ public class ViewSectionActivityTest  extends BaseActivityTest<ViewSectionActivi
         this.setActivityIntent(intent);
         super.setUp();
     }
+
     public void testShouldHaveBoardName() {
         TextView firstButton = (TextView) activity.findViewById(R.id.board_name_header);
         assertEquals("test", firstButton.getText());

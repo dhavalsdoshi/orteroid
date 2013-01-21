@@ -29,7 +29,6 @@ public class ViewBoardActivity extends Activity {
     private int selectedPosition;
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +37,7 @@ public class ViewBoardActivity extends Activity {
         board = intent.getParcelableExtra(BOARD);
         boardKey = intent.getStringExtra(BOARD_KEY);
         boardId = intent.getStringExtra(BOARD_ID);
-        selectedPosition = intent.getIntExtra(SELECTED_POSITION,0);
+        selectedPosition = intent.getIntExtra(SELECTED_POSITION, 0);
         customActionBar = new CustomActionBar(this, R.id.spinnerForSections, actionBarCallback());
         customActionBar.updateSelectedIndex(selectedPosition);
         BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback());
@@ -208,7 +207,7 @@ public class ViewBoardActivity extends Activity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
-        setResult(Activity.RESULT_CANCELED,intent);
+        setResult(Activity.RESULT_CANCELED, intent);
         super.onBackPressed();
     }
 

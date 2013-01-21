@@ -25,12 +25,13 @@ public class AddIdeaActivityTest extends BaseActivityTest<AddIdeaActivity> {
     public AddIdeaActivityTest() {
         super(AddIdeaActivity.class);
     }
+
     public void setUp() throws Exception {
         List<Section> listOfSections = new ArrayList<Section>();
-        final Point point = new Point(1, 1, "point",1);
-        final Point secondPoint = new Point(1, 1, "point2",1);
-        final Point thirdPoint = new Point(2, 1, "point3",1);
-        final Point fourthPoint = new Point(1, 1, "point4",1);
+        final Point point = new Point(1, 1, "point", 1);
+        final Point secondPoint = new Point(1, 1, "point2", 1);
+        final Point thirdPoint = new Point(2, 1, "point3", 1);
+        final Point fourthPoint = new Point(1, 1, "point4", 1);
         Section section = new Section("What went well", 1);
         Section section2 = new Section("What did not go well", 2);
         section.addPoint(point);
@@ -44,13 +45,14 @@ public class AddIdeaActivityTest extends BaseActivityTest<AddIdeaActivity> {
 
         String boardName = "test";
         final Board board = new Board(boardName, 2, listOfSections);
-        Intent intent = new Intent(getInstrumentation().getTargetContext(),AddIdeaActivity.class);
-        intent.putExtra(Constants.SELECTED_POSITION,"1");
+        Intent intent = new Intent(getInstrumentation().getTargetContext(), AddIdeaActivity.class);
+        intent.putExtra(Constants.SELECTED_POSITION, "1");
         intent.putExtra(Constants.BOARD, board);
         this.setActivityIntent(intent);
         super.setUp();
     }
-    public void testShouldAddIdeaWhenSubmitPressed(){
+
+    public void testShouldAddIdeaWhenSubmitPressed() {
         Activity activity = getActivity();
         EditText editText = (EditText) activity.findViewById(R.id.ideaMessage);
         String text = "Edited Text for new idea";

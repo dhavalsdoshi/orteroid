@@ -52,6 +52,7 @@ public class TestUtilities {
         }
         instrumentationTestCase.getInstrumentation().waitForIdleSync();
     }
+
     public static void navigateSpinnerToIndex(final Spinner spinner, final int indexToSelect, InstrumentationTestCase instrumentationTestCase) {
         try {
             instrumentationTestCase.runTestOnUiThread(new Runnable() {

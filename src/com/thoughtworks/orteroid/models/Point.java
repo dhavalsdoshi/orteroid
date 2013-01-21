@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-public class Point implements Parcelable{
+public class Point implements Parcelable {
 
     private int id;
     private String message;
@@ -40,7 +40,7 @@ public class Point implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-        Log.v("","Write to Parcel: " + flags);
+        Log.v("", "Write to Parcel: " + flags);
         parcel.writeInt(id);
         parcel.writeString(message);
         parcel.writeInt(sectionId);
@@ -64,8 +64,9 @@ public class Point implements Parcelable{
     public String votes() {
         return votes.toString();
     }
-    public Point clone(){
-        return new Point(sectionId,id,message,votes);
+
+    public Point clone() {
+        return new Point(sectionId, id, message, votes);
     }
 
     @Override

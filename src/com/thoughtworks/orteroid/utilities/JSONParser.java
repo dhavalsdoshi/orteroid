@@ -69,11 +69,11 @@ public class JSONParser {
 
 
     public static String[] parseStringToRecentBoardsId(String data) {
-        return getDataList(data,BOARD_ID);
+        return getDataList(data, BOARD_ID);
     }
 
     private static String[] getDataList(String data, String boardDetail) {
-        if(data == null) return null;
+        if (data == null) return null;
         JSONArray jsonArray = null;
         try {
             jsonArray = new JSONArray(data);
@@ -83,7 +83,7 @@ public class JSONParser {
         List<String> items = new ArrayList<String>();
         try {
             for (int index = 0; index < jsonArray.length(); index++) {
-                JSONObject jsonObject =  jsonArray.getJSONObject(index);
+                JSONObject jsonObject = jsonArray.getJSONObject(index);
                 items.add(jsonObject.get(boardDetail).toString());
             }
         } catch (JSONException e) {
