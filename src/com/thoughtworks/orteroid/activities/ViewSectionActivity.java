@@ -9,11 +9,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.models.Board;
+import com.thoughtworks.orteroid.models.Point;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
 import com.thoughtworks.orteroid.utilities.Font;
 import com.thoughtworks.orteroid.utilities.SectionNameListAdapter;
@@ -22,6 +25,7 @@ import org.json.JSONArray;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.List;
 
 import static com.thoughtworks.orteroid.constants.Constants.*;
 
@@ -56,6 +60,20 @@ public class ViewSectionActivity extends Activity {
         }
 
     }
+    private Callback<List<Point>> viewPointsCallback() {
+        final Context context = this;
+        return new Callback<List<Point>>() {
+            @Override
+            public void execute(List<Point> points) {
+                if (points != null) {
+                    ViewSectionActivity.this.board.update(points);
+                } else {
+                    connectionIssueNotification();
+                }
+            }
+        };
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -83,6 +101,7 @@ public class ViewSectionActivity extends Activity {
                     System.out.println(board.getSectionNames());
                     listView.setAdapter(new SectionNameListAdapter(context, board.getSectionNames(), activity));
                     addRecentBoardNameToSharedPreferences();
+                    BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback());
                 } else {
                     connectionIssueNotification();
                 }

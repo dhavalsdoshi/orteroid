@@ -17,6 +17,8 @@ import com.thoughtworks.orteroid.utilities.Font;
 import com.thoughtworks.orteroid.utilities.JSONParser;
 import com.thoughtworks.orteroid.utilities.SharedData;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,22 +86,14 @@ public class MainActivity extends Activity {
         SharedPreferences sharedPreferences = getSharedPreferences(SharedData.PREFS_NAME, 0);
         String data = sharedPreferences.getString("boards", null);
         final String[] recentBoardNames = JSONParser.parseStringToRecentBoardsName(data);
-        List<String> recentBoards = new ArrayList<String>();
-        int index = 0;
-        String[] decodedRecentBoardNames = new String[recentBoardNames.length];
-        for (String recentBoardName : recentBoardNames) {
-            decodedRecentBoardNames[index] = recentBoardName;
-            index++;
-        }
         if (recentBoardNames == null || recentBoardNames.length == 0) {
             generateToastForNoRecentBoards();
             return;
         }
-        for (String recentBoardName : decodedRecentBoardNames) {
-            recentBoards.add(recentBoardName);
-        }
-        final String[] recentBoardId = JSONParser.parseStringToRecentBoardsId(data);
+        buildAlert(recentBoardNames, JSONParser.parseStringToRecentBoardsId(data));
+    }
 
+    private void buildAlert(final String[] recentBoardNames, final String[] recentBoardId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.alert_box_heading, null);
@@ -112,10 +106,23 @@ public class MainActivity extends Activity {
                 startViewSectionActivity(recentBoardNames[item], recentBoardId[item], intent);
             }
         };
-        ListAdapter adapter = new BoardListAdapter(this, recentBoards);
+        ListAdapter adapter = new BoardListAdapter(this, decodeList(recentBoardNames));
         builder.setAdapter(adapter, listener);
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private String[] decodeList(String[] recentBoardNames) {
+        String decodedList[] = new String[recentBoardNames.length];
+        int index = 0;
+        for (String recentBoardName : recentBoardNames) {
+            try {
+                decodedList[index] = URLDecoder.decode(recentBoardName, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return decodedList;
     }
 
     private void generateToastForNoRecentBoards() {

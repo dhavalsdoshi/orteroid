@@ -51,6 +51,6 @@
                 android:enabled="true"
                 android:onClick="addAnIdea"
                 android:layout_gravity="center_horizontal" android:layout_weight="1" android:clickable="true"
-                android:background="@color/black" android:textColor="@android:color/holo_green_light"/>
+                android:background="@color/black" android:textColor="#4fff15"/>
     </RelativeLayout>
 </LinearLayout>

@@ -12,11 +12,11 @@ import com.thoughtworks.orteroid.R;
 import java.util.List;
 
 public class BoardListAdapter extends ArrayAdapter {
-    private final List<String> names;
+    private String[] names = null;
     private final Context context;
     View view;
 
-    public BoardListAdapter(Context context, List<String> objects) {
+    public BoardListAdapter(Context context, String[] objects) {
         super(context, R.layout.alert_box_names, R.id.nameOfSection, objects);
         this.context = context;
         this.names = objects;
@@ -29,7 +29,7 @@ public class BoardListAdapter extends ArrayAdapter {
 
         TextView sectionName = (TextView) view.findViewById(R.id.nameOfSection);
         sectionName.setTypeface(Font.setFontForIdea((Activity) this.getContext()));
-        sectionName.setText(names.get(position));
+        sectionName.setText(names[position]);
         sectionName.setTextSize(25);
         sectionName.setPadding(5, 5, 5, 5);
         return view;

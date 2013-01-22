@@ -29,7 +29,7 @@ public class SharedData {
     }
 
     public static void add(String boardId, String boardKey, Activity activity) {
-        if (boardId.equals("2") || boardId.equals("1")) return;
+        if (boardId.equals("2") || boardId.equals("6733")) return;
 
         SharedPreferences sharedPreferences = activity.getSharedPreferences(SharedData.PREFS_NAME, 0);
         String previusRecentBoardList = sharedPreferences.getString("boards", null);

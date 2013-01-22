@@ -2,16 +2,17 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" android:background="#000000" android:paddingBottom="10dip">
 
     <EditText
-            android:layout_width="fill_parent"
+            android:layout_width="294dp"
             android:layout_height="39dip"
             android:hint="Enter Board name"
             android:id="@+id/boardKey" android:layout_gravity="center"
             android:layout_alignParentLeft="true" android:layout_alignParentTop="true"
             android:layout_marginTop="26dp" android:paddingLeft="5dip" android:paddingRight="5dip"
-            android:layout_marginLeft="10dip" android:layout_marginRight="10dip"/>
+            android:layout_marginLeft="10dip" android:background="#ffffff"
+            android:layout_alignParentRight="true" android:layout_marginRight="10dip"/>
 
     <EditText
             android:layout_width="194dp"
@@ -20,7 +21,8 @@
             android:layout_height="39dip"
             android:layout_weight="1"
             android:layout_alignLeft="@+id/boardKey" android:layout_alignParentTop="true"
-            android:layout_marginTop="80dp" android:layout_alignRight="@+id/boardKey"/>
+            android:layout_marginTop="80dp" android:layout_alignRight="@+id/url"
+            android:background="@android:color/white"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,5 +37,5 @@
             android:hint="Paste the url of board"
             android:id="@+id/url" android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
             android:layout_marginTop="161dp" android:layout_alignRight="@+id/boardKey"
-            android:layout_alignLeft="@+id/boardKey"/>
+            android:layout_alignLeft="@+id/boardKey" android:background="@android:color/white"/>
 </RelativeLayout>

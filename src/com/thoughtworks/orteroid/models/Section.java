@@ -21,6 +21,8 @@ public class Section implements Parcelable {
     private Section(Parcel in) {
         id = in.readInt();
         name = in.readString();
+        points = new ArrayList<Point>();
+        in.readTypedList(points, Point.CREATOR);
     }
 
     public String name() {
@@ -52,6 +54,7 @@ public class Section implements Parcelable {
     public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeInt(id);
         parcel.writeString(name);
+        parcel.writeTypedList(points);
     }
 
     public static final Parcelable.Creator<Section> CREATOR = new Parcelable.Creator<Section>() {

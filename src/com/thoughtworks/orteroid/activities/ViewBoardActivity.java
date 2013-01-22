@@ -39,8 +39,8 @@ public class ViewBoardActivity extends Activity {
         boardId = intent.getStringExtra(BOARD_ID);
         selectedPosition = intent.getIntExtra(SELECTED_POSITION, 0);
         customActionBar = new CustomActionBar(this, R.id.spinnerForSections, actionBarCallback());
+        customActionBar.setActionBar(board, this);
         customActionBar.updateSelectedIndex(selectedPosition);
-        BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback());
     }
 
     @Override
@@ -233,10 +233,10 @@ public class ViewBoardActivity extends Activity {
 
     private void setPoints(Board board, final int selectedItem) {
         String colourCode = ColorSticky.getColorCode(selectedItem);
-
         SectionListAdapter sectionListAdapter = new SectionListAdapter(this, board.pointsOfSection(selectedItem), colourCode);
         final ListView listView = (ListView) findViewById(android.R.id.list);
         int currentItem = listView.getFirstVisiblePosition();
+        listView.setEmptyView(findViewById(R.id.no_ideas_added));
         listView.setAdapter(sectionListAdapter);
         listView.setSelectionFromTop(currentItem, 0);
     }

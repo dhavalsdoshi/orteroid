@@ -53,6 +53,6 @@
                 android:layout_gravity="center_horizontal"
                 android:clickable="true"
                 android:background="@color/black"
-                android:textColor="@android:color/holo_green_light"/>
+                android:textColor="#4fff15"/>
     </RelativeLayout>
 </LinearLayout>
