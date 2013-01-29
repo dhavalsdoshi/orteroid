@@ -9,9 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
@@ -19,7 +17,7 @@ import com.thoughtworks.orteroid.models.Board;
 import com.thoughtworks.orteroid.models.Point;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
 import com.thoughtworks.orteroid.utilities.Font;
-import com.thoughtworks.orteroid.utilities.SectionNameListAdapter;
+import com.thoughtworks.orteroid.utilities.SectionNAmeListAdapter;
 import com.thoughtworks.orteroid.utilities.SharedData;
 import org.json.JSONArray;
 
@@ -99,7 +97,7 @@ public class ViewSectionActivity extends Activity {
                     ViewSectionActivity.this.board = board;
                     ListView listView = (ListView) findViewById(android.R.id.list);
                     System.out.println(board.getSectionNames());
-                    listView.setAdapter(new SectionNameListAdapter(context, board.getSectionNames(), activity));
+                    listView.setAdapter(new SectionNAmeListAdapter(context, board.getSectionNames(), activity));
                     addRecentBoardNameToSharedPreferences();
                     BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback());
                 } else {

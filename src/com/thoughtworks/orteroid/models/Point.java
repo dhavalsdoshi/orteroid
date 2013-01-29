@@ -18,6 +18,13 @@ public class Point implements Parcelable {
         this.votes = votes;
     }
 
+    @Override
+    public String toString() {
+        return "Point{" +
+                "message='" + message + '\'' +
+                '}';
+    }
+
     private Point(Parcel parcel) {
         this.id = parcel.readInt();
         this.message = parcel.readString();

@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.*;
 import android.widget.*;
 import com.thoughtworks.orteroid.Callback;
@@ -27,6 +29,7 @@ public class ViewBoardActivity extends Activity {
     private String boardKey;
     private String boardId;
     private int selectedPosition;
+    SectionListAdapter sectionListAdapter;
 
 
     @Override
@@ -43,6 +46,7 @@ public class ViewBoardActivity extends Activity {
         customActionBar.updateSelectedIndex(selectedPosition);
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
@@ -53,12 +57,32 @@ public class ViewBoardActivity extends Activity {
     }
 
     public void refresh(View view) {
-
         ImageButton refreshButton = (ImageButton) findViewById(R.id.refreshButton);
         refreshButton.setVisibility(View.GONE);
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress);
         progressBar.setVisibility(View.VISIBLE);
         BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback());
+    }
+
+    public void search(View view) {
+        TextView searchView = (TextView) findViewById(R.id.searchText);
+        searchView.setVisibility(View.VISIBLE);
+        searchView.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence textToSearch, int arg1, int arg2, int arg3) {
+                sectionListAdapter.getFilter().filter(textToSearch);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                sectionListAdapter.getFilter().filter(arg0.toString());
+            }
+        });
     }
 
     @Override
@@ -206,9 +230,14 @@ public class ViewBoardActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent();
-        setResult(Activity.RESULT_CANCELED, intent);
-        super.onBackPressed();
+        TextView searchView = (TextView) findViewById(R.id.searchText);
+        if (searchView.getVisibility() == View.VISIBLE) {
+            searchView.setVisibility(View.GONE);
+        } else {
+            Intent intent = new Intent();
+            setResult(Activity.RESULT_CANCELED, intent);
+            super.onBackPressed();
+        }
     }
 
     private Callback<List<Point>> viewPointsCallback() {
@@ -233,7 +262,7 @@ public class ViewBoardActivity extends Activity {
 
     private void setPoints(Board board, final int selectedItem) {
         String colourCode = ColorSticky.getColorCode(selectedItem);
-        SectionListAdapter sectionListAdapter = new SectionListAdapter(this, board.pointsOfSection(selectedItem), colourCode);
+        sectionListAdapter = new SectionListAdapter(this, board.pointsOfSection(selectedItem), colourCode);
         final ListView listView = (ListView) findViewById(android.R.id.list);
         int currentItem = listView.getFirstVisiblePosition();
         listView.setEmptyView(findViewById(R.id.no_ideas_added));

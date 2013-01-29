@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
@@ -102,7 +103,15 @@ public class CustomActionBar {
     private void onActionBarItemSelected(int itemPosition, Board board) {
         int selectedSection = board.sections().get(itemPosition).id();
         selectedIndex = itemPosition;
+        makeSearchTextInvisible();
         actionBarCallback.execute(selectedSection);
+    }
+
+    private void makeSearchTextInvisible() {
+        TextView searchView = (TextView) activity.findViewById(R.id.searchText);
+        if (searchView.getVisibility() == View.VISIBLE) {
+            searchView.setVisibility(View.GONE);
+        }
     }
 
 

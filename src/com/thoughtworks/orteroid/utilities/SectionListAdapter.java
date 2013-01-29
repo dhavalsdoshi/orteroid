@@ -8,16 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
 import android.widget.TextView;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.models.Point;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SectionListAdapter extends ArrayAdapter<Point> {
 
     private final Context context;
-    private final List<Point> points;
+    private List<Point> points;
     View rowView;
     String colour;
 
@@ -27,6 +29,7 @@ public class SectionListAdapter extends ArrayAdapter<Point> {
         this.points = objects;
         this.colour = colourCode;
     }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -38,11 +41,11 @@ public class SectionListAdapter extends ArrayAdapter<Point> {
         }
         TextView ideas = (TextView) rowView.findViewById(R.id.idea_text);
         ideas.setTypeface(Font.setFontForIdea((Activity) this.getContext()));
-        ideas.setText(points.get(position).message());
+        ideas.setText(getItem(position).message());
         ideas.setTextSize(18);
         TextView votes = (TextView) rowView.findViewById(R.id.vote_count);
         votes.setTypeface(Font.setFontForIdea((Activity) this.getContext()));
-        String votesForPoint = points.get(position).votes();
+        String votesForPoint = getItem(position).votes();
         if (votesForPoint == null) votes.setText("+" + 0);
         else votes.setText("+" + votesForPoint);
         View view = rowView.findViewById(R.id.row_text);
@@ -50,5 +53,4 @@ public class SectionListAdapter extends ArrayAdapter<Point> {
         drawable.setColor(Color.parseColor(colour));
         return rowView;
     }
-
 }

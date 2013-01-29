@@ -11,13 +11,13 @@ import com.thoughtworks.orteroid.R;
 
 import java.util.List;
 
-public class SectionNameListAdapter extends ArrayAdapter<String> {
+public class SectionNAmeListAdapter extends ArrayAdapter<String> {
     private final Context context;
     View rowView;
     private final List<String> sectionNames;
     private final Activity activity;
 
-    public SectionNameListAdapter(Context context, List<String> objects, Activity activity) {
+    public SectionNAmeListAdapter(Context context, List<String> objects, Activity activity) {
         super(context, R.layout.board_view_layout, R.id.section_names, objects);
         this.context = context;
         this.sectionNames = objects;

@@ -32,6 +32,7 @@
         </activity>
         <activity
                 android:name=".activities.ViewBoardActivity"
+                android:windowSoftInputMode="stateHidden"
                 android:screenOrientation="portrait">
 
         </activity>
