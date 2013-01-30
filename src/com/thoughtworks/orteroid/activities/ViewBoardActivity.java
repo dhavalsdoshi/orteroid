@@ -64,11 +64,31 @@ public class ViewBoardActivity extends Activity {
         BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback());
     }
 
+    public void sort(View view) {
+        Spinner spinner = (Spinner) findViewById(R.id.sortSpinner);
+        spinner.setVisibility(View.VISIBLE);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int itemPosition, long id) {
+                if (itemPosition == 0) sortByVotes();
+                if (itemPosition == 1) ;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+    }
+
+    private void sortByVotes() {
+        List<Point> points = board.pointsOfSectionSortedByVotes(board.sections().get(customActionBar.selectedIndex()).id());
+        setPointsIntoList(board.sections().get(customActionBar.selectedIndex()).id(),points);
+    }
+
     public void search(View view) {
         TextView searchView = (TextView) findViewById(R.id.searchText);
         searchView.setVisibility(View.VISIBLE);
         searchView.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void onTextChanged(CharSequence textToSearch, int arg1, int arg2, int arg3) {
                 sectionListAdapter.getFilter().filter(textToSearch);
@@ -83,6 +103,7 @@ public class ViewBoardActivity extends Activity {
                 sectionListAdapter.getFilter().filter(arg0.toString());
             }
         });
+
     }
 
     @Override
@@ -233,6 +254,9 @@ public class ViewBoardActivity extends Activity {
         TextView searchView = (TextView) findViewById(R.id.searchText);
         if (searchView.getVisibility() == View.VISIBLE) {
             searchView.setVisibility(View.GONE);
+            sectionListAdapter.getFilter().filter("");
+
+
         } else {
             Intent intent = new Intent();
             setResult(Activity.RESULT_CANCELED, intent);
@@ -261,14 +285,20 @@ public class ViewBoardActivity extends Activity {
 
 
     private void setPoints(Board board, final int selectedItem) {
+        List<Point> points = board.pointsOfSection(selectedItem);
+        setPointsIntoList(selectedItem, points);
+    }
+
+    private void setPointsIntoList(int selectedItem, List<Point> points) {
         String colourCode = ColorSticky.getColorCode(selectedItem);
-        sectionListAdapter = new SectionListAdapter(this, board.pointsOfSection(selectedItem), colourCode);
+        sectionListAdapter = new SectionListAdapter(this, points, colourCode);
         final ListView listView = (ListView) findViewById(android.R.id.list);
         int currentItem = listView.getFirstVisiblePosition();
         listView.setEmptyView(findViewById(R.id.no_ideas_added));
         listView.setAdapter(sectionListAdapter);
         listView.setSelectionFromTop(currentItem, 0);
     }
+
 
     private void connectionIssueNotification() {
         AlertDialog.Builder builder =

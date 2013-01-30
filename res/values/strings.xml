@@ -17,8 +17,13 @@
     <string name="edit">edit</string>
     <string name="option5">Recent boards</string>
     <string name="choose_section">Choose section..!!!</string>
+    <color name="gray">#5A5A5A</color>
     <color name="black">#000</color>
     <color name="blue">#00f</color>
     <color name="red">#f00</color>
+    <string-array name="options">
+        <item>By votes</item>
+        <item>By creation time</item>
+    </string-array>
 
 </resources>

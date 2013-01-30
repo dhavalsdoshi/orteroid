@@ -42,23 +42,23 @@ public class ContentFetcher extends AsyncTask<String, Void, List<String>> {
 
     public String response(String url) {
         HttpClient httpClient = new DefaultHttpClient();
-        HttpRequestBase httpRequest = httpRequest(url);
-        String result = null;
-        try {
-            HttpResponse httpResponse = httpClient.execute(httpRequest);
-            StatusLine statusLine = httpResponse.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            if (statusCode >= 200 && statusCode <= 210) {
-                HttpEntity httpEntity = httpResponse.getEntity();
-                InputStream content = httpEntity.getContent();
-                result = toString(content);
-            }
-        } catch (IOException httpResponseError) {
-            Log.e("HTTP Response", "IO error");
-            return "404 error";
+    HttpRequestBase httpRequest = httpRequest(url);
+    String result = null;
+    try {
+        HttpResponse httpResponse = httpClient.execute(httpRequest);
+        StatusLine statusLine = httpResponse.getStatusLine();
+        int statusCode = statusLine.getStatusCode();
+        if (statusCode >= 200 && statusCode <= 210) {
+            HttpEntity httpEntity = httpResponse.getEntity();
+            InputStream content = httpEntity.getContent();
+            result = toString(content);
         }
-        return result;
+    } catch (IOException httpResponseError) {
+        Log.e("HTTP Response", "IO error");
+        return "404 error";
     }
+    return result;
+}
 
     private HttpRequestBase httpRequest(String url) {
         if (responseType.equals(Constants.GET)) {

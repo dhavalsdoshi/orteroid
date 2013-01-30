@@ -70,6 +70,13 @@ public class Board implements Parcelable {
         }
         return null;
     }
+    public List<Point> pointsOfSectionSortedByVotes(int selectedSection) {
+        for (Section section : sections) {
+            if ((section.id()).equals(selectedSection))
+                return section.sortedPoints();
+        }
+        return null;
+    }
 
     public Integer id() {
         return id;
@@ -109,4 +116,6 @@ public class Board implements Parcelable {
         Section selectedSection = sections.get(selectedIndex);
         return selectedSection.getPointFromMessage(message);
     }
+
+
 }
