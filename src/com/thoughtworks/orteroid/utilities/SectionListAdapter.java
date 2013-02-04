@@ -8,25 +8,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Filter;
 import android.widget.TextView;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.models.Point;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class SectionListAdapter extends ArrayAdapter<Point> {
 
     private final Context context;
-    private List<Point> points;
     View rowView;
     String colour;
 
     public SectionListAdapter(Context context, List<Point> objects, String colourCode) {
         super(context, R.layout.section_view_row_layout, R.id.idea_text, objects);
         this.context = context;
-        this.points = objects;
+        List<Point> points = objects;
         this.colour = colourCode;
     }
 

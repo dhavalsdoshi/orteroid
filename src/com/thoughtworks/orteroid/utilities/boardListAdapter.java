@@ -14,7 +14,7 @@ import java.util.List;
 public class BoardListAdapter extends ArrayAdapter {
     private String[] names = null;
     private final Context context;
-    View view;
+    private View view;
 
     public BoardListAdapter(Context context, String[] objects) {
         super(context, R.layout.alert_box_names, R.id.nameOfSection, objects);

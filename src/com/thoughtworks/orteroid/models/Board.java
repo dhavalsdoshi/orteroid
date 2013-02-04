@@ -2,7 +2,6 @@ package com.thoughtworks.orteroid.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,10 +69,19 @@ public class Board implements Parcelable {
         }
         return null;
     }
+
     public List<Point> pointsOfSectionSortedByVotes(int selectedSection) {
         for (Section section : sections) {
             if ((section.id()).equals(selectedSection))
-                return section.sortedPoints();
+                return section.sortedPointsByVotes();
+        }
+        return null;
+    }
+
+    public List<Point> pointsOfSectionSortedByTime(int selectedSection) {
+        for (Section section : sections) {
+            if ((section.id()).equals(selectedSection))
+                return section.sortedPointsByTime();
         }
         return null;
     }

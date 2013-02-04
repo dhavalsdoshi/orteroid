@@ -88,8 +88,7 @@ public class EditIdeaActivity extends Activity {
     }
 
     private String convertLineBreakToSpace(String rawIdea) {
-        String message = rawIdea.replaceAll("\n", " ");
-        return message;
+        return rawIdea.replaceAll("\n", " ");
     }
 
     private Callback<Boolean> editIdeaCallback() {

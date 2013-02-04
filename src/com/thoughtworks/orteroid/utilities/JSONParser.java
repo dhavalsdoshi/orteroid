@@ -58,13 +58,12 @@ public class JSONParser {
     }
 
     public static Point parseToPoint(JSONObject jsonObject) throws JSONException {
-        return new Point(jsonObject.getInt(SECTIONID_KEY), jsonObject.getInt(ID_KEY), jsonObject.getString(MESSAGE_KEY), jsonObject.getInt("votes_count"));
+        return new Point(jsonObject.getInt(SECTIONID_KEY), jsonObject.getInt(ID_KEY), jsonObject.getString(MESSAGE_KEY), jsonObject.getInt("votes_count"),jsonObject.getString("updated_at"));
     }
 
 
     public static String[] parseStringToRecentBoardsName(String data) {
-        String[] dataList = getDataList(data, BOARD_NAME);
-        return dataList;
+        return getDataList(data, BOARD_NAME);
     }
 
 

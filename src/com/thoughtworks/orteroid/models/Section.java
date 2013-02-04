@@ -46,18 +46,33 @@ public class Section implements Parcelable {
     public List<Point> points() {
         return points;
     }
-    public List<Point> sortedPoints() {
-       Collections.sort(points,new Comparator<Point>() {
+
+    public List<Point> sortedPointsByVotes() {
+        Collections.sort(points, new Comparator<Point>() {
 
             @Override
             public int compare(Point lhs, Point rhs) {
                 int lhsVotes = Integer.parseInt(lhs.votes());
                 int rhsVotes = Integer.parseInt(rhs.votes());
-                return lhsVotes>rhsVotes?-1:lhsVotes<rhsVotes?1:0;
+                return lhsVotes > rhsVotes ? -1 : lhsVotes < rhsVotes ? 1 : 0;
             }
         });
         return points;
     }
+
+    public List<Point> sortedPointsByTime() {
+        Collections.sort(points, new Comparator<Point>() {
+
+            @Override
+            public int compare(Point lhs, Point rhs) {
+                Long lhsTime = lhs.creationTime();
+                Long rhsTime = rhs.creationTime();
+                return lhsTime > rhsTime ? -1 : lhsTime < rhsTime ? 1 : 0;
+            }
+        });
+        return points;
+    }
+
     @Override
     public int describeContents() {
         return 0;

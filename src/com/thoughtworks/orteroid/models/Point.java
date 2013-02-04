@@ -4,18 +4,29 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Point implements Parcelable {
 
     private int id;
     private String message;
     private int sectionId;
     private Integer votes;
+    private Date creationTime;
 
-    public Point(int sectionId, int id, String message, Integer votes) {
+    public Point(int sectionId, int id, String message, Integer votes, String dateString) {
         this.id = id;
         this.message = message;
         this.sectionId = sectionId;
         this.votes = votes;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd hh:mm:ss +SSSS");
+        try {
+            creationTime = dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -30,6 +41,8 @@ public class Point implements Parcelable {
         this.message = parcel.readString();
         this.sectionId = parcel.readInt();
         this.votes = parcel.readInt();
+        this.creationTime = new Date(parcel.readLong());
+
     }
 
     public String message() {
@@ -52,6 +65,7 @@ public class Point implements Parcelable {
         parcel.writeString(message);
         parcel.writeInt(sectionId);
         parcel.writeInt(votes);
+        parcel.writeLong(creationTime.getTime());
     }
 
     public static final Parcelable.Creator<Point> CREATOR = new Parcelable.Creator<Point>() {
@@ -73,7 +87,7 @@ public class Point implements Parcelable {
     }
 
     public Point clone() {
-        return new Point(sectionId, id, message, votes);
+        return new Point(sectionId, id, message, votes, creationTime.toString());
     }
 
     @Override
@@ -86,9 +100,8 @@ public class Point implements Parcelable {
         if (id != point.id) return false;
         if (sectionId != point.sectionId) return false;
         if (!message.equals(point.message)) return false;
-        if (votes != null ? !votes.equals(point.votes) : point.votes != null) return false;
+        return !(votes != null ? !votes.equals(point.votes) : point.votes != null);
 
-        return true;
     }
 
     @Override
@@ -98,5 +111,10 @@ public class Point implements Parcelable {
         result = 31 * result + sectionId;
         result = 31 * result + (votes != null ? votes.hashCode() : 0);
         return result;
+    }
+
+    public Long creationTime() {
+        System.out.println(creationTime +"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+ creationTime.getTime());
+        return creationTime.getTime();
     }
 }

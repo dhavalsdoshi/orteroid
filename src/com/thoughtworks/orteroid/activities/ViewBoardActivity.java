@@ -28,7 +28,6 @@ public class ViewBoardActivity extends Activity {
     private Board board;
     private String boardKey;
     private String boardId;
-    private int selectedPosition;
     SectionListAdapter sectionListAdapter;
 
 
@@ -40,7 +39,7 @@ public class ViewBoardActivity extends Activity {
         board = intent.getParcelableExtra(BOARD);
         boardKey = intent.getStringExtra(BOARD_KEY);
         boardId = intent.getStringExtra(BOARD_ID);
-        selectedPosition = intent.getIntExtra(SELECTED_POSITION, 0);
+        int selectedPosition = intent.getIntExtra(SELECTED_POSITION, 0);
         customActionBar = new CustomActionBar(this, R.id.spinnerForSections, actionBarCallback());
         customActionBar.setActionBar(board, this);
         customActionBar.updateSelectedIndex(selectedPosition);
@@ -64,14 +63,20 @@ public class ViewBoardActivity extends Activity {
         BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback());
     }
 
-    public void sort(View view) {
-        Spinner spinner = (Spinner) findViewById(R.id.sortSpinner);
+    public void showSortOptions(View view) {
+        TextView searchView = (TextView) findViewById(R.id.searchText);
+        if (searchView.getVisibility() == View.VISIBLE) {
+            searchView.setVisibility(View.GONE);
+            sectionListAdapter.getFilter().filter("");
+        }
+        final Spinner spinner = (Spinner) findViewById(R.id.sortSpinner);
         spinner.setVisibility(View.VISIBLE);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int itemPosition, long id) {
                 if (itemPosition == 0) sortByVotes();
-                if (itemPosition == 1) ;
+                if (itemPosition == 1) sortByTime();
+                spinner.setVisibility(View.GONE);
             }
 
             @Override
@@ -80,13 +85,20 @@ public class ViewBoardActivity extends Activity {
         });
     }
 
+    private void sortByTime() {
+        List<Point> points = board.pointsOfSectionSortedByTime(board.sections().get(customActionBar.selectedIndex()).id());
+        setPointsIntoList(board.sections().get(customActionBar.selectedIndex()).id(), points);
+    }
+
     private void sortByVotes() {
         List<Point> points = board.pointsOfSectionSortedByVotes(board.sections().get(customActionBar.selectedIndex()).id());
-        setPointsIntoList(board.sections().get(customActionBar.selectedIndex()).id(),points);
+        setPointsIntoList(board.sections().get(customActionBar.selectedIndex()).id(), points);
     }
 
     public void search(View view) {
         TextView searchView = (TextView) findViewById(R.id.searchText);
+        Spinner spinner = (Spinner) findViewById(R.id.sortSpinner);
+        if(spinner.getVisibility() == View.VISIBLE) spinner.setVisibility(View.GONE);
         searchView.setVisibility(View.VISIBLE);
         searchView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -252,12 +264,14 @@ public class ViewBoardActivity extends Activity {
     @Override
     public void onBackPressed() {
         TextView searchView = (TextView) findViewById(R.id.searchText);
+        Spinner spinner = (Spinner) findViewById(R.id.sortSpinner);
         if (searchView.getVisibility() == View.VISIBLE) {
             searchView.setVisibility(View.GONE);
             sectionListAdapter.getFilter().filter("");
-
-
-        } else {
+        }else if(spinner.getVisibility() == View.VISIBLE){
+            spinner.setVisibility(View.GONE);
+        }
+        else {
             Intent intent = new Intent();
             setResult(Activity.RESULT_CANCELED, intent);
             super.onBackPressed();
