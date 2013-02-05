@@ -25,7 +25,7 @@ public class EditIdeaActivityTest extends BaseActivityTest<EditIdeaActivity> {
     }
 
     public void setUp() throws Exception {
-        point = new Point(1, 1, "dummy text", 1);
+        point = new Point(1, 1, "dummy text", 1,"2013/01/29 20:40:18 +0000");
         BoardRepository boardRepository = mock(BoardRepository.class);
         BoardRepository.setBoardRepository(boardRepository);
         Board board = new Board("dummy", 2, null);

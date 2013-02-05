@@ -35,10 +35,10 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
     @Override
     protected void setUp() throws Exception {
         List<Section> listOfSections = new ArrayList<Section>();
-        final Point point = new Point(1, 1, "point", 1);
-        final Point secondPoint = new Point(1, 1, "point2", 1);
-        final Point thirdPoint = new Point(2, 1, "point3", 1);
-        final Point fourthPoint = new Point(1, 1, "point4", 1);
+        final Point point = new Point(1, 1, "point", 1,"2013/01/29 20:40:18 +0000");
+        final Point secondPoint = new Point(1, 1, "point2", 1,"2013/01/29 20:40:18 +0000");
+        final Point thirdPoint = new Point(2, 1, "point3", 1,"2013/01/29 20:40:18 +0000");
+        final Point fourthPoint = new Point(1, 1, "point4", 1,"2013/01/29 20:40:18 +0000");
         Section section = new Section("What went well", 1);
         Section section2 = new Section("What did not go well", 2);
         section.addPoint(point);
@@ -49,22 +49,22 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
         listOfSections.add(section2);
         BoardRepository boardRepository = mock(BoardRepository.class);
         BoardRepository.setBoardRepository(boardRepository);
-
         String boardName = "test";
         final Board board = new Board(boardName, 2, listOfSections);
         Intent intent = new Intent((getInstrumentation().getTargetContext()), ViewBoardActivity.class);
         intent.putExtra(Constants.BOARD_KEY, boardName);
         String boardId = "2";
         intent.putExtra(Constants.BOARD_ID, boardId);
+        intent.putExtra(Constants.BOARD, board);
 
 
         doAnswer(new Answer<Object>() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
                 ((Callback) invocation.getArguments()[2]).execute(new ArrayList<Point>() {{
-                    add(new Point(1, 1, "point10", 5));
+                    add(new Point(1, 1, "point10", 5,"2013/01/29 20:40:18 +0000"));
                     add(fourthPoint.clone());
-                    add(new Point(1, 3, "point5", 3));
+                    add(new Point(1, 3, "point5", 3,"2013/01/29 20:40:18 +0000"));
                 }});
                 return null;
             }

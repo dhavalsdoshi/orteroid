@@ -4,10 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.test.InstrumentationTestCase;
 import android.test.TouchUtils;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Spinner;
+import android.widget.*;
 
 public class TestUtilities {
 
@@ -28,8 +25,12 @@ public class TestUtilities {
 
     public static void clickButton(int id, Activity activity, InstrumentationTestCase instrumentationTestCase) {
 
-        if (!(activity.findViewById(id) instanceof Button)) {
+        if ((activity.findViewById(id) instanceof ImageButton)) {
             ImageButton view = (ImageButton) activity.findViewById(id);
+            TouchUtils.clickView(instrumentationTestCase, view);
+        }
+        else if ((activity.findViewById(id) instanceof TextView)) {
+            TextView view = (TextView) activity.findViewById(id);
             TouchUtils.clickView(instrumentationTestCase, view);
         } else {
             Button view = (Button) activity.findViewById(id);
