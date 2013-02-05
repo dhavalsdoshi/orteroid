@@ -98,7 +98,7 @@ public class ViewBoardActivity extends Activity {
     public void search(View view) {
         TextView searchView = (TextView) findViewById(R.id.searchText);
         Spinner spinner = (Spinner) findViewById(R.id.sortSpinner);
-        if(spinner.getVisibility() == View.VISIBLE) spinner.setVisibility(View.GONE);
+        if (spinner.getVisibility() == View.VISIBLE) spinner.setVisibility(View.GONE);
         searchView.setVisibility(View.VISIBLE);
         searchView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -268,10 +268,9 @@ public class ViewBoardActivity extends Activity {
         if (searchView.getVisibility() == View.VISIBLE) {
             searchView.setVisibility(View.GONE);
             sectionListAdapter.getFilter().filter("");
-        }else if(spinner.getVisibility() == View.VISIBLE){
+        } else if (spinner.getVisibility() == View.VISIBLE) {
             spinner.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             Intent intent = new Intent();
             setResult(Activity.RESULT_CANCELED, intent);
             super.onBackPressed();

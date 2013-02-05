@@ -58,6 +58,7 @@ public class ViewSectionActivity extends Activity {
         }
 
     }
+
     private Callback<List<Point>> viewPointsCallback() {
         final Context context = this;
         return new Callback<List<Point>>() {

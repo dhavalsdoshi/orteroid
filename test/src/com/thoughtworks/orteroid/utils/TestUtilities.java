@@ -28,8 +28,7 @@ public class TestUtilities {
         if ((activity.findViewById(id) instanceof ImageButton)) {
             ImageButton view = (ImageButton) activity.findViewById(id);
             TouchUtils.clickView(instrumentationTestCase, view);
-        }
-        else if ((activity.findViewById(id) instanceof TextView)) {
+        } else if ((activity.findViewById(id) instanceof TextView)) {
             TextView view = (TextView) activity.findViewById(id);
             TouchUtils.clickView(instrumentationTestCase, view);
         } else {

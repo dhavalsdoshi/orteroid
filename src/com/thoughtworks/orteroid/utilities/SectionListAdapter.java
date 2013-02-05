@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.models.Point;
+
 import java.util.List;
 
 public class SectionListAdapter extends ArrayAdapter<Point> {

@@ -114,7 +114,7 @@ public class Point implements Parcelable {
     }
 
     public Long creationTime() {
-        System.out.println(creationTime +"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+ creationTime.getTime());
+        System.out.println(creationTime + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + creationTime.getTime());
         return creationTime.getTime();
     }
 }

@@ -19,8 +19,8 @@ public class BoardTest extends TestCase {
             add(new Section("What did not go well", 2));
         }};
 
-        firstPoint = new Point(1, 112, "Hey ! This is a test", 1,"2013/01/29 20:40:18 +0000");
-        secondPoint = new Point(2, 301, "This is a test too", 2,"2013/01/29 20:40:18 +0000");
+        firstPoint = new Point(1, 112, "Hey ! This is a test", 1, "2013/01/29 20:40:18 +0000");
+        secondPoint = new Point(2, 301, "This is a test too", 2, "2013/01/29 20:40:18 +0000");
         board = new Board("test", 2, listOfSections);
         listOfPoints = new ArrayList<Point>();
         listOfPoints.add(firstPoint);

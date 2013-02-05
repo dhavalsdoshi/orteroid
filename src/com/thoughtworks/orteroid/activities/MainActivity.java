@@ -19,8 +19,6 @@ import com.thoughtworks.orteroid.utilities.SharedData;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends Activity {
 
@@ -47,7 +45,7 @@ public class MainActivity extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-        // EasyTracker.getInstance().activityStart(this);
+//        EasyTracker.getInstance().activityStart(this);
     }
 
     @Override
