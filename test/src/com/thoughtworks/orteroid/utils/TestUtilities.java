@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.test.InstrumentationTestCase;
 import android.test.TouchUtils;
 import android.widget.*;
+import com.thoughtworks.orteroid.activities.BaseActivityTest;
 
 public class TestUtilities {
 
@@ -66,5 +67,19 @@ public class TestUtilities {
             e.printStackTrace();
         }
         instrumentationTestCase.getInstrumentation().waitForIdleSync();
+    }
+
+    public static <T extends Activity> void editTextAndSubmit(BaseActivityTest<T> baseActivityTest, final EditText editText, final String text, final Button submitButton) {
+        try {
+            baseActivityTest.runTestOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    editText.setText(text);
+                    submitButton.performClick();
+                }
+            });
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 }

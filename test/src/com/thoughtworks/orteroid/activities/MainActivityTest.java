@@ -25,5 +25,4 @@ public class MainActivityTest extends BaseActivityTest<MainActivity> {
         bundleExtras.put(Constants.BOARD_ID, "6733");
         assertNavigationToTargetWithParameters(R.id.feedback, ViewSectionActivity.class, bundleExtras);
     }
-
 }

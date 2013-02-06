@@ -11,6 +11,7 @@ import com.thoughtworks.orteroid.models.Board;
 import com.thoughtworks.orteroid.models.Point;
 import com.thoughtworks.orteroid.models.Section;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
+import com.thoughtworks.orteroid.utils.TestUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +29,10 @@ public class AddIdeaActivityTest extends BaseActivityTest<AddIdeaActivity> {
 
     public void setUp() throws Exception {
         List<Section> listOfSections = new ArrayList<Section>();
-        final Point point = new Point(1, 1, "point", 1,"2013/01/29 20:40:18 +0000");
-        final Point secondPoint = new Point(1, 1, "point2", 1,"2013/01/29 20:40:18 +0000");
-        final Point thirdPoint = new Point(2, 1, "point3", 1,"2013/01/29 20:40:18 +0000");
-        final Point fourthPoint = new Point(1, 1, "point4", 1,"2013/01/29 20:40:18 +0000");
+        final Point point = new Point(1, 1, "point", 1, "2013/01/29 20:40:18 +0000");
+        final Point secondPoint = new Point(1, 1, "point2", 1, "2013/01/29 20:40:18 +0000");
+        final Point thirdPoint = new Point(2, 1, "point3", 1, "2013/01/29 20:40:18 +0000");
+        final Point fourthPoint = new Point(1, 1, "point4", 1, "2013/01/29 20:40:18 +0000");
         Section section = new Section("What went well", 1);
         Section section2 = new Section("What did not go well", 2);
         section.addPoint(point);
@@ -58,23 +59,9 @@ public class AddIdeaActivityTest extends BaseActivityTest<AddIdeaActivity> {
         String text = "Edited Text for new idea";
 
         Button submitButton = (Button) activity.findViewById(R.id.submitButton);
-        editTextAndSubmit(editText, text, submitButton);
+        TestUtilities.editTextAndSubmit(this, editText, text, submitButton);
         verify(BoardRepository.getInstance()).addIdea(eq(text), eq(2), (Callback) any());
     }
 
-
-    private void editTextAndSubmit(final EditText editText, final String text, final Button submitButton) {
-        try {
-            runTestOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    editText.setText(text);
-                    submitButton.performClick();
-                }
-            });
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-    }
 
 }

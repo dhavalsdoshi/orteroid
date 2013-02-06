@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
+import com.thoughtworks.orteroid.activities.ViewBoardActivity;
 import com.thoughtworks.orteroid.constants.Constants;
 import com.thoughtworks.orteroid.models.Board;
 import com.thoughtworks.orteroid.models.Section;
@@ -103,7 +104,9 @@ public class CustomActionBar {
     private void onActionBarItemSelected(int itemPosition, Board board) {
         int selectedSection = board.sections().get(itemPosition).id();
         selectedIndex = itemPosition;
-        makeSearchTextInvisible();
+        if(activity.getClass() == ViewBoardActivity.class) {
+            makeSearchTextInvisible();
+        }
         actionBarCallback.execute(selectedSection);
     }
 

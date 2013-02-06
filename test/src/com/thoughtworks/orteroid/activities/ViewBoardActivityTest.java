@@ -57,7 +57,6 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
         intent.putExtra(Constants.BOARD_ID, boardId);
         intent.putExtra(Constants.BOARD, board);
 
-
         doAnswer(new Answer<Object>() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
@@ -72,6 +71,10 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
 
         this.setActivityIntent(intent);
         super.setUp();
+    }
+
+    public void testShouldSortByVotes() {
+
     }
 
 
@@ -113,6 +116,7 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
         assertEquals("point5", fourthIdea.getText());
 
     }
+
 
     public void testShouldFindTotalNumberOfNavigationItemsInCorrespondingSpinner() {
         ActionBar actionBar;

@@ -36,4 +36,5 @@ public class BaseActivityTest<T extends Activity> extends ActivityInstrumentatio
         }
         nextActivity.finish();
     }
+
 }
