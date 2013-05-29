@@ -23,7 +23,6 @@ public class SectionListAdapter extends ArrayAdapter<Point> {
     public SectionListAdapter(Context context, List<Point> objects, String colourCode) {
         super(context, R.layout.section_view_row_layout, R.id.idea_text, objects);
         this.context = context;
-        List<Point> points = objects;
         this.colour = colourCode;
     }
 

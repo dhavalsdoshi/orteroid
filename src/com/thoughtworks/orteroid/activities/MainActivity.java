@@ -12,7 +12,7 @@ import android.widget.*;
 import com.crittercism.app.Crittercism;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
-import com.thoughtworks.orteroid.utilities.BoardListAdapter;
+import com.thoughtworks.orteroid.utilities.boardListAdapter;
 import com.thoughtworks.orteroid.utilities.Font;
 import com.thoughtworks.orteroid.utilities.JSONParser;
 import com.thoughtworks.orteroid.utilities.SharedData;
@@ -104,7 +104,7 @@ public class MainActivity extends Activity {
                 startViewSectionActivity(recentBoardNames[item], recentBoardId[item], intent);
             }
         };
-        ListAdapter adapter = new BoardListAdapter(this, decodeList(recentBoardNames));
+        ListAdapter adapter = new boardListAdapter(this, decodeList(recentBoardNames));
         builder.setAdapter(adapter, listener);
         AlertDialog alert = builder.create();
         alert.show();
