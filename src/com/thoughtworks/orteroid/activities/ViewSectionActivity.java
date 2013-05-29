@@ -17,7 +17,7 @@ import com.thoughtworks.orteroid.models.Board;
 import com.thoughtworks.orteroid.models.Point;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
 import com.thoughtworks.orteroid.utilities.Font;
-import com.thoughtworks.orteroid.utilities.SectionNAmeListAdapter;
+import com.thoughtworks.orteroid.utilities.SectionNameListAdapterTemp;
 import com.thoughtworks.orteroid.utilities.SharedData;
 import org.json.JSONArray;
 
@@ -97,7 +97,7 @@ public class ViewSectionActivity extends Activity {
                     ViewSectionActivity.this.board = board;
                     ListView listView = (ListView) findViewById(android.R.id.list);
                     System.out.println(board.getSectionNames());
-                    listView.setAdapter(new SectionNAmeListAdapter(context, board.getSectionNames(), activity));
+                    listView.setAdapter(new SectionNameListAdapterTemp(context, board.getSectionNames(), activity));
                     addRecentBoardNameToSharedPreferences();
                     BoardRepository.getInstance().retrievePoints(boardKey, boardId, viewPointsCallback());
                 } else {
