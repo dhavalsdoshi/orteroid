@@ -12,7 +12,7 @@ import android.widget.*;
 import com.crittercism.app.Crittercism;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.constants.Constants;
-import com.thoughtworks.orteroid.utilities.BoardListAdapter;
+import com.thoughtworks.orteroid.adapters.BoardListAdapter;
 import com.thoughtworks.orteroid.utilities.Font;
 import com.thoughtworks.orteroid.utilities.JSONParser;
 import com.thoughtworks.orteroid.utilities.SharedData;

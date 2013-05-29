@@ -17,7 +17,7 @@ import com.thoughtworks.orteroid.models.Point;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
 import com.thoughtworks.orteroid.utilities.ColorSticky;
 import com.thoughtworks.orteroid.utilities.CustomActionBar;
-import com.thoughtworks.orteroid.utilities.SectionListAdapter;
+import com.thoughtworks.orteroid.adapters.SectionListAdapter;
 
 import java.util.List;
 

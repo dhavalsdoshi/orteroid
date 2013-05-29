@@ -1,4 +1,4 @@
-package com.thoughtworks.orteroid.utilities;
+package com.thoughtworks.orteroid.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.thoughtworks.orteroid.R;
 import com.thoughtworks.orteroid.models.Point;
+import com.thoughtworks.orteroid.utilities.Font;
 
 import java.util.List;
 

@@ -17,7 +17,7 @@ import com.thoughtworks.orteroid.models.Board;
 import com.thoughtworks.orteroid.models.Point;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
 import com.thoughtworks.orteroid.utilities.Font;
-import com.thoughtworks.orteroid.utilities.SectionNameListAdapter;
+import com.thoughtworks.orteroid.adapters.SectionNameListAdapter;
 import com.thoughtworks.orteroid.utilities.SharedData;
 import org.json.JSONArray;
 
