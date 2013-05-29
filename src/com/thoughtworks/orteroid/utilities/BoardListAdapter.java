@@ -11,12 +11,12 @@ import com.thoughtworks.orteroid.R;
 
 import java.util.List;
 
-public class BoardListAdapterTemp extends ArrayAdapter {
+public class BoardListAdapter extends ArrayAdapter {
     private String[] names = null;
     private final Context context;
     private View view;
 
-    public BoardListAdapterTemp(Context context, String[] objects) {
+    public BoardListAdapter(Context context, String[] objects) {
         super(context, R.layout.alert_box_names, R.id.nameOfSection, objects);
         this.context = context;
         this.names = objects;
