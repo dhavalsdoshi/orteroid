@@ -3,15 +3,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
+                android:onClick="viewPoints"
                 android:layout_height="fill_parent">
 
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:id="@+id/section_names" android:layout_gravity="center"
             android:layout_alignParentRight="true"
-            android:onClick="viewPoints"
-            android:id="@+id/section_names"
             android:background="@drawable/sticky"
             android:layout_alignParentLeft="true" android:paddingLeft="5dip" android:paddingTop="10dip"
             android:paddingRight="5dip" android:paddingBottom="10dip" android:layout_margin="5dip"/>
