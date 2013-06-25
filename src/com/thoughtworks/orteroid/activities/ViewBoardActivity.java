@@ -6,12 +6,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.*;
 import android.widget.*;
 import com.thoughtworks.orteroid.Callback;
 import com.thoughtworks.orteroid.R;
+import com.thoughtworks.orteroid.fragments.ViewPointsFragment;
 import com.thoughtworks.orteroid.models.Board;
 import com.thoughtworks.orteroid.models.Point;
 import com.thoughtworks.orteroid.repositories.BoardRepository;
@@ -23,12 +29,12 @@ import java.util.List;
 
 import static com.thoughtworks.orteroid.constants.Constants.*;
 
-public class ViewBoardActivity extends Activity {
+public class ViewBoardActivity extends FragmentActivity {
     private CustomActionBar customActionBar;
     private Board board;
     private String boardKey;
     private String boardId;
-    SectionListAdapter sectionListAdapter;
+    private SectionListAdapter sectionListAdapter;
 
 
     @Override
@@ -43,6 +49,10 @@ public class ViewBoardActivity extends Activity {
         customActionBar = new CustomActionBar(this, R.id.spinnerForSections, actionBarCallback());
         customActionBar.setActionBar(board, this);
         customActionBar.updateSelectedIndex(selectedPosition);
+        BoardFragmentsAdapter adapter = new BoardFragmentsAdapter(getSupportFragmentManager());
+        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(adapter);
+        pager.setCurrentItem(selectedPosition);
     }
 
 
@@ -326,6 +336,29 @@ public class ViewBoardActivity extends Activity {
                         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public class BoardFragmentsAdapter extends FragmentPagerAdapter {
+        public BoardFragmentsAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public int getCount() {
+            return board.sections().size();
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+//            customActionBar.updateSeletedIndex(position);
+            return new ViewPointsFragment(board, position, ViewBoardActivity.this);
+        }
+
+        @Override
+        public CharSequence getPageTitle (int position) {
+            return board.getSectionNames().get(position);
+        }
+
     }
 
 

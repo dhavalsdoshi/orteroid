@@ -29,14 +29,16 @@
             android:textColor="@android:color/black" android:layout_marginLeft="2dip"
             android:layout_marginRight="2dip"/>
 
-    <ListView
-            android:id="@android:id/list"
+    <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
             android:layout_width="fill_parent"
             android:layout_height="0dip"
-            android:layout_marginBottom="10dip"
-            android:layout_marginTop="1dip"
-            android:divider="#80000000"
-            android:layout_weight="9"/>
+            android:layout_weight="16">
+        <android.support.v4.view.PagerTabStrip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top" />
+    </android.support.v4.view.ViewPager>
 
     <Spinner
             android:layout_width="fill_parent"

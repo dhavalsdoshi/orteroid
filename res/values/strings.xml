@@ -17,6 +17,7 @@
     <string name="edit">edit</string>
     <string name="option5">Recent boards</string>
     <string name="choose_section">Choose section..!!!</string>
+    <string name="empty_board_list_text">No ideas added yet..!!</string>
     <color name="gray">#5A5A5A</color>
     <color name="black">#000</color>
     <color name="blue">#00f</color>
