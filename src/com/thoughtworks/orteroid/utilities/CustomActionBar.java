@@ -46,7 +46,7 @@ public class CustomActionBar {
     public ActionBar useActionBar(boolean setNavigationMode) {
         actionBar = activity.getActionBar();
         actionBar.setHomeButtonEnabled(true);
-        actionBar.setIcon(R.drawable.ic_launcher);
+        actionBar.setIcon(R.drawable.ideaboardz_icon);
         if (setNavigationMode) actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         return actionBar;
 
