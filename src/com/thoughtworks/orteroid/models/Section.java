@@ -67,7 +67,7 @@ public class Section implements Parcelable {
             public int compare(Point lhs, Point rhs) {
                 Long lhsTime = lhs.creationTime();
                 Long rhsTime = rhs.creationTime();
-                return lhsTime > rhsTime ? -1 : lhsTime < rhsTime ? 1 : 0;
+                return lhsTime < rhsTime ? -1 : lhsTime > rhsTime ? 1 : 0;
             }
         });
         return points;

@@ -43,6 +43,26 @@ public class ViewBoardActivity extends Activity {
         customActionBar = new CustomActionBar(this, R.id.spinnerForSections, actionBarCallback());
         customActionBar.setActionBar(board, this);
         customActionBar.updateSelectedIndex(selectedPosition);
+        initializeSpinner();
+    }
+
+    private void initializeSpinner() {
+        final Spinner spinner = (Spinner) findViewById(R.id.sortSpinner);
+        spinner.setSelection(1);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            boolean instantiatedFirstTime = false;
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int itemPosition, long id) {
+                if (itemPosition == 0) sortByVotes();
+                if (itemPosition == 1) sortByTime();
+                spinner.setVisibility(instantiatedFirstTime?View.GONE:View.VISIBLE);
+                instantiatedFirstTime = true;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
     }
 
 
@@ -71,18 +91,6 @@ public class ViewBoardActivity extends Activity {
         }
         final Spinner spinner = (Spinner) findViewById(R.id.sortSpinner);
         spinner.setVisibility(View.VISIBLE);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int itemPosition, long id) {
-                if (itemPosition == 0) sortByVotes();
-                if (itemPosition == 1) sortByTime();
-                spinner.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
     }
 
     private void sortByTime() {

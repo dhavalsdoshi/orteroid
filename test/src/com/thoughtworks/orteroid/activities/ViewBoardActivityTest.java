@@ -37,8 +37,8 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
     protected void setUp() throws Exception {
         List<Section> listOfSections = new ArrayList<Section>();
         final Point point = new Point(1, 1, "point", 1, "2013/01/29 20:40:18 +0000");
-        final Point secondPoint = new Point(1, 1, "point2", 1, "2013/01/29 20:40:18 +0000");
-        final Point thirdPoint = new Point(2, 1, "point3", 4, "2013/01/29 20:40:18 +0000");
+        final Point secondPoint = new Point(1, 1, "point2", 4, "2013/01/29 20:40:18 +0000");
+        final Point thirdPoint = new Point(2, 1, "point3", 1, "2013/01/29 20:40:18 +0000");
         final Point fourthPoint = new Point(1, 1, "point4", 1, "2013/01/29 20:40:18 +0000");
         Section section = new Section("What went well", 1);
         Section section2 = new Section("What did not go well", 2);
@@ -78,8 +78,8 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
         TestUtilities.clickButton(R.id.sortButton,activity,this);
         Spinner sortSpinner = (Spinner) activity.findViewById(R.id.sortSpinner);
         assertEquals(sortSpinner.getVisibility(), View.VISIBLE);
-        TestUtilities.navigateSpinnerToIndex(sortSpinner, 1, this);
-        assertEquals(((TextView)activity.findViewById(R.id.vote_count)).getText(), "4");
+        TestUtilities.navigateSpinnerToIndex(sortSpinner, 0, this);
+        assertEquals(((TextView)activity.findViewById(R.id.vote_count)).getText(), "+4");
     }
 
 
