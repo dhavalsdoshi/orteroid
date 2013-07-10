@@ -32,7 +32,7 @@ public class Point implements Parcelable {
     @Override
     public String toString() {
         return "Point{" +
-                "message='" + message + '\'' +
+                "message=' " + message + " '" +
                 '}';
     }
 

@@ -82,6 +82,16 @@ public class ViewBoardActivityTest extends BaseActivityTest<ViewBoardActivity> {
         assertEquals(((TextView)activity.findViewById(R.id.vote_count)).getText(), "+4");
     }
 
+    public void testShouldSearch(){
+        TestUtilities.clickButton(R.id.searchButton,activity,this);
+        TextView search = (TextView) activity.findViewById(R.id.searchText);
+        assertEquals(search.getVisibility(), View.VISIBLE);
+        TestUtilities.setEditText(R.id.searchText, "point2", activity, this);
+        ListView listView = (ListView) activity.findViewById(android.R.id.list);
+        TextView firstButton = (TextView) activity.findViewById(R.id.idea_text);
+        assertEquals(firstButton.getText(), "point2");
+        assertEquals(listView.getChildCount(), 1);
+    }
 
     public void testShouldListThePointsOfDefaultSection() {
         TextView firstButton = (TextView) activity.findViewById(R.id.idea_text);
