@@ -19,6 +19,7 @@ import com.ideaboardz.android.utilities.SharedData;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 public class MainActivity extends Activity {
 
@@ -155,7 +156,11 @@ public class MainActivity extends Activity {
                 EditText urlEditText = (EditText) promptsView.findViewById(R.id.url);
                 String url = urlEditText.getText().toString();
                 if (boardId.length() != 0 && boardKey.length() != 0) {
-                    startViewSectionActivity(boardKey, boardId, intent);
+                    try {
+                        startViewSectionActivity(URLEncoder.encode(boardKey, "UTF-8").replace("+", "%20"), boardId, intent);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 } else if (url.length() != 0) {
                     startViewSectionActivity(getBoardKeyFromUrl(url), getBoardIdFromUrl(url), intent);
                 }
