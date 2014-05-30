@@ -60,16 +60,22 @@ public class BoardRepository {
         contentFetcher.execute(response);
     }
 
-    public void editIdea(String editedIdea, int ideaId, final Callback<Boolean> callback) {
+    public void editIdea(String editedIdea, int ideaId, String oldmessage,final Callback<Boolean> callback) {
         String encodedMessage = editedIdea.replace(" ", "%20");
-        String response = urlGenerator.urlForEditingIdea(ideaId, encodedMessage);
+        String encodedOldMessage = oldmessage.replace(" ", "%20");
+        String response = urlGenerator.urlForEditingIdea(ideaId, encodedMessage, encodedOldMessage);
         Callback<List<String>> serverCallback = generateServerCallbackForPutRequest(callback);
         ContentFetcher contentFetcher = new ContentFetcher(serverCallback, Constants.PUT);
         contentFetcher.execute(response);
     }
 
     public void deletePoint(Point selectedPoint, final Callback<Boolean> callback) {
-        String response = urlGenerator.urlForDeletingIdea(selectedPoint);
+        String response = null;
+        try {
+            response = urlGenerator.urlForDeletingIdea(selectedPoint);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         Callback<List<String>> serverCallback = generateServerCallbackForGetRequest(callback);
         ContentFetcher contentFetcher = new ContentFetcher(serverCallback, Constants.GET);
         contentFetcher.execute(response);

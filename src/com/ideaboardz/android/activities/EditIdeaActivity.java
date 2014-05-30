@@ -26,6 +26,7 @@ public class EditIdeaActivity extends Activity {
 
     private Point point;
     private String message;
+    private String oldmessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,8 @@ public class EditIdeaActivity extends Activity {
         this.point = intent.getParcelableExtra(Constants.SELECTED_POINT);
         setupText();
         setBackgroundLayout();
+        EditText editText = (EditText) findViewById(R.id.editIdea);
+        oldmessage = editText.getText().toString();
     }
 
     @Override
@@ -84,7 +87,8 @@ public class EditIdeaActivity extends Activity {
     private void sendEditedIdea() {
         Callback<Boolean> callback = editIdeaCallback();
         message = convertLineBreakToSpace(message);
-        BoardRepository.getInstance().editIdea(message, point.id(), callback);
+        oldmessage = convertLineBreakToSpace(oldmessage);
+        BoardRepository.getInstance().editIdea(message, point.id(), oldmessage, callback);
     }
 
     private String convertLineBreakToSpace(String rawIdea) {
@@ -118,7 +122,7 @@ public class EditIdeaActivity extends Activity {
     private void generateFailureNotification() {
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(this)
-                        .setTitle("The following idea failed :\n " + message)
+                        .setTitle("The following idea failed :\n " + oldmessage)
                         .setNegativeButton("Try Resending", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 sendEditedIdea();

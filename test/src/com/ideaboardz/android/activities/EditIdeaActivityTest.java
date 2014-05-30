@@ -24,9 +24,10 @@ public class EditIdeaActivityTest extends BaseActivityTest<EditIdeaActivity> {
     public EditIdeaActivityTest() {
         super(EditIdeaActivity.class);
     }
+    String oldmessage = "dummy text";
 
     public void setUp() throws Exception {
-        point = new Point(1, 1, "dummy text", 1, "2013/01/29 20:40:18 +0000");
+        point = new Point(1, 1, oldmessage, 1, "2013/01/29 20:40:18 +0000");
         BoardRepository boardRepository = mock(BoardRepository.class);
         BoardRepository.setBoardRepository(boardRepository);
         Board board = new Board("dummy", 2, null);
@@ -44,7 +45,7 @@ public class EditIdeaActivityTest extends BaseActivityTest<EditIdeaActivity> {
         String existingText = editText.getText().toString();
 
         assertNotNull(editText);
-        assertEquals("dummy text", existingText);
+        assertEquals(oldmessage, existingText);
     }
 
     public void testShouldEditIdeaWhenSubmitPressed() {
@@ -55,7 +56,7 @@ public class EditIdeaActivityTest extends BaseActivityTest<EditIdeaActivity> {
 
         Button submitButton = (Button) activity.findViewById(R.id.submitEdit);
         TestUtilities.editTextAndSubmit(this, editText, text, submitButton);
-        verify(BoardRepository.getInstance()).editIdea(eq(text), eq(1), (Callback) any());
+        verify(BoardRepository.getInstance()).editIdea(eq(text), eq(1), eq(oldmessage), (Callback) any());
     }
 
 }
